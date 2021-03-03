@@ -1,0 +1,107 @@
+{% extends "main_eleve.html" %} 
+{% block title %}Acceuil{% endblock %} 
+{% block content %}
+<!--{% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+
+   Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+            {{ include('include/nav_eleve.html') }}
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#Dossier_eleve" data-toggle="tab">Dossier</a></li>
+                <li class="nav-item"><a class="nav-link" href="#ajoutedossier" data-toggle="tab">Ajouter un fichier</a></li>
+              </ul>
+            </div><!-- Notifications -->
+            <div class="card-body">
+              <div class="tab-content">
+                <!-- /.card-header -->
+                <div class="active tab-pane" id="Dossier_eleve">
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Mon dossier</h6>
+                    </div>
+                    <!-- Card Body -->    <!-- DataTales Example -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="dataTable_list_fichier" width="100%" cellspacing="0" table>
+                                <thead>
+                                    <tr>
+                                      <th >Date</th>
+                                      <th >Libelle</th>
+                                      <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <tr> 
+                                    <td> 25/03/2020</td>
+                                    <td> Document de recherche numérique sur les fonctions </td>
+                                    <td>
+                                      <button class="btn btn-sm btn-success"><i class="fas fa-file"></i></button>
+                                      <button class="btn btn-sm btn-info"><i class="fas fa-download"></i></button>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="active tab-pane" id="ajoutedossier">
+                  <form action="" method="post" enctype="multipart/form-data">
+                    <div class="form-row">
+                      <div class="col">
+                        <label for="libelle_fichier">Libellé</label>
+                        <input
+                          required=""
+                          type="text"
+                          name="libelle_fichier"
+                          class="form-control form-control-user"
+                          id="libelle_fichier"
+                          placeholder="{% if libelle_fichier is defined %}{{ libelle_fichier  }}{% endif %}   "
+                        />
+                      </div>
+                      <div class="col">
+                        <label for="photo">Document </label>
+                        <input
+                          required=""
+                          type="file"
+                          name="photo"
+                          class="form-control form-control-user"
+                          id="photo"
+                          placeholder=" {% if photo is defined %}{{ photo  }}{% endif %}"
+                        />
+                      </div>
+                    </div><br/><hr/>
+                    <button class="btn btn-info" type="submit" name="BtnUpdateInfoEleve">AJOUTER DOCUMENTT</button>
+                    <button class="btn btn-danger" type="reset">EFFACER</button>
+                  </form>
+                </div>
+                <!-- /.tab-pane -->
+              </div>
+              <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+
+
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_eleve.js"></script>
+{% endblock %} 

@@ -1,0 +1,258 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} {% block title %}Copies étudiant {% endblock %} {% block content %}
+
+
+<input type="hidden" name="id_personne" value="{% if id_pers_personne is defined %}{{id_pers_personne}}{% endif %}" id="id_personne">
+
+<div class="card ">
+
+
+    <div class="card-body" style="
+        background-image: url('/public/assets/img/background/back_img5.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;padding-top: 20px; ">
+
+
+        <div class="container">
+
+
+            <li class="list-group-item card border-left-primary shadow h-100 py-2">
+
+                <a href="#">
+
+                    <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+
+							<i class="fas fa-folder fa-2x text-primary-300"></i>
+							&nbsp; Evaluation :
+							{{get_Eval_by.eval_libelle}}
+
+						</b>
+
+                </a>
+                <a class="float-right"></a>
+
+            </li>
+
+
+            <div class="container-fluid pb-filemng-template">
+
+                <div class="row">
+
+                    <div class="col-12">
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-body pb-filemng-panel-body">
+
+                                <div class="row col-12">
+
+                                    <div class="col-12 card">
+                                        <div class="card-header p-2">
+                                            <ul class="nav nav-pills">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" href="#docs" data-toggle="tab">Copie</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Notifications -->
+                                        <div class="card-body">
+                                            <div class="tab-content">
+                                                <div class=" active tab-pane" id="docs">
+
+                                                    <div class="row">
+
+                                                        <div class="col">
+                                                            <a href="#" class="btn-primary">Classe</a>
+                                                            <dt>{{get_Eval_by.groupe_libelle}}</dt>
+                                                            <br>
+                                                            <a href="#" class="btn-primary">Professeur</a>
+                                                            <dt>{{get_Eval_by.nom_prenom}}</dt>
+                                                            <br>
+                                                            <a href="#" class="btn-primary">Matière</a>
+                                                            <dt>{{get_Eval_by.mat_code}}-{{get_Eval_by.libele}}</dt>
+                                                            <br>
+                                                            <a href="#" class="btn-primary">Date :
+																{{get_Eval_by.eval_date}}</a>
+                                                            <dd>{{get_Eval_by.eval_hDebut}} - {{get_Eval_by.eval_hFin}}</dd>
+                                                            <br>
+                                                            <a href="#" class="btn-primary">Coéficient</a>
+                                                            <dt>Coef :{{get_Eval_by.coef}}- Noté : /{{get_Eval_by.notation}}</dt>
+                                                            <br>
+                                                           <!--  <a href="#" class="btn-primary">Informations</a>
+                                                            <dt style=" background-color: #e0e0e0; color: black;  text-align: left; padding-left: 3px;  padding-right: 3px;">
+                                                                    {..{..get_Eval_by.eval_desc..}..}
+                                                            </dt> -->
+
+                                                        </div>
+
+                                                        <div class="col">
+                                                            <b> <dt> Copie de  :</dt> </b> <br>
+                                                            <dd>
+                                                                <b> <strong>{{get_elevBy.nom_prenom}}</strong> </b> <br> Matricule :{{get_elevBy.matricule}}<br> Tel :{{get_elevBy.contact}}<br> Email :{{get_elevBy.email}}<br>
+
+                                                            </dd>
+                                                            <br>
+
+                                                            <dt>Etat : {% if etat_copie is defined %}
+                                                                {% if etat_copie =='non' %}
+                                                                    <span class="text-warning"> Copie non soumise</span>
+                                                                {% else %}
+                                                                    <span class="text-success"> Evaluation terminée</span>
+                                                                    <br>
+                                                                    Copie envoyé le :{{etat_copie.0.date_fin}}
+                                                                {% endif %}
+                                                                {% endif %}</dt>
+                                                        </div>
+
+
+                                                        <div class="col">
+                                                            <img id="user_tof_mini" class="img-profile img-thumbnail" src="/files/{{get_elevBy.id_pers_personne}}/tiny{{get_elevBy.id_pers_personne}}.jpg" alt="photo etudiant">
+                                                        </div>
+
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row">
+                                                        {% if (etat_copie is defined)  %} {% for key, value in etat_questions %}
+                                                        <br>
+                                                        <hr>
+                                                        <div class="card shadow mb-12 col-12">
+                                                            <div class="card-header py-3">
+                                                                <h6 class="m-0 font-weight-bold text-primary">
+
+                                                                    <span><U> Question N° {{value.question_number}}  :</U></span> <br> {% autoescape %} {{value.question|raw}} {% endautoescape %}
+
+                                                                </h6>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                {% if  (etat_copie !='non') %} 
+
+                                                                {% if ((value.reps).0).0 is defined %} {% autoescape %} {{(((value.reps).0).1)|raw}} {% endautoescape %} {% endif %}
+
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %} {% endif %}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %} {% block javascript_footer_add %}
+
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+<script type="text/javascript" src="assets/js/mescript_eleve_eval.js"></script>
+
+
+<script>
+    $(function() {
+
+        var dataSrc = [{ %
+            if get_matEnseigners is defined %
+        } { %
+            for key, value in get_matEnseigners %
+        } {
+            "text": "{{ value.code }}-{{ value.libele }}",
+            "iconCls": "fa fa-book",
+            "matiereid": "{{ value.id_matiere_matiere }}"
+        }, { % endfor %
+        } { % endif %
+        }]
+
+
+        var folderData = [
+
+            { %
+                if files_get is defined %
+            } { %
+                for key, value in files_get %
+            } { %
+                if (value .1 == 'docx') or(value .1 == 'doc') %
+            } { % set extentionss = 'docx' %
+            } { % elseif(value .1 == 'xls') or(value .1 == 'xlx') or(value .1 == 'xlsx') %
+            } { % set extentionss = 'xlx' %
+            } { %
+                else %
+            } { % set extentionss = 'pdf' %
+            } { % endif %
+            } {
+                "icon": "<img style=\"width:20px;\" class=\"img-responsive\" src=\"assets/img/{{extentionss}}.png\">",
+                "liens": "{{ value.0 }}",
+                "text": "{{ key }}"
+            }, { % endfor %
+            } { % endif %
+            }
+
+        ];
+        for (var key in folderData) {
+            $(".pb-filemng-template-body").append('<tr><td>' + folderData[key].icon + ' </td><td><a href="' + folderData[key].liens + '"  download="' + folderData[key].text + '"><i class="fa fa-download" aria-hidden="true"></i></a> &nbsp; ' + folderData[key].text + '</td></tr>');
+        }
+
+        for (var key in dataSrc) {
+            $("#treeview_test").append('<li><form action="" method="POST"><a href="index.php?p=elearning_prof&id_prof=' + {
+                {
+                    id_pers_personne
+                }
+            } + '&action=getcoursdocs&id_matiere=' + dataSrc[key].matiereid + '&matiere_select=' + dataSrc[key].text + '" name="id_personne" title="Modifier" type="submit" value="mat_id" class=""><i class="fa fa-folder" aria-hidden="true"></i>' + dataSrc[key].text + '	</a></form></li>');
+        }
+
+
+        var folderData_prof = [{ %
+                if filesprof_get is defined %
+            } { %
+                for key, value in filesprof_get %
+            }
+
+            { %
+                if (value .1 == 'docx') or(value .1 == 'doc') %
+            } { % set extentionss = 'docx' %
+            } { % elseif(value .1 == 'xls') or(value .1 == 'xlx') or(value .1 == 'xlsx') %
+            } { % set extentionss = 'xlx' %
+            } { %
+                else %
+            } { % set extentionss = 'pdf' %
+            } { % endif %
+            }
+
+            {
+                "icon": "<img style=\"width:20px;\" class=\"img-responsive\" src=\"assets/img/{{extentionss}}.png\">",
+                "liens": "{{ value.0 }}",
+                "text": "{{ key }}"
+            }, { % endfor %
+            } { % endif %
+            }
+        ];
+
+        for (var key in folderData_prof) {
+
+            $(".filemng_prof").append(
+                '<tr><td>' + folderData[key].icon + ' </td><td><a href="' + folderData[key].liens + '"  download="' + folderData[key].text + '"><i class="fa fa-download" aria-hidden="true"></i></a> &nbsp; ' + folderData[key].text + '</td></tr>'
+
+            );
+
+        }
+
+
+    });
+</script>
+
+
+{% endblock %}

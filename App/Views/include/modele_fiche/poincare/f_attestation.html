@@ -1,0 +1,98 @@
+
+
+<!--DEBUT CONTENUS-->
+<div class="col-12 row" id="div_print">
+    <div class="text-center col-12 ">
+        <p style="padding-top: 5px;">
+            REPUBLIQUE DE COTE D'IVOIRE
+            <hr style="width: 5%; color: black; border: 1px dashed #000;">
+            <br>
+            MINISTERE DE L'EDUCATION NATIONALE, DE L'ENSEIGNEMENT TECHNIQUE 
+            <br> ET DE LA FORMATION PROFESSIONNELLE
+            <hr style="width: 5%; color: black; border: 1px dashed #000;">   
+        </p>
+            
+    </div>
+    <div class="container-fluid col-12 row">
+        
+            <div class="col-4 text-right" >
+                <img src="/public/assets/img/univ/{{1}}.png" style="width: 100px; height: 100px;">
+            </div>
+            <div class="col-8 text-left" >
+                <br><br>
+                <B><h4>COLLEGE HENRI POINCARE</h4></B>
+            </div>
+    </div>
+    <div class="container-fluid col-12 row">
+    
+            <div class="col-12 ">
+                <p style="text-align: center;">
+                    28 BP 1087 Abidjan 28
+                    <br>
+                    Tel. : 22 41 67 94/ 22 42 28 15
+                    <br>
+                    Email : poincareabidjan@yahoo.fr
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                  <p class="text-center"><h4 class="text-black bg-dark p-2 rounded-pill" style="text-align: center;">ATTESTATION DE FREQUENTATION</h4></p>
+                </p>
+            </div> 
+    </div>
+    <div class="col-12 row">
+        <div class="col-1 "> </div>
+        <div class="col-10 ">
+            <p  style="text-align: justify;">
+                <br>
+                    &nbsp;Nous soussigné, <B>DIALLO Abdramane</B>, Directeur des enseignements au <B>COLLEGE HENRI POINCARE ABIDJAN,</B> attestons que l'élève nommé(e) <B> {{get_elevBy.0.nom_prenom|upper}} </B>né(e) <B>le {{get_elevBy.0.date_naiss|date("m/d/Y")}}</B> à <B>{{lieu_naiss|upper}},</B> est régulièrement (re)inscrit(e) dans notre établissement en classe de <B> {{get_eleves_allGrpe.0.groupe_libelle}} </B>sous le numéro  matricule <B> {{get_elevBy.0.matricule|upper}} </B> au titre de l'année 2020-2021 en <B>COUR DU JOUR</B> depuis le <B>05/09/2020.</B>
+                    <br>
+                    <br>
+                    &nbsp;En foi de quoi la présente attesttion lui est délivré pour servir et valoir ce que de droit.
+                </p>
+        </div>
+        <div class="col-1 "></div>
+
+    </div>
+    <div class="container col-12 ">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-1">
+                
+            </div> 
+            <div class="col-10 row">   
+                <div class="col-4">
+                    <img src="/files/{{get_elevBy.0.id_pers_personne}}/{{get_elevBy.0.id_pers_personne}}.jpg" style="width: 100px; height: 100px; " alt="">
+                </div> 
+                
+                <div class="col-8">
+                    <p><B>Le Directeur des Enseignements</B></p>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <B>DIALLO Abdramane</B>
+                </div> 
+
+
+            </div> 
+            <div class="col-1"></div> 
+        </div>
+        <br>
+        <br> 
+        <br>
+        <br>
+        <div class="container" style="text-align: right;">Fait à Abidjan, le 05 septembre 2020</div>      
+    </div>    
+</div>
+
+<!--FIN CONTENUS-->

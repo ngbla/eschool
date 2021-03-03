@@ -1,0 +1,389 @@
+{% extends "main.html" %}
+
+{% block title %}Administrateur - Relever de Notes{% endblock %}
+
+
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class=" container-fluid"   style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px;min-height: 1024px; ">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item" ><a class="nav-link {% if panel == 1 %} active {% endif %}" data-toggle="tab" href="#home">Ajouter un modèle à un Département</a></li>
+        <li class="nav-item" ><a class="nav-link {% if panel == 2 %} active {% endif %}" data-toggle="tab" href="#menu1">Voir les modèles</a></li>
+        <!-- <li class="nav-item" ><a class="nav-link {% if panel == 3 %} active {% endif %}" data-toggle="tab" href="#menu2">Ajout Bilan matières</a></li>
+        <li class="nav-item" ><a class="nav-link {% if panel == 4 %} active {% endif %}" data-toggle="tab" href="#menu3">Menu 3</a></li>-->
+    </ul>
+
+    
+    
+    <div class="tab-content">
+
+        <div id="home"  class="tab-pane {% if panel == 1 %} active {% endif %}  row">
+            
+            <div class="col-12"><br><br><br></div>
+            <div class="col-12 row">
+                <form method="POST" class="form-row col-12 row"> 
+                    <div class="input-group col-4">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Département</button>
+                        </div>
+                        <select class="form-control" name="departementid">
+                            <option value="" disabled selected hidden>Choisissez un Département</option>
+                            {% if get_all_departBy is defined %}
+                            {% for key, value in get_all_departBy  %}
+                            <option value="{{value.id_depat}}">{{value.lib_depat}}</option>
+                            {% endfor %} 
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="input-group  col-4">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Modèle Relever</button>
+                        </div>
+                        <select class="form-control" name="idmodele_relever">
+                            <option value="" disabled selected hidden>Choisissez un modèle</option>
+                            {% if get_all_bulletinModeleBy is defined %}
+                            {% for key, value in get_all_bulletinModeleBy  %}
+                            <option value="{{value.id}}">{{value.libelle_bulletin}}</option>
+                            {% endfor %} 
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-info btn-icon-split" name="modele_relever">
+                            <span class="icon text-white-50">
+                            <i class="fas fa-info"></i>
+                            </span>
+                            <span class="text">Voir</span>
+                        </button>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-success btn-icon-split" name="btn_lier_departbultin">
+                            <span class="icon text-white-50">
+                            <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="text">Lier</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12"><br><br><br></div>
+            <div class="col-12 card">
+                <div class="card-body">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Département</th>
+                            <th>Modèle Relever</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            
+                            {% if get_bultinDepart_By is defined %}
+                            {% for key, value in get_bultinDepart_By  %}
+                            <tr>
+                                <td>{{value.lib_depat}}</td>
+                                <td>{{value.libelle_bulletin}}</td>
+                            </tr>
+                       
+                            {% endfor %} 
+                            {% endif %}
+            
+                      
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="menu1" class="tab-pane {% if panel == 2 %} active {% endif %} row">
+
+            <div class="col-12"><br></div>
+            <div class="col-12">
+                <form method="POST" class="form-row row"> 
+
+                    <div class="input-group  col-8">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Modèle Relever</button>
+                        </div>
+                        <select class="form-control" name="idmodele_relever">
+                            <option value="" disabled selected hidden> {% if libelle_bulletin is defined %} {{libelle_bulletin}}{% else %}Choisissez un modèle {% endif %}</option>
+                            {% if get_all_bulletinModeleBy is defined %}
+                            {% for key, value in get_all_bulletinModeleBy  %}
+                            <option value="{{value.id}}">{{value.libelle_bulletin}}</option>
+                            {% endfor %} 
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-info btn-icon-split">
+                            <span class="icon text-white-50">
+                            <i class="fas fa-info"></i>
+                            </span>
+                            <span class="text">Voir</span>
+                        </button>
+                    </div>
+        
+                </form>
+            </div>
+            <div class="col-12"><br></div>
+
+            <div id="relever" class="col-12 container" style="color: black ;background-color:white ">
+
+                <!-- Content Wrapper.  <div class="content-wrapper"> Contains page content -->
+                {% if (libelle_bulletin is defined) and (univInfos.0.initiale_univ is defined) %} 
+                    {{ include('include/modele_relever/'~univInfos.0.initiale_univ~'/'~libelle_bulletin~'.html') }} 
+                {% endif %}
+                <!-- Content Wrapper. Contains page content -->
+
+                <br>
+
+            </div>
+        </div>
+        <!-- 
+            <div class="tab-pane">
+                <div class="col-12"><br><br><br></div>
+                <div class="col-12 row">
+                    <form method="POST" class="form-row col-12 row"> 
+                        <div class="input-group col-3">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Niveau</button>
+                            </div>
+                            <select class="form-control" name="id_niveau">
+                                <option value="" disabled selected hidden>Choisissez un Niveau</option>
+                                {% if getNiveau is defined %}
+                                {% for key, value in getNiveau  %}
+                                <option value="{{value.id_niveau}}|_|{{value.libelle_niveau}}">{{value.libelle_niveau}}</option>
+                                {% endfor %} 
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="input-group  col-4">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Filière</button>
+                            </div>
+                            <select class="form-control" name="id_filiere">
+                                <option value="" disabled selected hidden>Choisissez une Filière</option>
+                                {% if getClassesBy is defined %}
+                                {% for key, value in getClassesBy  %}
+                                <option value="{{value.id_classe_classe}}|_|{{value.libelle}}">{{value.libelle}}</option>
+                                {% endfor %} 
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="input-group  col-3">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Bilan</button>
+                            </div>
+                            <select class="form-control" name="id_bilan">
+                                <option value="" disabled selected hidden>Choisissez un Bilan</option>
+                                {% if getBilanBy is defined %}
+                                {% for key, value in getBilanBy  %}
+                                <option value="{{value.id_bilan}}|_|{{value.libelle_bilan}}">{{value.libelle_bilan}}</option>
+                                {% endfor %} 
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-info btn-icon-split" name="btn_add_bilan">
+                                <span class="icon text-white-50">
+                                <i class="fas fa-info"></i>
+                                </span>
+                                <span class="text">Ajouter</span>
+                            </button>
+                        </div>
+
+                        <div class="col-12"><br><br><br></div>
+                        <div class="col-12 card">
+                            <div class="card-body row">
+
+                                <div class="d-flex justify-content-between bg-warning mb-1 col-12">
+                                    <div class="p-1 "> 
+                                    Niveau : <strong> <span id="span_niveau"> {% if niveau is defined %} {{niveau}} {% else %}....  {% endif %}</span></strong> .
+                                    </div>
+                                    <div class="p-1 "> 
+                                Filière :  <strong> <span id="span_filiere"> {% if filiere is defined %} {{filiere}} {% else %}....  {% endif %}</span></strong>.
+                                    </div>
+                
+                                    <div class="p-1 "> 
+                                        Bilan :  <strong> <span id="span_filiere">{% if bilan is defined %} {{bilan}} {% else %}....  {% endif %}</span></strong>.
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                        <tr>
+                                            <th>Matières</th>
+                                            <th>Supprimer</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            {% if get_B_li_bilanNivFil_By is defined %}
+                                            {% for key, value in get_B_li_bilanNivFil_By  %}
+                                            <tr>
+                                                <td>({{value.code_mat}})-{{value.lib_mat}}</td>
+                                                <td>
+                                                    <button  type="button" class="btn btn-icon-split btn-outline-danger ">
+                                                        <span class="icon text-white-50 ">
+                                                            <i class="fas fa-minus btn_supMat_bilan" id="{{value.fk_iduniv}}_{{value.fk_bul_bilan}}_{{value.fk_niveau}}_{{value.fk_filiere}}_{{value.fk_matiere}}"></i>
+                                                        </span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                    
+                                            {% endfor %} 
+                                            {% endif %}
+                            
+                                    
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Matières</th>
+                                                <th>Ajouter</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            {% if get_mat_nivoFilBy is defined %}
+                                            {% for key, value in get_mat_nivoFilBy  %}
+                                            <tr>
+                                                <td>({{value.code_mat}})-{{value.lib_mat}}</td>
+                                                <td>
+                                                    <button  type="button" class="btn btn-icon-split btn-outline-success ">
+                                                        
+                                                    <span class="icon text-white-50" >
+                                                        <i class="fas fa-plus btn_addMat_bilan" id="{{value.id_niveau}}_{{value.id_classe}}_{{value.id_matiere}}_{{id_bilan}}_{{id_univ}}" name="{{value.id_niveau}}_{{value.id_classe}}_{{value.id_matiere}}_{{id_bilan}}_{{id_univ}}"></i>
+                                                        </span>
+                                                    </button>
+                                            </td>
+                                            </tr>
+                                    
+                                            {% endfor %} 
+                                            {% endif %}
+                            
+                                    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+            </div>
+        -->
+
+    </div>
+
+
+</div>
+{% endblock %}
+{% block javascript_footer_add %}
+
+<script src='assets/vendor/html2pdf/html2pdf.bundle.min.js'></script>
+<script>
+    function generatePDF() {
+      // Choose the element that our invoice is rendered in.
+      const element = document.getElementById("relever");
+      // Choose the element and save the PDF for our user.
+      html2pdf()
+        .from(element)
+        .save();
+    }
+
+    $(document).ready(function(){
+
+        liens =  Appconfigs.liens_serv  ;   
+
+        $('.btn_supMat_bilan').on('click', function(event) {
+        
+            event.preventDefault();
+
+            titre="//admin_relever.html :: click evenement Change sur: #btn_supMat_bilan";
+            info="  // Valeur=id --> "+event.target.id;
+            valueur= ""; 
+
+            consoleInfo(envi, titre, info, valueur);
+            url_info = liens+'App/Models/info.model.php';
+            values_info = 'action=bulletin_lier_BilanNivFiliereSUP&infos='+event.target.id;
+            idelemt = '#'+event.target.id;
+            root_AjaxMethod(url_info, values_info, ajax_retour_bultin,idelemt);
+
+        });
+
+        $('.btn_addMat_bilan').on('click', function(event) {
+            
+            event.preventDefault();
+            titre="//admin_relever.html :: click evenement Change sur: #btn_addMat_bilan";
+            info="  // Valeur=id --> "+event.target.id;
+            valueur= ""; 
+            consoleInfo(envi, titre, info, valueur);
+
+            url_info = liens+'App/Models/info.model.php';
+            values_info = 'action=bulletin_lier_BilanNivFiliere&infos='+event.target.id;
+            idelemt = '#'+event.target.id;
+            root_AjaxMethod(url_info, values_info, ajax_retour_bultin,idelemt);
+            
+        });
+
+        function ajax_retour_bultin(jsondata) {
+            
+
+            if (typeof(jsondata) !=undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                if (jsondata == 1) {
+                    classtype = "alert-success";
+                    infos_stat = "Ajout éffectuer";
+                    location.reload();
+                }
+                else{
+                    classtype = 0;
+                    infos_stat = "Ajout erreur";
+                }
+                
+                root_fct_showinfos_toast(infos_stat,classtype);
+            }
+
+        }
+
+        
+
+     
+
+
+    });
+</script>
+
+{% endblock %} 
+
+
+
+
+
+
+
+
+
+
+
+
+

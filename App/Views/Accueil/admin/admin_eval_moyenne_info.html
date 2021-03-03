@@ -1,0 +1,151 @@
+{% extends "main.html" %} 
+{% block title %}Home{% endblock %} 
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+
+<div class="row">
+  <div class="col-xl-12 col-lg-12">
+      <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+              <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                  <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800"><a href="#">Informations</a></div><br>
+                  <div class="h5 mb-0 ">
+                      
+                      <dl class="form-row">
+                          {% if get_info_onMoy is defined %}
+                              <div class="col-6">
+                                <dt><strong>Annee Scolaire</strong></dt>
+                                <dd>{{ get_info_onMoy.2.groupe_libelle }}  </dd>
+                              </div>
+                              <div class="col-6">
+                                  <dt> <strong>Classe</strong> </dt>
+                                  <dd> {{ get_info_onMoy.0.groupe_libelle }} </dd>
+                               </div>
+                               <div class="col-6">
+                                  <dt><strong>Session</strong></dt>
+                                  <dd> {{ get_info_onMoy.3.groupe_libelle }} </dd>
+                              </div>
+                              <div class="col-6">
+                                <dt> <strong>Matière</strong> </dt>
+                                <dd> {{ get_info_onMoy.1.groupe_libelle }} </dd>
+                              </div>
+                              {% endif %}
+                              
+                      </dl>
+
+
+                  </div>
+              </div>
+              <div class="col-auto">
+              </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Moyennes </h6>
+    </div>
+
+    <div class="card-body">
+      
+
+        <fieldset>
+
+            <!-- Card Header - Accordion -->
+            <a href="#eval_collapse" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="eval_collapse">
+              <h6 class="m-0 font-weight-bold text-primary"></h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="eval_collapse" >
+
+              <div class="card-body">
+                
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="eval_prog_table" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Matricule</th>
+                        <th>Nom et prenom</th>
+                        <th>sexe</th>
+                        <th>Date et lieu de naiss</th>
+                        <th>Moyenne</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Matricule</th>
+                        <th>Nom et prenom</th>
+                        <th>sexe</th>
+                        <th>Date et lieu de naiss</th>
+                        <th>Moyenne</th>
+                        <th>Action</th>
+                      </tr>
+                    </tfoot>
+                    <tbody id="eval_prog_table_tbody">
+
+                      
+                      {% if get_info_elevMoyBymat is defined %}                 
+                        {% for key, value in get_info_elevMoyBymat  %}
+
+                          <tr> <td>{{ value.matricule }}</td>   <td>{{ value.nom_prenom }}</td>   <td>{{ value.sexe }}</td>   <td>{{ value.date_naiss }} à {{ value.lieu_naiss }}</td>  <td>{{ value.moyenne }}</td> 
+                            <td>
+                              <form action="" method="POST">
+                                <input type="hidden" value="{{ moy_annee }}" name="moy_annee">
+                                <input type="hidden" value="{{ moy_classe }}" name="moy_classe">
+                                <input type="hidden" value="{{ moy_mat }}" name="moy_mat">
+                                <input type="hidden" value="{{ moy_session }}" name="moy_session">
+
+                                <input type="hidden" value="{{  value.id_groupe }}" name="id_groupe">
+                                <input type="hidden" value="{{  value.id_eleve }}" name="id_eleve">
+                                <input type="hidden" value="{{  value.id_matiere }}" name="id_matiere">
+                                <input type="hidden" value="{{  value.id_prof }}" name="id_prof">
+                                <input type="hidden" value="{{  value.id_session }}" name="id_session">
+                                <input type="hidden" value="{% if value.etat_moy == 0 %}{{1}}{% else %}{{0}}{% endif %}" name="etat_moy">
+
+                              <button title="{% if value.etat_moy == 0 %}Autoriser l élève{% else %}Suprimer autorisaion élève{% endif %}" type="submit"  value="" class="btn btn-{% if value.etat_moy == 0 %}info{% else %}warning{% endif %} btn-circle">
+                              <i class="fas fa-info"></i>
+                              </button>
+                              </form>
+                            </td> 
+                          </tr>
+
+                        {% endfor %} 
+                      {% endif %}
+
+                    </tbody>
+                  </table>
+                </div>
+
+                
+              </div>
+
+
+            </div>
+
+        </fieldset>
+        
+
+
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+{% endblock %} 

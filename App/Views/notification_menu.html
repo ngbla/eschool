@@ -1,0 +1,41 @@
+<!-- NOTIFICATIONS -->
+{% if get_userNotifs is defined %}{% for notif in get_userNotifs %} {% set notifid = (notif.id_notif|number_format ) %}
+
+<div class="post clearfix">
+    <div class="card shadow mb-4">
+        <!-- HEADER -->
+        <a href="#collapse_{{notif.id_notif}}" class="d-block card-header py-3 form-row" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse_{{notif.id_notif}}">
+            <img style="height: 2em !important;" class="img-circle img-bordered-sm " src="{% if liens is defined %}{{liens}}{{notif.pers_id}}/tiny{{notif.pers_id}}.jpg{% elseif sexe == 'M' %}assets/img/m.png {% else %}assets/img/f.png {% endif %}" alt="user image">            &nbsp;
+            <span class="username">{{notif.nom_prenom}} </span>&nbsp;&nbsp;
+            <span class="description">- &nbsp;&nbsp; {{notif.date_creation_notif}}</span>
+        </a>
+        <!-- BODY -->
+        <div class="collapse show" id="collapse_{{notif.id_notif}}">
+            <div class="card-body">
+                <p>
+                    <strong>{{notif.notif_titre}}</strong> <br> {{notif.notif_desc}}
+                </p>
+                <p>
+                    <span class="float-right">
+                <form method="POST" class="float-right">
+                <input type="hidden" value="{{notif.id_notif}}" name="id_notif">
+                <a href="#" class="link-black text-sm text-danger float-right">
+                    <i class="fa fa-comments-o mr-1"></i> Désactiver
+                </a>
+                </form>
+            </span>
+                </p>
+                <br>
+                <hr>
+                <!-- FILE MANAGER -->
+                {{ include('file_manager.html') }}
+                <!-- /FILE MANAGER -->
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endfor %}{% endif %}
+<!-- /.NOTIFICATIONS -->

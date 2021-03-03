@@ -1,0 +1,14 @@
+[01-May-2020 10:19:56 Africa/Abidjan] PHP Parse error:  syntax error, unexpected ':', expecting ';' or '{' in /home/igtdrgyc/uges.x-pertizgroup.com/vendor/twig/twig/src/ExtensionSet.php on line 70
+[01-May-2020 10:20:06 Africa/Abidjan] PHP Parse error:  syntax error, unexpected ':', expecting ';' or '{' in /home/igtdrgyc/uges.x-pertizgroup.com/vendor/twig/twig/src/ExtensionSet.php on line 70
+[01-May-2020 10:27:01 Africa/Abidjan] PHP Parse error:  syntax error, unexpected ':', expecting ';' or '{' in /home/igtdrgyc/uges.x-pertizgroup.com/vendor/twig/twig/src/ExtensionSet.php on line 70
+[01-May-2020 10:27:45 Africa/Abidjan] PHP Parse error:  syntax error, unexpected ':', expecting ';' or '{' in /home/igtdrgyc/uges.x-pertizgroup.com/vendor/twig/twig/src/ExtensionSet.php on line 70
+[01-May-2020 10:28:42 Africa/Abidjan] PHP Parse error:  syntax error, unexpected ':', expecting ';' or '{' in /home/igtdrgyc/uges.x-pertizgroup.com/vendor/twig/twig/src/ExtensionSet.php on line 70
+[01-May-2020 10:32:28 Africa/Abidjan] PHP Parse error:  syntax error, unexpected ':', expecting ';' or '{' in /home/igtdrgyc/uges.x-pertizgroup.com/vendor/twig/twig/src/ExtensionSet.php on line 70
+[01-May-2020 10:32:44 Africa/Abidjan] PHP Parse error:  syntax error, unexpected ':', expecting ';' or '{' in /home/igtdrgyc/uges.x-pertizgroup.com/vendor/twig/twig/src/ExtensionSet.php on line 70
+[03-May-2020 18:28:32 Europe/Paris] PHP Parse error:  syntax error, unexpected 'elseif' (T_ELSEIF), expecting end of file in /home/igtdrgyc/uges.x-pertizgroup.com/public/index.php on line 74
+[03-May-2020 18:31:45 Europe/Paris] PHP Fatal error:  Cannot use App\Models\Parent as Parent because 'Parent' is a special class name in /home/igtdrgyc/uges.x-pertizgroup.com/App/Controllers/Crt_parent.php on line 13
+[03-May-2020 18:32:32 Europe/Paris] PHP Fatal error:  Cannot use App\Models\Parent as Parent because 'Parent' is a special class name in /home/igtdrgyc/uges.x-pertizgroup.com/App/Controllers/Crt_parent.php on line 13
+[03-May-2020 16:34:18 Africa/Abidjan] PHP Fatal error:  Cannot use 'Parent' as class name as it is reserved in /home/igtdrgyc/uges.x-pertizgroup.com/App/Models/Parent.php on line 13
+[03-May-2020 16:34:20 Africa/Abidjan] PHP Fatal error:  Cannot use 'Parent' as class name as it is reserved in /home/igtdrgyc/uges.x-pertizgroup.com/App/Models/Parent.php on line 13
+[17-Jun-2020 17:42:37 Africa/Abidjan] PHP Warning:  session_id(): Cannot change session id when session is active in /home/igtdrgyc/uges.x-pertizgroup.com/public/index.php on line 28
+[17-Jun-2020 17:42:40 Africa/Abidjan] PHP Warning:  session_id(): Cannot change session id when session is active in /home/igtdrgyc/uges.x-pertizgroup.com/public/index.php on line 28

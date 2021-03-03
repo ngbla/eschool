@@ -1,0 +1,32 @@
+<!DOCTYPE html> {% do gantry.document.addFramework('mootools.core') %}
+
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RECU D'INSCRIPTION 2020-2021</title>
+    <link href='assets/css/inscript_css.css' rel='stylesheet' /> {{ include('Inscription/include/all_head.html') }}
+
+
+</head>
+
+<body>
+
+    <div class="container" id="content">
+        {{ include('Inscription/include/form_fiche_model.html') }}
+
+    </div>
+
+
+    {% block javascript_footer %}
+    <!-- ::DEBUT :: Script commun aux pages-->
+    {{ include('Inscription/include/allscript.html') }}
+    <!-- ::FIN :: Script commun aux pages-->
+    {% endblock %}
+
+
+
+</body>
+
+</html>

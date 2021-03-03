@@ -1,0 +1,544 @@
+{% extends "main.html" %} {% block title %}Administration - Accueil{% endblock %} {% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row" style="
+background-image: url('/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; ">
+    <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+                <div class="text-center" id="div_user_tof">
+                    <img id="user_tof" class="profile-user-img img-fluid img-circle" src="{% if lien_photo is defined %}{{lien_photo}}{% elseif sexe == 'M' %}assets/img/m.png {% else %}assets/img/f.png {% endif %}" alt="User profile picture">
+                </div>
+                <br>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+
+                        <div class="input-group">
+
+                            <div class="custom-file" id="div_input_photo">
+                                <input type="file" class="custom-file-input" id="photo_user" name="photo_user">
+                                <label class="custom-file-label" for="exampleInputFile">Importer</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-icon-split" name="btn_send_photo">
+                        <span class="icon text-white-50">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <span class="text">Changer</span>
+                    </button>
+                </form>
+                <br>
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><strong> {% if nom_prenom is defined %}{{ nom_prenom|upper  }}{% endif %} </strong></h6>
+                </div>
+                <br> 
+                {% if (id_role is defined) and ((id_role==1) or (id_role==8)) %}
+
+                <p class="text-muted text-center"> <strong> Année scolaire</strong>
+                    <!-- About Me Box -->
+
+                    <form method="post" class="row">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-outline-warning  text-xs btn-xs text-small" name="change_annee">Changer</button>
+                            </div>
+                            <!-- /btn-group -->
+                            <select class="form-control col-9" name="id_annee_admin" required>
+                                <option value="" disabled selected hidden> Année</option>
+                                {% if all_annee is defined %}
+                                    {% for key, value in all_annee  %}
+                                    <option value="{{value.id_anscol_annee_scolaire}}">{{value.annee_libelle}}</option>
+                                    {% endfor %} 
+                                {% endif %}
+                            </select>
+                        </div>
+                    </form>
+                    <hr>
+                </p>
+                <!-- /.card -->
+                <p class="text-muted text-center"><br> <strong> Université(s)</strong></p>
+                <!-- About Me Box -->
+                <div class="card card-primary">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                        {% if get_all_univ is defined %} {% for univ in get_all_univ %}
+                        <ul class="list-group list-group-unbordered mb-3 ">
+                            <li class="list-group-item card border-left-danger shadow h-100 py-2">
+                                <a href="index.php?p=accueil&action=240d33ceb023760fe684b527722fcd627ddf4b00&cible={{univ.id_univ}}">
+                                    <b class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        <i class="fas fa-home fa-2x text-danger"></i> &nbsp; {{univ.non_univ}} <br>
+                                        Ville :  {{univ.ville_univ}}
+                                    </b>
+                                    <a class="float-right text-danger">
+                                        <i class="fa fa-share" aria-hidden="true"></i>
+                                    </a>
+                                </a>
+                            </li>
+                        </ul>
+                        {% endfor %} {% endif %}
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+                {% endif %}
+
+
+                <br>
+                <p class="text-muted text-center"> <strong> {{lib_role}}</strong></p>
+                <ul class="list-group list-group-unbordered mb-3 ">
+
+                    <li class="list-group-item card border-left-danger shadow h-100 py-2">
+                        <a href="#">
+                            <b class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                <i class="fas fa-users fa-2x text-danger"></i> &nbsp; Administrateurs
+                            </b>
+                            <a class="float-right text-danger">         
+                            {% if result_effectif_all.nbreadmin is defined %}
+                            {{ result_effectif_all.nbreadmin.0.nbreadmin }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item card border-left-info shadow h-100 py-2">
+                        <a href="index.php?p=admin_prof_listAll">
+                            <b class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            <i class="fas fa-user fa-2x text-info"></i>  &nbsp;Professeurs 
+                            </b>
+                            <a class="float-right text-info">
+                            {% if result_effectif_all.nbreprof is defined %}
+                            {{ result_effectif_all.nbreprof.0.nbreprof }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item card border-left-info shadow h-100 py-2">
+                        <a href="index.php?p=admin_ceerClasse">
+                            <b class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            <i class="fas fa-user fa-2x text-info-300"></i> &nbsp; Parents
+                            </b>
+                            <a class="float-right text-info">
+                            {% if result_effectif_all.nbreparent is defined %}
+                            {{ result_effectif_all.nbreparent.0.nbreparent }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item card border-left-primary shadow h-100 py-2">
+                        <a href="index.php?p=admin_elev_listAll">
+                            <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                <i class="fas fa-users fa-2x text-primary"></i> &nbsp; Elèves/Etudiants
+                            </b>
+                            <a class="float-right text-primary">         
+                            {% if result_effectif_all.nbreelev is defined %}
+                            {{ result_effectif_all.nbreelev.0.nbreelev }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item card border-left-primary shadow h-100 py-2">
+                        <a href="index.php?p=admin_elev_listAll">
+                            <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                <i class="fas fa-users fa-2x text-primary"></i> &nbsp; Anciens Etudiants
+                            </b>
+                            <a class="float-right text-primary">         
+                            {% if result_effectif_all.nbre_ancien_elev is defined %}
+                            {{ result_effectif_all.nbre_ancien_elev.0.nbre_ancien_elev }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item card border-left-primary shadow h-100 py-2">
+                        <a href="index.php?p=admin_ceerClasse">
+                            <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <i class="fas fa-folder fa-2x text-primary-300"></i> &nbsp; Filières
+                            </b>
+                            <a class="float-right text-primary">
+                            {% if result_effectif_all.nbrefiliere is defined %}
+                            {{ result_effectif_all.nbrefiliere.0.nbrefiliere }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item card border-left-primary shadow h-100 py-2">
+                        <a href="#">
+                            <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <i class="fas fa-folder fa-2x text-primary-300"></i> &nbsp; Niveaux
+                            </b>
+                            <a class="float-right text-primary">
+                            {% if result_effectif_all.nbreniveaux is defined %}
+                            {{ result_effectif_all.nbreniveaux.0.nbreniveaux }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+
+
+                    <li class="list-group-item card border-left-warning shadow h-100 py-2">
+                        <a href="index.php?p=admin_classe_attrib_filliere">
+                            <b class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <i class="fas fa-home fa-2x text-warning"></i> &nbsp; Groupes
+                            </b>
+                            <a class="float-right text-warning">
+                            {% if result_effectif_all.nbreclasse is defined %}
+                            {{ result_effectif_all.nbreclasse.0.nbreclasse }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item card border-left-success shadow h-100 py-2">
+                        <a href="index.php?p=admin_ceerMatiere">
+                            <b class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <i class="fas fa-clipboard fa-2x text-success"></i> &nbsp; Matieres
+                            </b>
+                            <a class="float-right text-success">
+                            {% if result_effectif_all.nbrematirer is defined %}
+                            {{ result_effectif_all.nbrematirer.0.nbrematirer }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+
+
+
+
+                    <li class="list-group-item card border-left-warning shadow h-100 py-2">
+                        <a href="index.php?p=admin_creerannee">
+                            <b class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <i class="fas fa-calendar fa-2x text-warning"></i> &nbsp; Annee Scolaire
+                            </b>
+                            <a class="float-right text-warning">
+                            {% if result_effectif_all.nbreannee is defined %}
+                            {{ result_effectif_all.nbreannee.0.nbreannee }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item card border-left-primary shadow h-100 py-2">
+                        <a href="index.php?p=admin_ceerSalle">
+                            <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <i class="fas fa-university fa-2x text-primary"></i> &nbsp; Salle
+                            </b>
+                            <a class="float-right text-primary">
+                            {% if result_effectif_all.nbresalle is defined %}
+                            {{ result_effectif_all.nbresalle.0.nbresalle }}
+                            {% endif %}
+                            </a>
+                        </a>
+                    </li>
+
+
+
+                </ul>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <!-- About Me Box -->
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Informations</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <strong><i class="fa fa-envelope mr-1"></i> Email</strong>
+                <p class="text-muted">
+                    {% if email is defined %}{{ email }}{% endif %}
+                </p>
+                <hr>
+
+                <strong><i class="fa fa-phone mr-1"></i> Contact</strong>
+                <p class="text-muted">
+                    {% if contact is defined %}{{ contact }}{% endif %}
+                </p>
+                <hr>
+
+                <strong><i class="fa fa-user mr-1"></i> Sexe</strong>
+                <p class="text-muted">
+                    {% if sexe is defined %}{{ sexe }}{% endif %}
+                </p>
+                <hr>
+
+                <strong><i class="fa fa-comments mr-1"></i> Notes</strong>
+
+                <p class="text-muted">
+                    <textarea name="" id="" cols="auto" rows="10"></textarea>
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" href="#stat_menu" data-toggle="tab">Tableau de Bord</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#activity_prof" data-toggle="tab">Notifications</a></li>
+                    <!-- /<li class="nav-item"><a  id="prof_emploitps_cal" class="nav-link" href="#timeline_prof" data-toggle="tab">Emploi du temps</a></li> -->
+                    <li class="nav-item"><a class="nav-link" href="#settings_prof" data-toggle="tab">Dossier</a></li>
+                </ul>
+            </div>
+            <!-- Notifications -->
+            <div class="card-body">
+                <div class="tab-content">
+                    <!-- /.card-header -->
+                    <div class="active tab-pane" id="stat_menu">
+
+                        <!-- NOTIFICATIONS -->
+                        {{ include('include/stat_menu.html') }}
+                        <!-- /NOTIFICATIONS -->
+                        <br>
+                        <hr>
+
+                        <!-- /.post -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="tab-pane" id="activity_prof">
+
+                        <!-- NOTIFICATIONS -->
+                        {{ include('notification_menu.html') }}
+                        <!-- /NOTIFICATIONS -->
+                        <br>
+                        <hr>
+
+                        <!-- /.post -->
+                    </div>
+                    <!-- /.tab-pane >Emploi du temps-->
+                    <div class="tab-pane" id="timeline_prof">
+                        <div id="calendar"></div>
+                    </div>
+                    <!-- /.tab-pane Dossier-->
+                    <div class="tab-pane" id="settings_prof">
+                        <div class="form-row">
+                            <div class="col">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="{% if email is defined %}{{ email  }}{% endif %}   " />
+                            </div>
+                            <div class="col">
+                                <label for="tel">Contacts</label>
+                                <input type="tel" name="tel" class="form-control form-control-user" id="telexplid" placeholder=" {% if contact is defined %}{{ contact  }}{% endif %}" />
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <label for="pass1">Mots de Passe</label>
+                                <input type="password" name="pass1" class="form-control form-control-user" id="exampleInputPassword" placeholder="**********" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="pass2">Repeter Mots de Passe</label>
+                                <input type="password" name="pass2" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="**********" />
+                            </div>
+                        </div>
+
+
+                        <hr />
+                        <label for="">Ajouter un fichier</label>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="exampleInputFile">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input style="border-radius: 10px; border : 1px solid #36b9cc" type="text" name="fichiersend" placeholder="Nom du fichier">
+                            <button href="#" class="btn btn-info btn-icon-split">
+                                <span class="icon text-white-50">
+                                <i class="fas fa-add"></i>
+                                </span>
+                                <span class="text">Envoyer</span>
+                            </button>
+                        </form>
+                        <hr>
+                        <br>
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Liste des notes des élèves</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <!-- DataTales Example -->
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="dataTable_list_fichier" width="100%" cellspacing="0" table>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Libelle</th>
+                                                <th>Liens</th>
+                                                <th>Action</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Libelle</th>
+                                                <th>Liens</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+
+                                            <tr>
+                                                <td> 1</td>
+                                                <td> 1</td>
+                                                <td> 1</td>
+                                                <td> 1</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+    </div>
+</div>
+
+{% endblock %} {% block javascript_footer_add %}
+<script src='assets/vendor/fullcalendar/core/main.js'></script>
+<script src='assets/vendor/fullcalendar/core/locales-all.js'></script>
+<script src='assets/vendor/fullcalendar/interaction/main.js'></script>
+<script src='assets/vendor/fullcalendar/daygrid/main.js'></script>
+<script src='assets/vendor/fullcalendar/timegrid/main.js'></script>
+<script src='assets/vendor/fullcalendar/list/main.js'></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            },
+            defaultDate: '2020-05-03',
+            navLinks: true, // can click day/week names to navigate views
+            businessHours: true, // display business hours
+            editable: true,
+            events: [{
+                    title: 'Business Lunch',
+                    start: '2020-02-03T13:00:00',
+                    constraint: 'businessHours'
+                }, {
+                    title: 'Meeting',
+                    start: '2020-02-13T11:00:00',
+                    constraint: 'availableForMeeting', // defined below
+                    color: '#257e4a'
+                }, {
+                    title: 'Conference',
+                    start: '2020-02-18',
+                    end: '2020-02-20'
+                }, {
+                    title: 'Party',
+                    start: '2020-02-29T20:00:00'
+                },
+
+                // areas where "Meeting" must be dropped
+                {
+                    groupId: 'availableForMeeting',
+                    start: '2020-02-11T10:00:00',
+                    end: '2020-02-11T16:00:00',
+                    rendering: 'background'
+                }, {
+                    groupId: 'availableForMeeting',
+                    start: '2020-02-13T10:00:00',
+                    end: '2020-02-13T16:00:00',
+                    rendering: 'background'
+                },
+
+                // red areas where no events can be dropped
+                {
+                    start: '2020-02-24',
+                    end: '2020-02-28',
+                    overlap: false,
+                    rendering: 'background',
+                    color: '#ff9f89'
+                }, {
+                    start: '2020-02-06',
+                    end: '2020-02-08',
+                    overlap: false,
+                    rendering: 'background',
+                    color: '#ff9f89'
+                }
+            ]
+        });
+        calendar.render();
+        if (typeof(localStorage.getItem("admin_name"))!=undefined && typeof(localStorage.getItem("admin_img")!=undefined)) {
+            localStorage.removeItem("admin_name");
+            localStorage.removeItem("admin_img");
+        }
+        localStorage.setItem("admin_name", "{{nom_prenom}}-({{contact}})");
+        localStorage.setItem("admin_img", "{{lien_photo}}");
+
+        /*::DEBUT:: FCT UTILISATEUR CONNECTEZ
+            DESATIVE USER CONNECTEZ
+            Desactive utilisateur connectez
+        */
+        var_etatinit_i = 0;
+        var auto_user_initetat = setInterval(fct_auto_user_initetat, 5000);
+        function fct_auto_user_initetat() {
+            //console.log('var_etatinit_i = ' + var_etatinit_i);
+            if ((var_etatinit_i == 500 || var_etatinit_i == 0) && typeof($('#global_admin').val()) != undefined && typeof($('#global_univ').val()) != undefined) {
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=auto_user_initetat&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+                idelemt = '#';
+                root_AjaxMethod(url_info, values_info, ajax_auto_user_initetat, idelemt);
+                var_etatinit_i = 0;
+                console.log('Initialisation var_etatinit_i = ' + var_etatinit_i);
+            }
+            var_etatinit_i++;
+
+
+        }
+
+        function ajax_auto_user_initetat(params) {}
+
+        
+    });
+</script>
+
+<script src="assets/js/mescript_admin.js"></script>
+
+{% endblock %}

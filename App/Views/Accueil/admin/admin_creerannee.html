@@ -1,0 +1,229 @@
+{% extends "main.html" %} 
+{% block title %}Home{% endblock %} 
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row"   style="background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px;padding-top: 20px; ">
+
+  <div class="card shadow mb-4 col-12">
+
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary"> Création d'une Année Scolaire </h6>
+    </div>
+
+    <div class="card-body">
+
+      <form  method="POST">
+        <div class="row col-12">
+
+            <div class="col-md-4">
+
+              <div class="form-group form-inline">
+                <label class="select-inline" for="cree_anne_scol">Année Scolaire : &nbsp; </label>
+                <select class="form-control select2 cree_anne_scol" name="cree_anne_scol" required >
+                  <option selected="selected" value='{{ "now"|date("Y") }}-{{ "now"|date("Y") + 1}}'>{{ "now"|date("Y") }}-{{ "now"|date("Y") + 1}}</option>
+                  <option value='{{ "now"|date("Y") - 1}}-{{ "now"|date("Y") }}'> {{ "now"|date("Y") - 1}}-{{ "now"|date("Y") }}</option>
+                  <option value='{{ "now"|date("Y") - 2}}-{{ "now"|date("Y")- 1 }}'> {{ "now"|date("Y") - 2}}-{{ "now"|date("Y")- 1 }}</option>
+                  <option value='{{ "now"|date("Y") - 3}}-{{ "now"|date("Y")- 2 }}'> {{ "now"|date("Y") - 3}}-{{ "now"|date("Y")- 2 }}</option>
+                </select>
+              </div>
+
+              
+              <div class="form-group form-inline">
+                <label >Début de l' Année Scolaire : &nbsp; </label>
+                <div class="form-group">
+                  <div class='input-group date'>
+                      <input type='date' name="cree_anne_scol_dateDebut" class="form-control" required/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group form-inline">
+                <label >Fin de l' Année Scolaire : &nbsp; </label>
+                <div class="form-group">
+                  <div class='input-group date'>
+                      <input type='date' name="cree_anne_scol_dateFin" class="form-control" required/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group form-inline">
+                <label class="select-inline">Nombre de parties Année Scolaire : &nbsp; </label>
+                <select class="form-control select2" name="cree_anne_scol_part" id="admin_creerAnnee_listPart_select" required>
+                  <option  value='1'>1</option>
+                  <option  value='2' selected="selected" >2</option>
+                  <option  value='3'>3</option>
+                  <option  value='4'>4</option>
+                  <option  value='5'>5</option>
+                </select>
+              </div>
+              <!-- /.form-group -->
+            </div>
+
+            <!-- /.col -->
+            <div class="col-md-8" id="admin_creerAnnee_listPart">
+
+              <div class="form-group form-inline">
+                <label >Titre Année Scolaire Partie 1 : &nbsp; </label>
+                <div class="form-group">
+                  <div class='input-group date'>
+                      <input type='text' name="cree_anne_scol_Part1" placeholder="Ex: Semestre 1" class="form-control" required/>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group form-inline">
+                <label >Début P1 : &nbsp; </label>
+                <div class="form-group">
+                  <div class='input-group date'>
+                      <input type='date' name="cree_anne_scol_Part1_dateDebut" class="form-control" required/>
+                  </div>
+                </div>
+
+                <label >&nbsp;Fin P1 : &nbsp; </label>
+                <div class="form-group">
+                  <div class='input-group date'>
+                      <input type='date' name="cree_anne_scol_Part1_dateFin" class="form-control" required/>
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+
+              <div class="form-group form-inline">
+                <label >Titre Année Scolaire Partie 2 : &nbsp; </label>
+                <div class="form-group">
+                  <div class='input-group date'>
+                      <input type='text' name="cree_anne_scol_Part2"  placeholder="Ex: Semestre 1" class="form-control" required/>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group form-inline">
+                <label >Début P2 : &nbsp; </label>
+                <div class="form-group">
+                  <div class='input-group date'>
+                      <input type='date' name="cree_anne_scol_Part2_dateDebut" class="form-control" required/>
+                  </div>
+                </div>
+                <label >&nbsp;Fin P2 : &nbsp; </label>
+                <div class="form-group">
+                  <div class='input-group date'>
+                      <input type='date' name="cree_anne_scol_Part2_dateFin" class="form-control" required/>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+          
+        </div>
+        <button type="submit" name="cree_anne_scol_btn" class="btn btn-primary btn-icon-split">
+          <span class="icon text-white-50">
+            <i class="fas fa-check"></i>
+          </span>
+          <span class="text">Creer</span>
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <div class="col-12 card shadow mb-12">
+
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Listes des Années Scolaire</h6>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable_list_anneeNEWS" width="100%" cellspacing="0" table>
+          <thead>
+            <tr>
+              <th rowspan="2" colspan="1">Annee Scolaire</th>
+              <th rowspan="2" colspan="1">Date Debut</th>
+              <th rowspan="2" colspan="1">Date Fin</th>
+              <th rowspan="1" colspan="3">Découpages</th>
+
+
+            </tr>
+            <tr>
+              <!--<th rowspan="2" colspan="2" colspan="3">Contact</th>-->                                 
+              <th rowspan="1" colspan="1">Libelle</th>
+              <th rowspan="1" colspan="1">Date Debut</th>
+              <th rowspan="1" colspan="1">Date Fin</th>
+                                          
+              
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Annee Scolaire</th>
+              <th>Date Debut</th>
+              <th>Date Fin</th>
+              <th>Libelle</th>
+              <th>Date Debut</th>
+              <th>Date Fin</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <!--                              
+            {% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+              {% if etat_inscrip is defined %}
+            {% endif %} {% set annee = 'bar' %}{% set varannee = allAnneeScolaire[0].annee_libelle %}
+                {{ varannee }}
+            --> 
+            {% if allAnneeScolaire is defined %}
+                
+                {% for key, value in allAnneeScolaire  %}
+                <tr>
+                  
+                  <!--
+                  <td>{{ value.id_annee_partie }}</td>
+                  <td>{{ value.id_anneeScolaire }}</td>
+                    <td>{{ value.id_anscol_annee_scolaire }}</td> 
+                  -->
+                  <td>{{ value.annee_libelle }}</td>
+                  <td>{{ value.annee_date_debut }}</td>
+                  <td>{{ value.annee_date_fin }}</td>
+                  <td>{{ value.libele_partie }}</td>
+                  <td>{{ value.partie_dateDebut }}</td>
+                  <td>{{ value.partie_dateFin }}</td>
+                  
+
+
+                </tr>
+                {% endfor %} 
+            {% endif %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+  </div>
+
+
+
+
+
+
+
+
+</div>
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+{% endblock %} 

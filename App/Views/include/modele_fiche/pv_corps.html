@@ -1,0 +1,176 @@
+<style type="text/css">
+    .site-content {
+        min-height: calc(90vh - 10px)
+    }
+    
+    #fp_table td {
+        border: 1px solid black;
+        max-width: 10px !important;
+        word-wrap: break-word;
+        font-size: 0.8em;
+    }
+    
+    #fp_table th {
+        border: 1px solid black;
+        max-width: 10px !important;
+        word-wrap: break-word;
+        font-size: 0.8em;
+    }
+    
+    #fp_table .td_large {
+        max-width: 20px !important;
+    }
+    
+    #fp_table .td_xlarge {
+        max-width: 30px !important;
+    }
+</style>
+
+<main class="site-content">
+
+    <div class="container table-responsive">
+        <table class="table  table-bordered table-sm" id="fp_table">
+            <thead class="text-center" style="color: black;font-size: xx-small;">
+                <tr>
+                    <th class="td_xlarge" colspan="2" style="border: none;"></th>
+                    <th colspan="{{nbre_ecue}}"><strong> {{groupe|upper}}</strong></th>
+                    <th class="td_large" colspan="2" style="border: none;"></th>
+                </tr>
+                <tr>
+                    <th class="td_xlarge" colspan="2" style="border: none;"></th>
+                    {% for key, value in tb_mat_MP %} {% set col = value.nbre_ecue + 1 %}
+                    <th colspan="{{col}}">UE : {{value.MatP_code}} <br> {{value.lib_mp}}</th>
+                    {% endfor %}
+                    <th class="td_large" colspan="2" style="border: none;"></th>
+                </tr>
+                <tr>
+                    <th class="td_large" style="border: none;"></th>
+                    <th class="td_xlarge" style="border: none;"></th>
+                    {% for key, value in info_etudiants.0.ecue %} {% if (cle_past is defined) and (cle_past != value.1 ) %}
+                    <th colspan="1" rowspan="2">Rés. UE</th>
+                    {% endif %}
+                    <th colspan="1" rowspan="2"> {{value.lib_mateft}}</th>
+                    {% set cle_past = value.1 %} {% endfor %}
+                    <th colspan="1" rowspan="2"> Rés. UE</th>
+                    <th class="td_large" colspan="2"><strong> RÉSULTAT</strong></th>
+                </tr>
+                <tr>
+                    <th class="td_large"><strong> Matricule</strong></th>
+                    <th class="td_xlarge"><strong> Nom et Prénoms</strong></th>
+
+                    <th class="td_large" colspan="1"> ECUE Validées</th>
+                    <th class="td_large" colspan="1"> Décision</th>
+                </tr>
+            </thead>
+            <tbody style="color: black;font-size: xx-small;" class="text-center">
+                {% for key, value in info_etudiants %} {% set tmp_cred_T = 0 %} {% set tmp_cred_TOK = 0 %} {% set tmp_moye = 0 %} {% set cle_test = 0 %} {% set var_tmp_credit = 0 %} {% set var_tmp_moy = 0 %}
+                <tr>
+                    <td>{{ value.matricule}}</td>
+                    <td>{{ value.nom_prenom|upper}}</td>
+
+                    {% for cle, val in value.ecue %} {% set tmp_cred = (tb_mat_MP[val.1][cle])['credit'] %} {% set tmp_mention = '' %} {% set tmp_result = 'R' %} {% set tmp_cred_TOK = tmp_cred_TOK + tmp_cred %} {% set tmp_moye =tmp_moye + (val.0) * tmp_cred %}
+                    <!--RESULTAT UE-->
+                    {% if (cle_test != 0) and (cle_test != val.1) %}
+                    <td colspan="1" class="text-center">
+                        {% set var_tmp_moy =(var_tmp_moy/var_tmp_credit) %}
+                        <span>
+                              {% if var_tmp_moy < 10  %}  {% set tmp_cred = 0 %}
+                              {% elseif (var_tmp_moy < 12 ) and ( 10 <= var_tmp_moy) %} 
+                                {% set tmp_mention = 'Pas.' %} {% set tmp_result = 'V' %}
+                              {% elseif (var_tmp_moy < 14 ) and ( 12 <= var_tmp_moy) %} 
+                                {% set tmp_mention = 'A.B.' %} {% set tmp_result = 'V' %}
+                              {% elseif (var_tmp_moy < 16 ) and ( 14 <= var_tmp_moy) %} 
+                                {% set tmp_mention = 'Bien' %} {% set tmp_result = 'V' %}
+                              {% elseif (var_tmp_moy < 17 ) and ( 16 <= var_tmp_moy) %} 
+                                {% set tmp_mention = 'T.B' %} {% set tmp_result = 'V' %}
+                              {% elseif (var_tmp_moy < 18 ) and ( 17 <= var_tmp_moy) %} 
+                                  {% set tmp_mention = 'Ex.' %} {% set tmp_result = 'V' %}
+                              {% elseif (var_tmp_moy < 20 ) and ( 18 <= var_tmp_moy) %} 
+                                  {% set tmp_mention = 'T.Ex.' %} {% set tmp_result = 'V' %}
+                              {% else %} {% endif %}
+                            </span>
+
+                        <strong>
+                              <!--var_tmp_credit = {{var_tmp_credit}} et var_tmp_moy = {{var_tmp_moy}} <br>
+                              cle_test = {{cle_test}} et val 1 = {{val.1}}<br>-->
+                              {{var_tmp_moy|number_format(2)}} <br>
+                              {{tmp_result}} <br>
+                              {{tmp_mention}} <br>
+                              {% if var_tmp_moy < 10  %} 0 / {{var_tmp_credit}} 
+                              {% else %} {{var_tmp_credit}} / {{var_tmp_credit}}
+                                {% set tmp_cred_T = tmp_cred_T + var_tmp_credit %}
+                              {% endif %}
+
+                            </strong>
+                    </td>
+                    {% set var_tmp_credit = 0 %} {% set var_tmp_moy = 0 %} {% endif %}
+                    <!--FIN RESULTAT UE-->
+                    {% set var_tmp_credit = var_tmp_credit + (tb_mat_MP[val.1][cle])['credit'] %} {% set var_tmp_moy = var_tmp_moy + (val.0)* (tb_mat_MP[val.1][cle])['credit'] %} {% set cle_test = val.1 %}
+                    <!--RESULTAT ECUE-->
+                    <td class="text-center">
+                        <span>
+                            {% if val.0 < 10  %}  {% set tmp_cred = 0 %}
+                            {% elseif (val.0 < 12 ) and ( 10 <= val.0) %} 
+                              {% set tmp_mention = 'Pas.' %} {% set tmp_result = 'V' %}
+                            {% elseif (val.0 < 14 ) and ( 12 <= val.0) %} 
+                              {% set tmp_mention = 'A.B.' %} {% set tmp_result = 'V' %}
+                            {% elseif (val.0 < 16 ) and ( 14 <= val.0) %} 
+                              {% set tmp_mention = 'Bien' %} {% set tmp_result = 'V' %}
+                            {% elseif (val.0 < 17 ) and ( 16 <= val.0) %} 
+                              {% set tmp_mention = 'T.B' %} {% set tmp_result = 'V' %}
+                            {% elseif (val.0 < 18 ) and ( 17 <= val.0) %} 
+                                {% set tmp_mention = 'Ex.' %} {% set tmp_result = 'V' %}
+                            {% elseif (val.0 < 20 ) and ( 18 <= val.0) %} 
+                                {% set tmp_mention = 'T.Ex.' %} {% set tmp_result = 'V' %}
+                            {% else %} {% endif %}
+                          </span> {{(val.0)|number_format(2)}} <br> {{tmp_result}} <br>
+                        <!--{{tmp_mention}} <br>
+                            {{tmp_cred}} / {{(tb_mat_MP[val.1][cle])['credit']}} <br>-->
+                    </td>
+                    {% endfor %}
+                    <!--DERNIER RESULTAT UE-->
+                    {% set var_tmp_moy =(var_tmp_moy/var_tmp_credit) %}
+                    <span>
+                      {% if var_tmp_moy < 10  %}  {% set tmp_cred = 0 %}
+                      {% elseif (var_tmp_moy < 12 ) and ( 10 <= var_tmp_moy) %} 
+                        {% set tmp_mention = 'Pas.' %} {% set tmp_result = 'V' %}
+                      {% elseif (var_tmp_moy < 14 ) and ( 12 <= var_tmp_moy) %} 
+                        {% set tmp_mention = 'A.B.' %} {% set tmp_result = 'V' %}
+                      {% elseif (var_tmp_moy < 16 ) and ( 14 <= var_tmp_moy) %} 
+                        {% set tmp_mention = 'Bien' %} {% set tmp_result = 'V' %}
+                      {% elseif (var_tmp_moy < 17 ) and ( 16 <= var_tmp_moy) %} 
+                        {% set tmp_mention = 'T.B' %} {% set tmp_result = 'V' %}
+                      {% elseif (var_tmp_moy < 18 ) and ( 17 <= var_tmp_moy) %} 
+                          {% set tmp_mention = 'Ex.' %} {% set tmp_result = 'V' %}
+                      {% elseif (var_tmp_moy < 20 ) and ( 18 <= var_tmp_moy) %} 
+                          {% set tmp_mention = 'T.Ex.' %} {% set tmp_result = 'V' %}
+                      {% else %} {% endif %}
+                    </span>
+
+                    <td colspan="1" class="text-center">
+                        <!--var_tmp_moy =  {{var_tmp_moy}} et
+                      var_tmp_credit = {{var_tmp_credit}} <br>-->
+                        <strong>
+                        {{var_tmp_moy|number_format(2)}} <br>
+                        {{tmp_result}} <br>
+                        {{tmp_mention}} <br>
+                        
+                        {% if var_tmp_moy < 10  %} 0 / {{var_tmp_credit}} 
+                        {% else %} {{var_tmp_credit}} / {{var_tmp_credit}}
+                          {% set tmp_cred_T = tmp_cred_T + var_tmp_credit %}
+                        {% endif %}
+                      </strong>
+                    </td>
+                    <!--FIN DERNIER RESULTAT UE-->
+                    <td> <strong> <b>{{tmp_cred_T}}/{{tmp_cred_TOK}}</b> </strong></td>
+                    <td> <strong></strong><b>{% set tmp_moye =tmp_moye / tmp_cred_TOK %} {% if tmp_cred_T == tmp_cred_TOK %} Admis(e) {% else %} Ajourné(e) {% endif %}</b></strong>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</main>

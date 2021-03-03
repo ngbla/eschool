@@ -1,0 +1,210 @@
+{% extends "main_prof.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- {# % for key, value in _context  %}<li>{{ key}}</li>{% endfor % #} -->
+
+    <!-- Style content N°1-->
+    <section class="content row" style="
+      background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;padding-top: 20px; ">
+
+        <div class="row col-12">
+            <div class="col-xl-12 col-lg-12">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800"><a href="#">Informations</a></div><br>
+                            <dl class="form-row">
+                                <div class="col-4">
+                                   <strong>Classe</strong> : {{ get_mat_grp_name.0.groupe_libelle }} 
+                                </div>
+                                <div class="col-3">
+                                    <strong>|| Matière</strong> :({{ get_mat_grp_name.0.code }})-{{ get_mat_grp_name.0.lib_mat }} 
+                                </div>
+                                <div class="col-3">
+                                    <strong>|| Période</strong> : {{ info_annee_partie.0.libele_partie }} 
+                                </div>
+                                <div class="col-2">
+                                    <strong>|| Session</strong> : {{ getAll_grpEvalBymat.0.Libelle_session }} 
+                                </div>
+
+                                <div class="col-12"> <br> <br></div>
+                            
+                                <div class="col-12">
+                                    <form method="POST" class="form-row">
+
+                                        <div class="col-4">
+                                            <dt><dd> <strong>Choix Période : </strong>
+                                                <select name="profmoy_select_periode" required>
+                                                    <option value="0" disabled selected>Choisissez une Période</option>
+                                                    {% if getmat_periode is defined %}                 
+                                                        {% for key, value in getmat_periode  %}
+                                                        <option value="{{ value.part_annee_id_tmp }}">{{ value.libele_partie }}</option>
+                                                        {% endfor %} 
+                                                    {% endif %}
+                                                </select>
+                                            </dd></dt>
+                                        </div>
+                                        <div class="col-4">
+                                            <dt><dd> <strong>Choix session</strong> : 
+                                                <select name="profmoy_select_sess" required>
+                                                    <option value="0" disabled selected>Choisissez une session</option>
+                                                    {% if getSession is defined %}                 
+                                                        {% for key, value in getSession  %}
+                                                        <option value="{{ value.id_session_session }}">{{ value.Libelle_session }}</option>
+                                                        {% endfor %} 
+                                                    {% endif %}
+                                                </select>
+                                            </dd></dt>
+                                        </div>
+                                        <div class="col-4">
+                                            {% if btn_voir_classe_notes is defined %} 
+                                            <input type="hidden" name="btn_voir_classe_notes" value="{{ btn_voir_classe_notes }}">
+                                            {% endif %}
+                                            <button type="submit" class="btn btn-outline-primary" >Afficher</button>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+                            </dl> 
+                        </div>
+                        <div class="col-auto">  </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row col-12"> <br> </div>
+
+        <div class="row col-12">
+
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Liste des moyennes des élèves</h6> :  
+                        </div>
+                        <!-- Card Body -->    <!-- DataTales Example -->
+                        {% if getAll_grpEvalBymat.0 is defined %}
+                        <div class="card-body">
+            
+                            <div class="table-responsive">
+                            <table class="table table-striped" id="dataTable_prof_listMoyElev" width="100%" cellspacing="0" table>
+                                <thead>
+                                <tr>
+                                    <th >Matricule</th>
+                                    <th >Nom et Prénom</th>
+                                    <th >Sexe</th>
+                                    {% if getAll_grpEvalBymat is defined %}
+                                    
+                                        {% set tab_evalid = [] %}
+                                
+                                        {% for key, value in getAll_grpEvalBymat  %}
+                                            <th>{{ value.eval_libelle }} <br>Date : {{ value.eval_date }}<br>Notation : {{ value.notation }}<br>Coef : {{ value.coef }}</th>
+                                        {% endfor %} 
+
+                                        {% for key, value in getAll_grpEvalBymat  %}
+                                            {% set tab_evalid = tab_evalid|merge({ ( value.eval_libelle ~ value.eval_id ) : (value.eval_id)})   %}
+                                        {% endfor %} 
+
+                                    {% endif %}
+                                    <th >Moyenne</th>
+
+                                </tr>
+            
+                                </thead>
+                                <tbody>
+                                
+
+                                {% if getAll_elvDSgrp is defined %}
+                                    
+                                    <!-- FOR SUR LISTE ELEVE DU GRPE-->
+                                    {% for keyelv, valueelv in getAll_elvDSgrp  %}
+
+                                    {% set moyenne = 0 %}
+                                    {% set coefmoy = 0 %}
+                                    <tr>
+                                        <td>{{ valueelv.matricule }}</td>
+                                        <td>{{ valueelv.nom_prenom }}</td>
+                                        <td>{{ valueelv.sexe }}</td>
+                                        
+                                        {% if getAll_grpEvalBymat is defined %}
+                                        <!-- FOR SUR LISTES EVAL-->
+                                        {% for key, values in getAll_grpEvalBymat  %} 
+
+                                            {% set test = 0 %}
+
+                                            {% if get_notes_prof_eval_grpBY is defined %}
+                                                <!-- FOR SUR LISTES NOTES :: SI note definie-->
+                                                {% for cle, info in get_notes_prof_eval_grpBY  %}
+                                                        <!-- TESTE SI ID ELEVE = ID ELEVE DS NOTE-->
+                                                        {% if  info.id_eleve == valueelv.id_eleve_eleve %}
+                                                                {% if values.eval_id == info.id_evaluation %}
+                                                                    <td> {{ info.note }} </td>
+
+                                                                    {% set test = 1 %}
+                                                                    {% set moyenne = moyenne + info.note * info.coef %}
+                                                                    {% set coefmoy = coefmoy + info.coef %}
+                                                                {% endif %}
+                                                                <!-- FOR SUR LISTES NOTES :: SINON note non definie -->
+                                                        {% endif %}
+
+                                                    <!-- /FOR SUR LISTES NOTES :: FIN SI -->
+                                                {% endfor %} 
+                                                <!-- fin /FOR SUR LISTES NOTES :: -->
+                                            {% endif %}
+
+                                            {% if test == 0 %}
+                                                <td> {{"aucune note" }} </td>
+                                            {% endif %}
+
+                                        {% endfor %} 
+                                        {% endif %}
+
+                                        <td>{% if coefmoy > 0 %}{% set moyenne = moyenne / coefmoy %}{% else %}{% set moyenne = moyenne %}{% endif %}
+                                             {{moyenne}}
+                                            <input type="hidden" name="input_eleve_matmoy[]" value="{{getAll_grpEvalBymat.0.id_groupe}}_{{valueelv.id_eleve_eleve}}_{{getAll_grpEvalBymat.0.id_matiere_matiere}}_{{getAll_grpEvalBymat.0.id_prof}}_{{getAll_grpEvalBymat.0.id_session_session}}_{{moyenne}}_{{getAll_grpEvalBymat.0.fk_idpartAneeScol}}">
+                                        </td>
+                                    </tr>
+                                    {% endfor %} 
+                                {% endif %}
+            
+                                </tbody>
+                            </table>
+                            </div>
+                        
+                        </div>
+                        {% endif %}
+                </div>
+            </div>
+    
+
+        </div>
+
+
+    </section>
+        <!-- /.content -->
+
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_prof.js"></script>
+{% endblock %} 
+
+
+
+
+
+
+

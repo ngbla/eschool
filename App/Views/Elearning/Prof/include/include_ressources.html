@@ -1,0 +1,115 @@
+{% if videodocs.type == 'd' %}
+
+<li class="resources_docs" id="docs_{{videodocs.id_docsvideocour}}">
+    <div>
+        <div class="mod-indent-outer w-100">
+            <div>
+                <div class="activityinstance">
+                    <a class="aalink" target="_blank" href="{{liens_profmat_docs}}{{videodocs.lien_docsvideo}}">
+
+                      {% set exttabe = videodocs.lien_docsvideo|split('.') %}
+                      {% if (exttabe|last == 'docx') or (exttabe|last == 'doc') %}
+                        {% set extentionss = 'docx' %}
+                      {% elseif (exttabe|last == 'xls') or (exttabe|last == 'xlx')  %}
+                        {% set extentionss = 'xlx' %}
+                      {% else %}
+                        {% set extentionss = 'pdf' %}
+                      {% endif %}
+
+                      <img src="assets/img/{{extentionss}}.png" class="iconlarge activityicon img-responsive" alt="" role="presentation" aria-hidden="true" style="width:20px;" class="" >
+
+
+                      <span class="instancename">{{videodocs.video_libelle}}</span>
+                    </a>
+                </div>
+                <div class="contentafterlink">
+                    <div class="no-overflow">
+                        <div class="no-overflow">
+                            <p><i>Mise en ligne le {{videodocs.date_video}}</i> {% if (type_pers is defined) and (type_pers != 1) %}
+                                <a href="#"><i class="fa fa-trash text-danger text-xs docsfile" id="deldocs_{{videodocs.id_docsvideocour}}" valeur="{{videodocs.id_docsvideocour}}" ></i> </a> {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+
+{% endif %} {% if videodocs.type == 'v' %}
+<li class="resources_videos " id="video_{{videodocs.id_docsvideocour}}">
+    <div class="card shadow mb-4">
+
+
+
+        <!--collapse-->
+        <a href="#collapse_{{videodocs.id_docsvideocour}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse{{video.id_videocour}}">
+            <i class="fa fa-play-circle" style="color:#4e73df; font-size:1.3em" aria-hidden="true"> 
+          {{videodocs.video_libelle}}
+        </i>
+            <div class="text-right">Cliquez ici ,pour voir la vidéo</div>
+        </a>
+
+
+        <div class="collapse show" id="collapse_{{videodocs.id_docsvideocour}}">
+
+            <div class="card-body">
+
+                {% if (type_pers is defined) and (type_pers != 1) %}
+                <a href="#">
+                    <i class="fa fa-trash text-danger  text-right docsfile" id="deldocs_{{videodocs.id_docsvideocour}}" valeur="{{videodocs.id_docsvideocour}}" style="font">Supprimer</i>
+                </a>
+                {% endif %}
+
+                <div class="embed-responsive embed-responsive-4by3">
+
+                    <iframe frameborder="0" class="embed-responsive-item" src="{{videodocs.lien_docsvideo}}" controls autoplay="false"></iframe>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</li>
+{% endif %}
+
+<script>
+    $(document).ready(function() {
+
+        $('.docsfile').on('click', function(event) {
+
+            titre = "//evenement Change sur:include_ressources.html == .docsfile";
+            info = "  // Valeur=id --> " + event.target.id;
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=delete_courlement&infos=' + event.target.id;
+            idelemt = '#' + event.target.id;
+
+            root_AjaxMethod(url_info, values_info, ajax_deleteresult_toast, idelemt);
+
+        });
+
+        function ajax_deleteresult_toast(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                if (jsondata == 1) {
+                    classtype = "alert-success";
+                    infos_stat = "Ressource supprimer";
+                    window.location.reload();
+                } else {
+                    classtype = "alert-danger";
+                    infos_stat = "erreur lier à la suppression de la ressource";
+                }
+
+                root_fct_showinfos_toast(infos_stat, classtype);
+            }
+
+        }
+
+    });
+</script>

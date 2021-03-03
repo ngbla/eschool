@@ -1,0 +1,385 @@
+<script type='text/javascript'>
+    function preview_image(event) {
+
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('output_image');
+            output.src = reader.result;
+            //alert(output.src);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+
+    }
+
+    function fct_loaddocs(event) {
+
+        var input = document.getElementById("filesToUpload");
+        var ol = document.getElementById("fileList");
+
+        while (ol.hasChildNodes()) {
+            ol.removeChild(ol.firstChild);
+        }
+
+        for (var i = 0; i < input.files.length; i++) {
+            var li = document.createElement("li");
+            li.innerHTML = input.files[i].name;
+            ol.appendChild(li);
+        }
+        if (!ol.hasChildNodes()) {
+            var li = document.createElement("li");
+            li.innerHTML = 'No Files Selected';
+            ol.appendChild(li);
+        }
+
+        //alert("change"+params);
+        const reader = new FileReader();
+        reader.addEventListener('load', (event) => {
+            const result = event.target.result;
+            // Do something with result
+        });
+
+        reader.addEventListener('progress', (event) => {
+            if (event.loaded && event.total) {
+                const percent = (event.loaded / event.total) * 100;
+                console.log(`Progress: ${Math.round(percent)}`);
+            }
+        });
+        reader.readAsDataURL(file);
+
+    }
+
+
+    $(document).ready(function() {
+
+        var file = new File(['fijRKjhudDjiokDhg1524164151'],
+            '/public/assets/img/echool_img_2020.jpg', {
+                type: 'image/jpg'
+            });
+
+        console.log(file);
+        var fichierphoto_id = document.getElementById("fichierphoto_id");
+        //fichierphoto_id = file;
+
+        $("#fichierphoto_id").val(file);
+
+
+    });
+</script>
+
+<div class="col-md-12">
+    <h4> <i class="fa fa-info" style="color: #2a82bf;"></i> &nbsp;&nbsp;PHASE 2&nbsp;: Vérification des informations renseignées
+    </h4>
+    <hr style="color: #2a82bf; border: solid 3px;">
+</div>
+<div class="row text-center"><br />
+    <div class="col-md-1"> <br /> </div>
+    <div class="col-md-10 showback" style="margin-left: 1%;">
+        <form action="" method="POST" enctype="multipart/form-data" autocomplete="on">
+
+            <div class="row">
+                <div class="col-md-12 row">
+                    <div class="col-md-4">
+                        <p class="text-form">
+                            <b>
+                                Photo <strong>(* Facultatif)</strong>
+                                <i class="fa fa-arrow-down"
+                                    style="font-size:28px;color:red">
+                                </i>
+                                <br>
+                                (<span class="text-danger">Format : JPEG ou JPG et PNG </span>)
+                            </b>
+                        </p>
+                        <input type="file" id="fichierphoto_id" accept=".png,.jpg, .jpeg" onchange="preview_image(event)" name="fichierphoto" class="form-control text-maj" data-classButton="btn btn-primary" data-input="true" data-classIcon="icon-plus" data-buttonText="cliquez ici.">
+                    </div>
+                    <div class="col-md-8">
+                        <img src="/public/assets/img/echool_img_2020.jpg" class="img-responsive img-thumbnail" alt="PHOTO" id="output_image" style="max-height: 300px;">
+                    </div>
+                </div>
+
+                <div class="col-md-12 row">
+                    <hr style="color: #eaecf4; border: solid 3px;" width="100%">
+                </div>
+
+                <div class="col-md-12 row">
+                    <div class="col-md-2">
+                        <p class="text-form">
+                            <b>
+                                <span class="text-danger"> <br>
+                                    Liste des Documents à fournir ! <br>
+                                    (Veuillez placer les fichiers dans un même
+                                    dossier)
+                                </span>
+                            </b>
+                        </p>
+                        <br />
+                    </div>
+                    <div class="col-md-5">
+                        <dt> 
+                            <span class="text-warning">(Tous les élèves et
+                                étudiants) </span> 
+                        </dt>
+                        <ul>
+                            <li>Un Extrait de naissance</li>
+                            <li>Les bulletins de l'année précédente
+                            </li>
+                        </ul>
+                        <br>
+                        <dt>
+                            <span class="text-warning">(Uniquement les élèves de
+                                la 6ième à la Terminal - Enseignement
+                                générale et Technique ) </span>
+                        </dt>
+                        <ul>
+                            <li>Une copie de la CNI du parent</li>
+                        </ul>
+
+                    </div>
+                    <div class="col-md-5">
+                        <dt>
+                            <span class="text-warning"> (Uniquement les élèves
+                                l'Enseignement Technique et
+                                professionnelle )</span>
+                        </dt>
+                        <ul>
+                            <li>Une copie du certificat de Nationalité
+                            </li>
+                            <li>Une copie de la CNI ou attestation valide : recto verso sur la même page
+                            </li>
+                        </ul>
+                        <br>
+                        <dt>
+                            <span class="text-warning">
+                                (Uniquement les Étudiants l'Enseignement
+                                supérieur- BTS/LICENCE/MASTER )</span>
+                        </dt>
+                        <ul>
+                            <li>Une Fiche d'orientation </li>
+                            <li>Une Fiche d'orientation </li>
+                            <li>Une copie de la CNI ou attestation valide </li>
+                            <li>Une copie du relevé de note du diplôme : BAC - BT - BP </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 row">
+                    <hr style="color: #eaecf4; border: solid 3px;" width="100%">
+                </div>
+
+
+                <div class="col-md-12 row">
+                    <div class="col-md-4">
+                        <p class="text-form">
+                            <b>Import multiple des documents <strong>(*
+                                    Facultatif)</strong>
+                                <i class="fa fa-arrow-down"
+                                    style="font-size:28px;color:red">.PDF</i>
+                                <span class="text-danger"> <br>
+                                    *Maintenez la touche CTRL , et cliquez avec
+                                    la souris pour sélectionner plusieurs
+                                    Documents.
+                                </span>
+                            </b>
+                        </p>
+                        <input name="docsToUpload[]" id="filesToUpload" type="file" onchange="fct_loaddocs(event)" accept=".pdf" multiple>
+                        <br />
+                    </div>
+                    <div class="col-md-8">
+                        <strong>Listes des Documents :</strong>
+                        <ol id="fileList">
+
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="col-md-12 row">
+                    <hr style="color: #eaecf4; border: solid 3px;" width="100%">
+                </div>
+
+
+                <br>
+
+                <div class="col-md-4">
+                    <p align="justify" class="text-form"><b>Nom *</b></p>
+                    <input readonly type="text" name="nom" id="nom" class="form-control text-maj" required onkeyup="this.value=this.value.upperCase();" value="{% if post.nom is defined %}{{ post.nom }}{% endif %}"><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Prénom * </b></p>
+                    <input readonly type="text" name="prenom" id="prenom" class="form-control text-maj" required value="{% if post.prenom is defined %}{{ post.prenom }}{% endif %}"><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form">
+                        <b>Adresse e-mail * </b></p>
+                    <input readonly type="email" name="mail1" id="mail1" class="form-control" required value="{% if post.mail1 is defined %} {{ post.mail1 }}{% endif %}"><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Date de naissance * </b></p>
+                    <input readonly type="date" name="datenaiss" id="datenaiss" class="form-control text-maj" required value="{% if endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Lieu de naissance * </b></p>
+                    <input readonly type="text" name="lieunaiss" id="lieunaiss" class="form-control text-maj" required value="{% if post.lieunaiss is defined %}{{ post.lieunaiss }}{% endif %}"><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Nationalité * </b></p>
+                    <input readonly type="text" name="nationnalite" id="nationnalite" class="form-control text-maj" value="{% if post.nationnalite is defined %}{{
+                        post.nationnalite }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Téléphone portable * </b></p>
+                    <input readonly type="text" name="contact" id="contact" class="form-control text-maj" required="" value="{% if
+                        post.contact is defined %}{{ post.contact }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Téléphone fixe </b></p>
+                    <input readonly type="text" name="telfixe" id="telfixe" class="form-control text-maj" value="{% if post.telfixe
+                        is defined %}{{ post.telfixe }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Personne à contacter en cas
+                            d'urgence *</b></p>
+                    <input readonly type="text" name="nomurget" id="nomurget" class="form-control text-maj" required="" value="{% if
+                        post.nomurget is defined %}{{ post.nomurget }}{%
+                        endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Téléphone de la personne à
+                            contacter en cas d'urgence *</b></p>
+                    <input readonly type="text" name="telurget" id="telurget" class="form-control text-maj" required="" value="{% if
+                        post.telurget is defined %}{{ post.telurget }}{%
+                        endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Commune de résidence * </b></p>
+                    <input readonly type="text" name="commune" id="commune" class="form-control text-maj" required="" value="{% if
+                        post.commune is defined %}{{ post.commune }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Quartier de résidence * </b></p>
+                    <input readonly type="text" name="quartie" id="quartie" class="form-control text-maj" required="" value="{% if
+                        post.quartie is defined %}{{ post.quartie }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Situation matrimoniale * </b></p>
+                    <input readonly type="text" name="stuationmat" id="stuationmat" class="form-control text-maj" required="" value="{% if post.stuationmat is defined %}{{ post.stuationmat }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Sexe  *</b></p>
+                    <input readonly type="text" name="sexe" id="sexe" class="form-control text-maj" required="" value="{% if post.sexe is defined %}{{ post.sexe }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Civilité  *</b></p>
+                    <input readonly type="text" name="civilite" id="civilite" class="form-control
+                        text-maj" required="" value="{% if post.civilite is defined %}{{ post.civilite }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-12">
+                    <hr style="color: grey; border: solid 3px;" />
+                </div>
+                <div class="col-md-4"><br />
+                    <label for="nom_pere"><b>Nom  du  père  : </b></label>
+                    <input readonly type="text" name="nom_pere" id="nom_pere" class="text-uppercase form-control text-maj" value="{% if post.nom_pere is defined %}{{ post.nom_pere }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br />
+                    <label for="prof_pere"><b>Profession  du  Père  :</b></label>
+                    <input readonly type="text" name="prof_pere" id="prof_pere" class="form-control
+                        text-maj" value="{% if post.prof_pere is defined %}{{ post.prof_pere }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br />
+                    <label for="tel_pere"><b>Contact  du  Père  :</b></label>
+                    <input readonly type="text" name="tel_pere" id="tel_pere" class="form-control
+                        text-maj" value="{% if post.tel_pere is defined %}{{ post.tel_pere }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br />
+                    <label for="nom_mere"><b>Nom  de  la  Mère  : </b></label>
+                    <input readonly type="text" name="nom_mere" id="nom_mere" class="text-uppercase
+                        form-control text-maj" value="{% if post.nom_mere is defined %}{{ post.nom_mere }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br />
+                    <label for="prof_mere"><b>Profession  de  la  Mère  : </b></label>
+                    <input readonly type="text" name="prof_mere" id="prof_mere" class="form-control
+                        text-maj" value="{% if post.prof_mere is defined %}{{ post.prof_mere }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br />
+                    <label for="tel_mere"><b>Contact  de  la  Mère  : </b></label>
+                    <input readonly type="text" name="tel_mere" id="tel_mere" class="form-control
+                        text-maj" value="{% if post.tel_mere is defined %}{{ post.tel_mere }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-12">
+                    <hr style="color: grey; border: solid 3px;" />
+                </div>
+                <div class="col-md-4">
+                    <label for="anciennete"><b>Niveau  d'étude  précédent  *</b></label>
+                    <input readonly type="text" name="anciennete" id="anciennete" class="form-control
+                        text-maj" required="" value="{% if post.anciennete is defined %}{{ post.anciennete }}{% endif %}" /><br />
+                </div>
+                {% if post.parcours is defined %}
+                <div class="col-md-4">
+                    <label for="parcours"><b>Filière  Souhaité  * </b></label>
+                    <input readonly type="text" name="parcours" id="parcours" class="form-control
+                        text-maj" required="" value="{{ post.parcours }}" /><br />
+                </div>
+                {% endif %}
+                <div class="col-md-4">
+                    <label for="niveauetude">
+                        <b>Niveau  étude  où  vous  souhaitez  vous  inscrire  *</b>
+                    </label>
+                    <input readonly type="text" name="niveauetude" id="niveauetude" class="form-control
+                        text-maj" required="" value="{% if post.niveauetude is defined %}{{ post.niveauetude }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br>
+                    <label for="diplome"><b>Dernier  diplôme  obtenu  * </b></label>
+                    <input readonly type="text" name="diplome" id="diplome" class="form-control
+                        text-maj" value="{% if post.diplome is defined %}{{ post.diplome }}{% endif %}" required /><br />
+                </div>
+                <div class="col-md-4">
+                    <br>
+                    <label for="seriebac"><b>Série  du  BAC  * </b></label>
+                    <input readonly type="text" name="seriebac" id="seriebac" class="form-control
+                        text-maj" required value="{% if post.seriebac is defined %}{{ post.seriebac }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br>
+                    <label for="numbac"><b>N°  de  table  *</b></label>
+                    <input readonly type="text" name="numbac" id="numbac" class="form-control
+                        text-maj" required value="{% if  post.numbac is defined %}{{ post.numbac }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br>
+                    <label for="num_mesrs"><b>N° MESRS / MENET</b></label>
+                    <input readonly type="text" name="num_mesrs" id="num_mesrs" class="form-control text-maj" value="{% if post.num_mesrs is defined %}{{ post.num_mesrs }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4"><br>
+                    <label for="num_affect"><b>N° D'Affectation</b></label>
+                    <input readonly type="text" name="num_affect" id="num_affect" class="form-control text-maj" value="{% if post.num_affect is defined %}{{ post.num_affect }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <label for="profilcandidat"><b>Profession  * </b></label>
+                    <input readonly type="text" name="profilcandidat" id="profilcandidat" class="form-control text-maj" required="" value="{% if post.profilcandidat is defined %}{{ post.profilcandidat }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Activités  professionnelles  </b></p>
+                    <input readonly type="text" name="activite" id="activite" class="form-control text-maj" value="{% if post.activite is defined %}{{ post.activite }}{% endif %}" /><br />
+                </div>
+                <div class="col-md-4">
+                    <label for="carteetudiant"><b>N°  carte  étudiant(facultatif) </b></label>
+                    <input readonly type="text" name="carteetudiant" id="carteetudiant" class="form-control text-maj" value="{% if post.carteetudiant is defined %}{{ post.carteetudiant  }}{% endif %}"><br />
+                </div>
+            </div>
+            <input type="hidden" name="action_inscription" value="9ce5bbd2560d90e4238fb3afe1f30a28cb9ac938">
+            <div class="col-md-12 row">
+                <div class="col-7"></div>
+            </div>
+            <div class="col-md-12">
+                <hr style="color: #2a82bf; border: solid 3px;">
+            </div>
+            <input type="hidden" name="testform" value="9ce5bbd2560d90e4238fb3afe1f30a28cb9ac938">
+            <div class="col-md-12 row">
+                <button class="btn btn-warning col-5" type="submit" name="modif_forminfos" value="phase2">Modifier</button>
+                <div class="col-2"></div>
+                <button class="btn btn-success col-5" type="submit" name="FormNewInscriptionE1" value="phase3">Valider</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-1"> </div>
+</div>
+<br>
+<br>

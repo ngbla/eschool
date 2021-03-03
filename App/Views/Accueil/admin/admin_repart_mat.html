@@ -1,0 +1,543 @@
+{% extends "main.html" %} {% block title %}Administration - Répartition des matières{% endblock %} {% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="container-fluid" style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; min-height: 1024px;">
+
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link  {% if tab_select != 2 %} active  {% endif %} " href="#add_mat" data-toggle="tab">Ajout de Matières</a></li>
+        <li class="nav-item"><a class="nav-link {% if tab_select == 2 %} active  {% endif %}" href="#repart_mat" data-toggle="tab">Répartition des Matières</a></li>
+
+    </ul>
+    <hr>
+    <!-- Notifications -->
+
+    <div class="tab-content">
+
+        <div class=" tab-pane {% if tab_select != 2 %} active  {% endif %}" id="add_mat">
+            <form method="POST">
+                <div class="row">
+                    <!-- INFOS CLASSES -->
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Information </h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body row">
+                                <div class="col-6">
+                                    <label for="select_modfi_classe"> Niveau : &nbsp; &nbsp; </label>
+                                    <select class="form-control " id="select_modfi_niveau" name="select_modfi_niveau" width="50px;">
+                                    <option value="" disabled selected>Veuillez choisir un niveau</option>
+                                    {% if getNiveauBy is defined %}
+                                        {% for key, value in getNiveauBy  %}
+                                        <option value="{{ value.id_niveau }}">{{ value.libelle_niveau }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </select>
+                                </div>
+
+                                <div class="col-6">
+                                    <label for="select_modfi_classe"> Filière : &nbsp; &nbsp; </label>
+                                    <select class="form-control " id="select_modfi_classe" name="select_modfi_classe" width="50px;">
+                                    <option value="" disabled selected>Veuillez choisir une filière</option>
+                                    {% if allclasses is defined %}
+                                        {% for key, value in allclasses  %}
+                                        <option value="{{ value.id_classe_classe }}">{{ value.libelle }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- LISTE CLASSE MATIERE -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Matières ajouter </h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body" style="padding: 1rem 0.30rem;">
+
+                                <div class="d-flex justify-content-between bg-warning mb-1">
+                                    <div class="p-1 ">
+                                        Niveau : <strong> <span id="span_niveau">....</span></strong> .
+                                    </div>
+                                    <div class="p-1 ">
+                                        Filière : <strong> <span id="span_filiere">.....</span></strong>.
+                                    </div>
+
+                                    <div class="p-1 ">
+
+                                        <button type="submit" name="modif_classe_btn" id="modif_classe_btn" class="btn btn-info btn-icon-split ">
+                                            <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                            </span>
+                                            <span class="text">Modifier</span>
+                                        </button>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="table-responsive" style="font-size: 0.7em;">
+                                    <table class=" table table-bordered table-hover table-sm table-striped" id="dataTable_classe_classMat" style="width:100%" cellspacing="0" style="font-size: small;">
+                                        
+                                        <thead class="bg-gradient-info text-white text-center">
+                                            <tr>
+                                                <th>Code Matière</th>
+                                                <th>Nom Matière</th>
+                                                <th>Action</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Code Matière</th>
+                                                <th>Nom Matière</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody id="dataTable_classe_classMat_tbody">
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- lISTE MATIERE A AJOUTER -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Panier de Matières</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+
+                                <div class="table-responsive" style="font-size: 0.7em;">
+                                    <table class="table table-bordered table-hover table-sm table-striped " id="dataTable_classe_list_annee" style="width:100%" cellspacing="0" style="font-size: small;">
+                                        <thead class="bg-gradient-info text-white text-center">
+                                            <tr>
+                                                <th>Code Matière</th>
+                                                <th>Nom Matière</th>
+                                                <th>Description Matière</th>
+                                                <th>Action</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Code Matière</th>
+                                                <th>Nom Matière</th>
+                                                <th>Description Matière</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            {% if allmatiere is defined %} {% for key, value in allmatiere %}
+                                            <tr>
+                                                <td>{{ value.code }}</td>
+                                                <td>{{ value.libele }}</td>
+                                                <td>{{ value.description }}</td>
+
+                                                <td class="fieldtype_action field-152-td nowrap">
+                                                    <a title="Ajouter Matière" class="btn-default btn-xs purple " href="#">
+                                                        <i class="fa fa-plus cree_matiere_btn_add" id="{{ value.id_matiere_matiere }}_{{ value.code }}" value="{{ value.code }}/_/{{ value.libele }}/_/{{ value.description }}" option="cree_matiere_btn_add" style="font-size: x-large;"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                            {% endfor %} {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="tab-pane {% if tab_select == 2 %} active  {% endif %}" id="repart_mat">
+            <!-- LISTE DES CLASSES -->
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Filtre </h6>
+                        <!-- Card Body -->
+                        <form method="POST" class="col-12">
+                            <div class="card-body row">
+                                <div class="col-3">
+                                    <label for="select_repart_classe"> Niveau : &nbsp; &nbsp; </label> <br>
+                                    <select class="form-control " id="select_repart_niveau" name="select_repart_niveau" width="50px;">
+                                        <option value="" disabled selected>Veuillez choisir un niveau</option>
+                                        {% if getNiveauBy is defined %}
+                                        {% for key, value in getNiveauBy  %}
+                                            <option value="{{ value.id_niveau }}">{{ value.libelle_niveau }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </select>
+                                </div>
+
+                                <div class="col-4">
+                                    <label for="select_repart_classe"> Filière : &nbsp; &nbsp; </label> <br>
+                                    <select class="form-control " id="select_repart_classe" name="select_repart_classe" width="50px;">
+                                        <option value="" disabled selected>Veuillez choisir une filière</option>
+                                        {% if allclasses is defined %}
+                                        {% for key, value in allclasses  %}
+                                            <option value="{{ value.id_classe_classe }}">{{ value.libelle }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </select>
+                                </div>
+
+                                <div class="col-2">
+                                    <label for="select_repart_annee"> Année scolaire : &nbsp; &nbsp; </label> <br>
+                                    <select class="form-control " id="select_repart_annee" name="select_repart_annee" width="50px;">
+                                        <option value="" disabled selected>Veuillez choisir une année</option>
+                                        {% if allAnneeScolaire is defined %}
+                                        {% for key, value in allAnneeScolaire  %}
+                                            <option value="{{ value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </select>
+                                </div>
+
+                                <div class="col-3">
+                                    <br>
+                                    <button type="submit" name="btn_repart_mat" id="#" class="btn btn-info btn-icon-split ">
+                                        <span class="icon text-white-50">
+                                        <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text">repartie</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            {% if (get_filiereNiv_matcoef is defined) or (get_filNiv_matcoef_WithMP is defined) %}
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Accordion -->
+                    <a href="#collapseCardExample_grpMat" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample_grpMat">
+                        <h6 class="m-0 font-weight-bold text-primary">Ajouter une matière à une période </h6>
+                    </a>
+                    <!-- Card Content - Collapse -->
+                    <div class="collapse show" id="collapseCardExample_grpMat">
+                        <div class="card-body">
+                            <form method="POST">
+                                <input type="hidden" name="select_repart_niveau" value="{{select_repart_niveau.0.id_niveau}}">
+                                <input type="hidden" name="select_repart_classe" value="{{select_repart_classe.0.id_classe_classe}}">
+                                <input type="hidden" name="select_repart_annee" value="{{part_anneescol.0.id_anscol_annee_scolaire}}">
+
+                                <div class="d-flex justify-content-between bg-warning mb-1">
+                                    <div class="p-1 ">
+                                        Année scolaire : <strong> <span > {{part_anneescol.0.annee_libelle}} </span></strong> .
+                                    </div>
+                                    <div class="p-1 ">
+                                        Niveau : <strong> <span >{{select_repart_niveau.0.libelle_niveau}} </span></strong>.
+                                    </div>
+                                    <div class="p-1 ">
+                                        Filière : <strong> <span > {{select_repart_classe.0.libelle}} </span></strong>.
+                                    </div>
+                                </div>
+                                <br>
+                                <!-- PARTIE ANNEE -->
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-info">Choix de la Partie de l'année</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <select class="form-control" name="attrib_etap2_partannee">
+                                                <option value="0">Veuillez choisir une partie</option>
+                                                <option value="all">Toute Période</option>
+                                                {% if part_anneescol is defined %}
+                                                    {% for infos in part_anneescol %}
+                                                    <option value="{{ infos.id_annee_partie }}">{{ infos.libele_partie }}</option>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- MATIERE -->
+                                <div class="form-row">
+                                    <div class="col-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-info">Choix de la matière</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <select class="form-control" name="attrib_etap2_mat">
+                                                <option value="0">Choisissez une matière</option>
+                                                {% if get_mat_nivoFilBy is defined %}
+                                                {% for infos in get_mat_nivoFilBy %}
+                                                <option value="{{ infos.id_matiere }}">({{ infos.code_mat }})-{{ infos.lib_mat }}</option>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-info">Coefficient</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <input type="number" id="attrib_etap2_mat_coef" name="attrib_etap2_mat_coef" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-info">Crédit</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <input type="number" placeholder="EX: 3" id="attrib_etap2_mat_credit" name="attrib_etap2_mat_credit" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- SOUS MATIERE 1-->
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-info">Choix matière parent</button>
+                                            </div>
+                                            <!-- /btn-group -->
+                                            <select class="form-control" name="attrib_etap2_mats1">
+                                                <!-- /btn-group -->
+                                                <option value="0">Choisissez une matière</option>
+                                                {% if get_mat_nivoFilBy is defined %}
+                                                {% for infos in get_mat_nivoFilBy %}
+                                                <option value="{{ infos.id_matiere }}">{{ infos.code_mat }}-{{ infos.lib_mat }}</option>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <button type="submit" name="btn_attrib_etap2_ajout_mat" href="#" class="btn btn-warning btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </span>
+                                    <span class="text">Ajouter</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Accordion -->
+                    <a href="#collapseCard_grpMat2" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCard_grpMat2">
+                        <h6 class="m-0 font-weight-bold text-primary">Liste des matières repartie par partie d'année scolaire</h6>
+                    </a>
+                    <div class="collapse show" id="collapseCard_grpMat2">
+                        <!-- Card Content - Collapse -->
+                        <div class="card-body">
+                            <!-- DataTales Example -->
+                            <div class="d-flex justify-content-between bg-warning mb-1">
+                                <div class="p-1 ">
+                                    Année scolaire : <strong> <span > {{part_anneescol.0.annee_libelle}} </span></strong> .
+                                </div>
+                                <div class="p-1 ">
+                                    Niveau : <strong> <span >{{select_repart_niveau.0.libelle_niveau}} </span></strong>.
+                                </div>
+                                <div class="p-1 ">
+                                    Filière : <strong> <span > {{select_repart_classe.0.libelle}} </span></strong>.
+                                </div>
+                            </div>
+                            <br>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-sm table-striped" id="dataTable_attrib_grpMat" width="100%" cellspacing="0">
+                                    <caption>{{part_anneescol.0.annee_libelle}} / {{select_repart_niveau.0.libelle_niveau}} / {{select_repart_classe.0.libelle}}
+                                    {% for key, value in coefcedir  %} &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>{{value.lib_anne}}  : Total ({{value.val}})</span> <span> &nbsp;&nbsp;&nbsp;&nbsp; </span>
+                                    {% endfor %} 
+                                    </caption>
+                                    <thead class="bg-gradient-info text-white text-center">
+                                        <tr >
+                                            <th colspan="6">
+                                                {% for key, value in coefcedir  %}
+                                                <span>{{value.lib_anne}}  : Total ({{value.val}})</span> <span> &nbsp;&nbsp;&nbsp;&nbsp; </span>
+                                                {% endfor %} 
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>Période</th>
+                                            <th>matière</th>
+                                            <th>Coéfficient</th>
+                                            <th>Crédit</th>
+                                            <th>matière parent</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Nom Partie</th>
+                                            <th>matière</th>
+                                            <th>Coéfficient</th>
+                                            <th>Crédit</th>
+                                            <th>matière parent</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="dataTable_grpmat_tbody">
+
+
+                                        {% if get_filiereNiv_matcoef is defined %} {% for mat_coef in get_filiereNiv_matcoef %}
+                                        <tr>
+                                            <td>{{ mat_coef.libele_partie}}</td>
+                                            <td>({{ mat_coef.code }}) - {{ mat_coef.lib_matiere }}</td>
+                                            <td>{{ mat_coef.coeficient_tmp }}</td>
+                                            <td>{{ mat_coef.credit_tmp }}</td>
+                                            <td></td>
+                                            <td>
+                                                <form method="POST">
+
+                                                    <input type="hidden" name="select_repart_niveau" value="{{select_repart_niveau.0.id_niveau}}">
+                                                    <input type="hidden" name="select_repart_classe" value="{{select_repart_classe.0.id_classe_classe}}">
+                                                    <input type="hidden" name="select_repart_annee" value="{{part_anneescol.0.id_anscol_annee_scolaire}}">
+
+
+                                                    <button title="Suprimer" name="sup_fili_matcoef" type="submit" value="{{ mat_coef.filiere_niveau_matCoef_id }}" class="btn btn-danger ">
+                                                    <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %} {% endif %} {% if get_filNiv_matcoef_WithMP is defined %} {% for mat_coef in get_filNiv_matcoef_WithMP %}
+                                        <tr>
+                                            <td>{{ mat_coef.libele_partie}}</td>
+                                            <td>({{ mat_coef.code }}) - {{ mat_coef.lib_matiere }}</td>
+                                            <td>{{ mat_coef.coeficient_tmp }}</td>
+                                            <td>{{ mat_coef.credit_tmp }}</td>
+                                            <td>({{ mat_coef.matp_code }})-{{ mat_coef.matp_lib }}</td>
+                                            <td>
+                                                <form method="POST">
+
+                                                    <input type="hidden" name="select_repart_niveau" value="{{select_repart_niveau.0.id_niveau}}">
+                                                    <input type="hidden" name="select_repart_classe" value="{{select_repart_classe.0.id_classe_classe}}">
+                                                    <input type="hidden" name="select_repart_annee" value="{{part_anneescol.0.id_anscol_annee_scolaire}}">
+
+                                                    <button title="Suprimer" name="sup_fili_matcoef" type="submit" value="{{ mat_coef.filiere_niveau_matCoef_id }}" class="btn btn-danger ">
+                                                    <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %} {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+
+
+            // DataTable
+    var dataTable_attrib_grpMat = $('#dataTable_attrib_grpMat').DataTable({
+        initComplete: function() {
+            // Apply the search
+            this.api().columns().every(function() {
+                var that = this;
+
+                $('input', this.footer()).on('keyup change clear', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        },
+        dom: 'Blfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                titleAttr: 'Copy'
+            },
+            {
+                extend: 'excelHtml5',
+                text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                titleAttr: 'Excel'
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                titleAttr: 'CSV'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                titleAttr: 'PDF'
+            }
+
+        ]
+    });
+
+
+
+
+
+    });
+</script>
+{% endblock %}

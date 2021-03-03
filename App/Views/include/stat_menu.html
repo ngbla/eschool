@@ -1,0 +1,567 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+
+
+    <!-- Content Row -->
+    <div class="row">
+
+
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Dossiers en attentes
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {% if nbre_inscri_attente is defined %} {{nbre_inscri_attente}} {% else %}0{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paiements en attentes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {% if nbre_paiement_attente is defined %} {{nbre_paiement_attente}} {% else %}0{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Content Row -->
+    <div class="row">
+
+
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Activation de comptes en attentes
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{% if nbre_active_attente is defined %} {{nbre_active_attente}} {% else %}0{% endif %}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-nbre_etud_inscri text-uppercase mb-1">
+                                Inscriptions finalisées
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {% if nbre_etud_inscri is defined %} {{nbre_etud_inscri}} {% else %}0{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br> <br>
+    <!-- Content Row -->
+
+    <div class="row">
+
+
+        <!-- Professeurs -->
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Professeurs  <button type="button" class="btn btn-success btn-xs">  </button></h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive table-xs">
+                        <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="prof_connect">
+                            <thead class="bg-gradient-info text-white text-center" style="font-size: x-small;">
+                                <tr>
+                                    <th>IP</th>
+                                    <th>Navigateur</th>
+                                    <th>User</th>
+                                    <th>Localisation</th>
+                                    <th>Date Connexion</th> 
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: x-small;">
+                                {% if prof_conect is defined %} {% for info in prof_conect %}
+                                <tr>
+                                    <td>{{info.conex_ip}}</td>
+                                    <td>{{info.navigateur}}</td>
+                                    <td>{{info.nom_prenom}}</td>
+                                    <td>{{info.conex_continent_pays}}</td>
+                                    <td>{{info.conex_date_heure}}</td> 
+
+                                </tr>
+                                {% endfor %}{% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Eleves -->
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Etudiants / Elèves  <button type="button" class="btn btn-success btn-xs">  </button></h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive table-xs">
+                        <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="eleve_connect">
+                            <thead class="bg-gradient-info text-white text-center" style="font-size: x-small;">
+                                <tr>
+                                    <th>IP</th>
+                                    <th>Navigateur</th>
+                                    <th>User</th>
+                                    <th>Localisation</th>
+                                    <th>Date Connexion</th> 
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: x-small;">
+                                {% if eleve_conect is defined %} {% for info in eleve_conect %}
+                                <tr>
+                                    <td>{{info.conex_ip}}</td>
+                                    <td>{{info.navigateur}}</td>
+                                    <td>{{info.nom_prenom}}</td>
+                                    <td>{{info.conex_continent_pays}}</td>
+                                    <td>{{info.conex_date_heure}}</td> 
+
+                                </tr>
+                                {% endfor %}{% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Parents -->
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Parents  <button type="button" class="btn btn-success btn-xs">  </button></h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive table-xs">
+                        <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="parent_connect">
+                            <thead class="bg-gradient-info text-white text-center" style="font-size: x-small;">
+                                <tr>
+                                    <th>IP</th>
+                                    <th>Navigateur</th>
+                                    <th>User</th>
+                                    <th>Localisation</th>
+                                    <th>Date Connexion</th> 
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: x-small;">
+                                {% if parent_conect is defined %} {% for info in parent_conect %}
+                                <tr>
+                                    <td>{{info.conex_ip}}</td>
+                                    <td>{{info.navigateur}}</td>
+                                    <td>{{info.nom_prenom}}</td>
+                                    <td>{{info.conex_continent_pays}}</td>
+                                    <td>{{info.conex_date_heure}}</td>
+                   
+                                </tr>
+                                {% endfor %}{% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- admin -->
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Administrateurs  <button type="button" class="btn btn-success btn-xs">  </button></h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive table-xs">
+                        <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="admin_connect">
+                            <thead class="bg-gradient-info text-white text-center" style="font-size: x-small;">
+                                <tr>
+                                    <th>IP</th>
+                                    <th>Navigateur</th>
+                                    <th>User</th>
+                                    <th>Localisation</th>
+                                    <th>Date Connexion</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: x-small;">
+                                {% if admin_conect is defined %} {% for info in admin_conect %}
+                                <tr>
+                                    <td>{{info.conex_ip}}</td>
+                                     <td>{{info.navigateur}}</td>
+                                    <td>{{info.nom_prenom}}</td>
+                                    <td>{{info.conex_continent_pays}}</td>
+                                    <td>{{info.conex_date_heure}}</td>
+         
+                                </tr>
+                                {% endfor %}{% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</div>
+<!-- /.container-fluid -->
+
+<script>
+    $(document).ready(function() {
+
+
+        var admin_connect= $('#admin_connect').DataTable({
+            dom: 'Blfrtip',
+            pageLength: 20,
+            "order": [[ 4, "desc" ]],
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF',
+                    download: 'open',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("d/m/Y") }}'
+                }
+
+            ]
+        });
+
+        var prof_connect= $('#prof_connect').DataTable({
+            dom: 'Blfrtip',
+            pageLength: 20,
+            "order": [[ 4, "desc" ]],
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF',
+                    download: 'open',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("d/m/Y") }}'
+                }
+
+            ]
+        });
+        var eleve_connect= $('#eleve_connect').DataTable({
+            dom: 'Blfrtip',
+            pageLength: 20,
+            "order": [[ 4, "desc" ]],
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF',
+                    download: 'open',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("d/m/Y") }}'
+                }
+
+            ]
+        });
+        var parent_connect= $('#parent_connect').DataTable({
+            dom: 'Blfrtip',
+            pageLength: 20,
+            "order": [[ 4, "desc" ]],
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("m/d/Y") }}'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF',
+                    download: 'open',
+                    title: 'Liste des administrateurs connecté le :{{ "now"|date("d/m/Y") }}'
+                }
+
+            ]
+        });
+
+
+        /*::DEBUT:: FCT UTILISATEUR CONNECTEZ
+            DESATIVE USER CONNECTEZ
+        */
+
+        //Desactive utilisateur connectez
+        var setinter_userconect = setInterval(fct_get_userconnectnow, 5000);
+        function fct_get_userconnectnow() {
+            //console.log('var_etatinit_i = ' + var_etatinit_i);
+            if (typeof($('#global_admin').val()) != undefined && typeof($('#global_univ').val()) != undefined) {
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=get_userconnectnow&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+                idelemt = '#';
+                root_AjaxMethod(url_info, values_info, ajax_get_userconnectnow, idelemt);
+                //console.log('Initialisation var_etatinit_i = ' + var_etatinit_i);
+
+            }
+
+        }
+
+        function ajax_get_userconnectnow(jsondata) {
+            jsondata = JSON.parse(jsondata);
+
+            if (jsondata.eleve_conect != 0) { 
+                eleve_connect.clear().draw();
+                for (var x in jsondata.eleve_conect) {
+                    var rowNode = eleve_connect
+                        .row.add([jsondata.eleve_conect[x].conex_ip, jsondata.eleve_conect[x].navigateur, jsondata.eleve_conect[x].nom_prenom, jsondata.eleve_conect[x].conex_continent_pays, jsondata.eleve_conect[x].conex_date_heure, jsondata.eleve_conect[x].conex_etat])
+                        .draw()
+                        .node();
+                    $(rowNode)
+                        .css('color', '#858796')
+                        .animate({ color: '#858796' });
+                }
+
+            }
+
+            if (jsondata.prof_conect != 0) { 
+                prof_connect.clear().draw();
+                for (var x in jsondata.prof_conect) {
+                    var rowNode = prof_connect
+                        .row.add([jsondata.prof_conect[x].conex_ip, jsondata.prof_conect[x].navigateur, jsondata.prof_conect[x].nom_prenom, jsondata.prof_conect[x].conex_continent_pays, jsondata.prof_conect[x].conex_date_heure, jsondata.prof_conect[x].conex_etat])
+                        .draw()
+                        .node();
+                    $(rowNode)
+                        .css('color', '#858796')
+                        .animate({ color: '#858796' });
+                }
+            }
+
+            if (jsondata.parent_conect != 0) { 
+                parent_connect.clear().draw();
+                for (var x in jsondata.parent_conect) {
+                    var rowNode = parent_connect
+                        .row.add([jsondata.parent_conect[x].conex_ip, jsondata.parent_conect[x].navigateur, jsondata.parent_conect[x].nom_prenom, jsondata.parent_conect[x].conex_continent_pays, jsondata.parent_conect[x].conex_date_heure, jsondata.parent_conect[x].conex_etat])
+                        .draw()
+                        .node();
+                    $(rowNode)
+                        .css('color', '#858796')
+                        .animate({ color: '#858796' });
+                }
+            }
+
+            if (jsondata.admin_conect != 0) { 
+                //console.log(jsondata.admin_conect);
+                admin_connect.clear().draw();
+                for (var x in jsondata.admin_conect) {
+                    var rowNode = admin_connect
+                        .row.add([jsondata.admin_conect[x].conex_ip, jsondata.admin_conect[x].navigateur, jsondata.admin_conect[x].nom_prenom, jsondata.admin_conect[x].conex_continent_pays, jsondata.admin_conect[x].conex_date_heure, jsondata.admin_conect[x].conex_etat])
+                        .draw()
+                        .node();
+                    $(rowNode)
+                        .css('color', '#858796')
+                        .animate({ color: '#858796' });
+                }
+            
+            }
+
+
+        }
+
+
+        // Area Chart Example
+        var ctx = document.getElementById("myAreaChart_visiteurs");
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Total ",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "rgba(78, 115, 223, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: [10, 50, 3, 2, 50, 7, 20, 30, 10, 50, 60, 40],
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 7
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            // Include a dollar sign in the ticks
+                            callback: function(value, index, values) {
+                                return number_format(value);
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: false,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function(tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+                        }
+                    }
+                }
+            }
+        });
+
+
+
+
+
+
+
+    });
+</script>

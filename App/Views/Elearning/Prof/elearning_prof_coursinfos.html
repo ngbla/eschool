@@ -1,0 +1,657 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} {% block title %}Mes Cours{% endblock %} {% block content %}
+
+
+<!--CREATION USER CHAT AUTO-->
+<script>
+    /**
+     * utilitaire de cryptage
+     */
+    {%  if groupeid is defined %}
+
+        let cipher = salt => {
+                let textToChars = text => text.split('').map(c => c.charCodeAt(0))
+                let byteHex = n => ("0" + Number(n).toString(16)).substr(-2)
+                let applySaltToChar = code => textToChars(salt).reduce((a, b) => a ^ b, code)
+
+                return text => text.split('')
+                    .map(textToChars)
+                    .map(applySaltToChar)
+                    .map(byteHex)
+                    .join('')
+            }
+            // To create a cipher
+        let myCipher = cipher('uges@x-pertiz@2020');
+        //Then cipher any text:
+        uges_username_coder = myCipher("({{id_pers_personne}})-{{nom_prenom}}");
+        uges_avatar_coder = myCipher("{{liens}}{{id_pers_personne}}/{{id_pers_personne}}.jpg");
+        mode_connect_coder = myCipher("uges_offline");
+        //matierprof_coder= myCipher("{{matiere_select}} | Enseignant : ({{nom_prenom}})") ;
+        matierprof_coder = myCipher("{{matiere_select}}");
+        forumid_coder = myCipher("{{profpers_select}}-{{mat_select}}-{{groupeid}}");
+
+        if (typeof(localStorage.getItem("uges_username")) != undefined) {
+            localStorage.removeItem("uges_username");
+        }
+        localStorage.setItem("uges_username", uges_username_coder);
+
+        if (typeof(localStorage.getItem("uges_avatar")) != undefined) {
+            localStorage.removeItem("uges_avatar");
+        }
+        localStorage.setItem("uges_avatar", uges_avatar_coder);
+
+        if (typeof(localStorage.getItem("uges_mode_connect")) != undefined) {
+            localStorage.removeItem("uges_mode_connect");
+        }
+        localStorage.setItem("uges_mode_connect", mode_connect_coder);
+
+
+        if (typeof(localStorage.getItem("uges_matiere")) != undefined) {
+            localStorage.removeItem("uges_matiere");
+        }
+        localStorage.setItem("uges_matiere", matierprof_coder);
+
+        if (typeof(localStorage.getItem("uges_forumid")) != undefined) {
+            localStorage.removeItem("uges_forumid");
+        }
+        localStorage.setItem("uges_forumid", forumid_coder);
+
+    {% endif %}
+</script>
+<!--TEXTEDITOR JS-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="assets/js/editor.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#txtEditor").Editor();
+        $("#txtEditor_mod").Editor();
+    });
+</script>
+
+<input type="hidden" name="global_univ" value="{{fk_iduniv}}" id="global_univ">
+<input type="hidden" name="id_matiere" value="{% if mat_select is defined %}{{mat_select}}{% endif %}" id="id_matiere">
+<!--IDTYPE PROF = profpers_select-->
+<input type="hidden" name="id_personne" value="{% if profpers_select is defined %}{{profpers_select}}{% endif %}" id="id_personne"> 
+{% if groupeid is defined %}
+<input type="hidden" name="idgroupe_plan" value="{{ groupeid }}" id="idgroupe_plan">
+<input type="hidden" name="idtype_prof" value="{{ idtype_prof }}" id="idtype_prof"> 
+{% endif %}
+
+
+
+<div class="card card-body container-fluid" style="
+        background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;padding-top: 20px; 
+        padding-left: 0px;
+        padding-right: 0px;">
+
+
+
+
+    <div class="container-fluid" style="min-height: 1000px;     padding-left: 0px; padding-right: 0px;">
+
+        <!--DEBUT-->
+        <div class="col-12 row container-fluid" style="    padding-left: 1rem; padding-right: 0rem;">
+
+            <section class="col-9 card">
+
+                <div class="card-body">
+                    <div class=" ">
+                        <h3 class=" ">{{matiere_select}}</h3>
+                        <h3>
+                            {% if groupelibelle is defined %} {{ groupelibelle }} {% endif %}
+                        </h3>
+                        <hr>
+                        <!--SECTION-->
+                        {% if get_cour_section is defined %} {{ include('Elearning/Prof/include/include_section.html') }} {% endif %}
+                    </div>
+                </div>
+
+
+            </section>
+
+            <section class="col-3">
+                <aside id="block-region-side-pre" class="block-region" data-blockregion="side-pre" data-droptarget="1">
+                    <!--PLAN-->
+                    <section class=" block_blog_menu block  card mb-3" role="navigation" data-block="blog_menu" aria-labelledby="instance-445-header">
+
+                        <div class="card-body p-3">
+
+                            <h5 class="card-title d-inline">Menu</h5>
+
+
+                            <div class="list-group">
+                                <a href="#" data-toggle="modal" data-target="#myModal" class="list-group-item"><i class="fa fa-plus fa-fw"></i> Faire le Plan</a>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    
+                    <!--Modal-->
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog modal-xl modal-dialog-centered">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Ajouter un élément au Plan <br>(Section ou Partie)</h6>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+
+                                    <form class="form-horizontal" method="POST">
+                                        <div class="card-body">
+
+                                            <div class="form-group">
+                                                <label for="input_m_titre" class="control-label">Titre</label>
+                                                <div class="col-11">
+                                                    <input type="text" id="input_m_titre" name="input_m_titre" class="form-control" placeholder="TITRE" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-row">
+                                                <div class="col-6">
+                                                    <label for="input_m_position" class="control-label">Type (Section / Partie)</label>
+                                                    <select class="form-control col-11" name="input_m_position" style="min-width: 50%;">
+                                                        <option value="SECTION">Section</option>
+                                                        <option value="PARTIE">Partie</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-6">
+                                                    <label for="input_m_parentitre" class="control-label">Choix Section (Si Type = Partie)</label>
+                                                    <select class="form-control col-11" name="input_m_parentitre" style="min-width: 50%;">
+                                                        <option value="0" style="min-width: 50%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </option>
+
+                                                        {% if get_cour_section is defined %}
+                                                        {% for value in get_cour_section %}
+                                                        <option value="{{value.id_cours_plan}}">{{value.plan_position_num}}-{{value.plan_titre}}</option>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <!-- tools box -->
+                                                <div class="card card-info card-outline">
+                                                    <div class="card-header">
+                                                        <small>Contenu</small>
+                                                    </div>
+                                                    <!-- /.card-header TEXT EDITOR OLD -->
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+
+                                                            <!-- /.card-header TEXT EDITOR OLD -->
+                                                            <!--<textarea id="editor1" name="textarea_m_desc" style="width: 100%">Saisissez la description ici.</textarea><br>-->
+                                                            
+                                                            <!-- /.card-header TEXT EDITOR NEW -->
+                                                            <div class="row">
+                                                                <div class="col-lg-12 nopadding">
+                                                                    <textarea id="txtEditor" name="vf_question">
+                                                                    </textarea> 
+                                                                    <textarea id="txtEditorContent" name="textarea_m_desc" hidden=""></textarea> 
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <!-- /.card -->
+                                            </div>
+
+
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer">
+                                            <button type="button" class="btn btn-warning " data-dismiss="modal">Annuler</button>
+                                            <button type="submit" name="btn_creer_plan" class="btn btn-info float-right">Ajouter</button>
+                                        </div>
+                                        <!-- /.card-footer -->
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--/Modal-->
+
+                    <!--Modal-->
+                    <div class="modal fade" id="modal_cour_modif" role="dialog">
+                        <div class="modal-dialog modal-xl modal-dialog-centered">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Modification </h6>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+
+                                    <form class="form-horizontal" method="POST">
+                                        <div class="card-body">
+
+                                            <div class="form-group">
+                                                <label for="input_mod_titre" class="control-label">Titre</label>
+                                                <div class="col-11">
+                                                    <input type="text" id="input_mod_titre" name="input_mod_titre" class="form-control" placeholder="TITRE" required>
+                                                    <input type="hidden" id="mod_idcourplan" name="mod_idcourplan" class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-row">
+                                                <br>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <!-- tools box -->
+                                                <div class="card card-info card-outline">
+                                                    <div class="card-header">
+                                                        <small>Contenu</small>
+                                                    </div>
+                                                    <!-- /.card-header -->
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 nopadding">
+                                                                    <textarea id="txtEditor_mod" name="vf_question">
+                                                                    </textarea> 
+                                                                    <textarea id="txtEditorContent_mod" name="textarea_mod_desc" hidden=""></textarea> 
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.card -->
+                                            </div>
+
+
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer">
+                                            <button type="button" class="btn btn-info " data-dismiss="modal">Annuler</button>
+                                            <input class="btnRegister btn btn-success float-right" type="submit"  name="Modifier_cour" value="Modifier"/>
+                                        </div>
+                                        <!-- /.card-footer -->
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--/Modal-->
+
+                    <!--UPLOAD-->
+                    <section id="inst445" class=" block_blog_menu block  card mb-3" role="navigation" data-block="blog_menu" aria-labelledby="instance-445-header">
+
+                        <div class="card-body p-3">
+
+                            <h5 class="card-title d-inline">Upload fichiers</h5>
+
+
+                            <div class="list-group">
+                                <a href="#" data-toggle="modal" data-target="#modal_upload" class="list-group-item"><i class="fa fa-plus fa-fw"></i> Ajouter un fichier</a>
+                            </div>
+
+                        </div>
+
+                    </section>
+                    <!--Modal-->
+                    <div class="modal fade" id="modal_upload" role="dialog">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Ajouter un Fichier au Plan </h6>
+                                        <div class="spinner-border spinner-border-sm spinner_load"></div>
+                                        <div class="spinner-grow spinner-grow-sm spinner_load"></div>
+                                        <span class="badge badge-success badge_success">Success</span>
+                                        <span class="badge badge-danger badge_erreur">Erreur</span>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+
+
+                                    <div class="card-body">
+
+                                        <div class="tab-pane " id="file_upload">
+
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label for="input_m_position" class="control-label">Choix Section :</label>
+                                                    <select class="form-control col-11" name="input_m_position" style="min-width: 50%;" id="upload_selectsection">
+                                <option value="0" style="min-width: 50%;" disabled selected>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </option>
+                                {% if get_cour_section is defined %}
+                                {% for value in get_cour_section %}
+                                  <option value="{{value.id_cours_plan}}">{{value.plan_position_num}}-{{value.plan_titre}}</option>
+                                {% endfor %}
+                                {% endif %}
+                              </select>
+                                                </div>
+
+                                                <div class="col-6">
+                                                    <label for="input_m_parentitre" class="control-label">Choix Partie :</label>
+                                                    <select class="form-control col-11" name="input_m_parentitre" style="min-width: 50%;" id="upload_selectpartie">
+                                <option value="0" style="min-width: 50%;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </option>
+                              </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <hr> <br>
+
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <strong>Disponibilité :</strong>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="datedebut_dispo" class="control-label">Debut :</label>
+                                                    <input type="date" id="datedebut_dispo" name="datedebut_dispo" value="11/05/2020">
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <label for="datefin_dispo" class="control-label">Fin :</label>
+                                                    <input type="date" id="datefin_dispo" name="datefin_dispo" value="11/09/2020">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <hr> <br>
+
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <span class="text-warning">* Upload de Documents (.pdf, .xls, .xlsx, .doc, .docx, .ppt,  .pptx )</span>
+                                                    <br>
+                                                    <div class="progress progress-sm mb-2">
+
+                                                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                                    </div>
+
+                                                    <form class="needs-validation" novalidate>
+
+                                                        <input class="form-control" name="file" type="file" id="file_input" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/pdf, .xlsx, .docx, .pptx" />
+
+                                                        <br>
+
+                                                        <br>
+
+                                                        <a href="#" id="upload-button" class="btn btn-primary btn-icon-split">
+
+                                                            <span class="icon text-white-50">
+
+                                      <i class="fas fa-arrow-up"></i>
+
+                                    </span>
+
+                                                            <span class="text">Upload Documents</span>
+
+                                                        </a>
+
+                                                    </form>
+                                                </div>
+
+                                                <div class="form-group col-6">
+                                                    <span class="text-warning">* Upload de Vidéo (Liens vers la vidéo)</span>
+
+                                                    <br>
+
+                                                    <form class="needs-validation" novalidate>
+
+                                                        <input class="form-control" name="video_libelle" id="video_libelle" placeholder="Titre de la vidéo" type="text" />
+
+                                                        <br>
+
+                                                        <input class="form-control" name="liens_video" id="liens_video" placeholder="https://www.youtube.com/embed/...." type="text" />
+
+                                                        <br>
+
+                                                        <br>
+
+                                                        <a href="#" id="uploadvideo-button" class="btn btn-primary btn-icon-split">
+
+                                                            <span class="icon text-white-50">
+
+                                                            <i class="fas fa-arrow-up"></i>
+
+                                                            </span>
+
+                                                            <span class="text">Upload Liens Vidéo</span>
+
+                                                        </a>
+
+                                                    </form>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-warning float-right" data-dismiss="modal" onclick="location.reload();">Annuler</button>
+                                    </div>
+                                    <!-- /.card-footer -->
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--/Modal-->
+
+                    <!--SECTION TCHAT FORUM WITH GROUP-->
+                    {% if groupeid is defined %}
+                    <section class=" block_comments block  card mb-3" role="complementary" data-block="comments" aria-labelledby="instance-221-header">
+                        <div class="card-body p-3">
+                            <!-- a href="/public/conf/" target="_blank" class="btn btn-sm  btn-icon-split" style="width: 90%;color: #fff; background-color: #9382c0;border-color: #9382c0;">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-play"></i>
+                                </span>
+                                <span class="text"> Visio-Conf </span> <br><br>
+                            </a -->
+                           
+                            <a href="/public/classe_chat/index.html" target="_blank" class="btn btn-sm btn-info  btn-icon-split" style="width: 90%;">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-comments"></i>
+                                </span>
+                                <span class="text"> Forum </span>
+                            </a>
+                            <br><br>
+                            <form action="" method="post" target="_blank">
+                            <button value="jitsi" name="visio_conf_jitsi" class="btn btn-sm  btn-icon-split" style="width: 90%;color: #fff; background-color: #9382c0;border-color: #9382c0;">
+                                <span class="icon text-white-50">
+                                   <i class="fas fa-play"></i>
+                                </span>
+                                <span class="text"> Visio-Conférence </span>
+                            </button>
+                            </form>
+                            
+                        </div>
+                    </section>
+                    <!--UPLOAD-->
+                    <section class=" block_comments block  card mb-3" role="complementary" data-block="comments" aria-labelledby="instance-221-header">
+                        <div class="card-body">
+                            <strong><i class="fa fa-calendar mr-1"></i> Date</strong>
+                            <br> <br>
+                            <div class="row text-muted form-group ">
+                                <div class="col-4">Le</div>
+                                <div class="col-8">
+                                    <input class="form-control input-sm" id="datejr" value="{{datejr}}" type="text" readonly>
+                                </div>
+                            </div>
+
+
+                            <div class="row text-muted  form-group">
+                                <div class="col-4">De</div>
+                                <div class="col-8">
+                                    <input class="form-control input-sm" id="datedebut" value="{{datedebut}}" type="text" readonly>
+                                </div>
+                            </div>
+
+                            <div class="row text-muted  form-group">
+                                <div class="col-4"> à </div>
+                                <div class="col-8">
+                                    <input class="form-control input-xs" id="datefin" value="{{datefin}}" type="text" readonly>
+                                </div>
+                            </div>
+
+                            <hr>
+                        </div>
+                        <div class="card-body p-3">
+                            <a href="#" data-toggle="modal" data-target="#modal_apel" class="btn btn-sm btn-icon-split" style="width: 90%;color: #fff; background-color: #e49659;border-color: #e49659;">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-info"></i>
+                                </span>
+                                <span class="text"> Faire l'appel </span>
+                            </a>
+                        </div>
+                    </section>
+
+                    {% endif %}
+                    <!--Modal-->
+                    <div class="modal fade" id="modal_apel" role="dialog">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Matricule</th>
+                                            <th>Nom Prénoms</th>
+                                            <th>Présence</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if liste_grpeeleves is defined %} {% for key, value in liste_grpeeleves %}
+                                        <tr>
+                                            <td>{{value.matricule}}</td>
+                                            <td>{{value.nom_prenom}}</td>
+                                            <td>
+                                                <label class="radio-inline text-success"><input type="radio" class="optradio_presence" id="optradio1_{{value.id_eleve_eleve}}"  name="optradio_{{value.id_eleve_eleve}}" checked  option="present" value="{{value.id_eleve_eleve}}_{{value.elv_ds_grpe_groupe}}_{{mat_select}}"> Présent</label>
+                                                <br>
+                                                <label class="radio-inline text-warning"><input type="radio" class="optradio_presence" id="optradio2_{{value.id_eleve_eleve}}"  name="optradio_{{value.id_eleve_eleve}}" option="absent" value="{{value.id_eleve_eleve}}_{{value.elv_ds_grpe_groupe}}_{{mat_select}}"> Absent</label></td>
+                                        </tr>
+                                        {% endfor %} {% endif %}
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--/Modal-->
+
+                    <span id="sb-4"></span>
+                </aside>
+            </section>
+
+        </div>
+        <!--DEBUT -->
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+
+
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+<!-- TEST EDITOR CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link href="assets/css/editor.css" type="text/css" rel="stylesheet"/>
+
+
+<!-- <script type="text/javascript" src="assets/js/shieldui-all.min.js"></script> -->
+
+<script type="text/javascript" src="assets/js/upload_files.js"></script>
+
+
+<script>
+    $(function() {
+
+        // Envoi du contenu de txtEditorContent via submit
+        $("button:submit").click(function(){
+            $('#txtEditorContent').text($('#txtEditor').Editor("getText"));
+        });
+
+        $("input:submit").click(function(){
+            $('#txtEditorContent_mod').text($('#txtEditor_mod').Editor("getText"));
+        });     
+
+
+           
+        $('.mod_cour_info').on('click', function(event) {
+
+            titre = "//evenement Change sur:.mod_cour_info";
+            info = "  // Valeur=id --> " + event.target.id;
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=get_courplan_contenu&infos=' + event.target.id+'&global_admin='+$('#id_personne').val()+'&global_univ='+$('#global_univ').val();
+            idelemt = '#' + event.target.id;
+
+            root_AjaxMethod(url_info, values_info, ajax_modifcour_toast, idelemt);
+
+        });
+        function ajax_modifcour_toast(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                //consoleInfo(envi, 'Result get_courplan_contenu', jsondata[0].plan_titre, jsondata[0].plan_description);
+                if (jsondata != 0) {
+
+                    classtype = "alert-success";
+                    infos_stat = "Modification du cour effectuer";
+                    
+                    $('#input_mod_titre').val(jsondata.plan_titre);
+                    $('#mod_idcourplan').val(jsondata.id_courplan);
+                   
+                    $('#txtEditor_mod').Editor("setText",jsondata.plan_description);
+                    
+                    //window.location.reload();
+                } else {
+                    classtype = "alert-danger";
+                    infos_stat = "erreur lier à la Modification du cour";
+                }
+
+
+
+                root_fct_showinfos_toast(infos_stat, classtype);
+
+
+            }
+
+        }
+
+    })
+</script>
+
+<script type="text/javascript" src="assets/js/mescript_prof.js"></script>
+
+
+{% endblock %}

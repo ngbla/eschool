@@ -1,0 +1,57 @@
+<style type="text/css">      
+    .site-content{
+        min-height: calc(100vh - 10px)
+    }
+    #fp_table td {
+      border: 1px solid black;
+    }
+    #fp_table th {
+      border: 1px solid black;
+    }
+</style>
+<main class="site-content row" >
+
+  <div class="container table-responsive col-12">
+      <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="fp_table">
+          <thead class="table-dark">
+              <tr style="font-size: xx-small;">
+                  <th class="text-left"><strong> N°</strong></th>
+                  <th colspan="2" class="text-left"><strong> Matricule</strong></th>
+                  <th colspan="3" class="text-left"><strong> Nom et Prénoms</strong></th>
+                  <th colspan="2"><strong> Date naiss.</strong></th>
+                  <th><strong> Sexe</strong></th>
+                  <th><strong> Statut</strong></th>
+                  <th><strong> Note 1/20</strong></th>
+                  <th><strong> Note 2/20</strong></th>
+                  <th><strong> Note 3/20</strong></th>
+                  <th><strong> Note 4/20</strong></th>
+                  <th><strong> Note 5/20</strong></th>
+                  <th ><strong> Moy./20</strong></th>
+              </tr>
+          </thead>
+          <tbody style="color: black;font-size: xx-small;text-align:center;">
+            {% set user_num = 0 %}
+            {% for user in getAll_elvDSgrp %}
+            {% set user_num = user_num+1 %}
+              <tr>
+                  <td class="text-left"><strong>{{user_num}}</strong></td>
+                  <td colspan="2"  class="text-left"><strong>{{user.matricule}}</strong></td>
+                  <td colspan="3"  class="text-left"><strong>{{user.nom_prenom |upper}}</strong></td>
+                  <td colspan="2">{{user.date_naiss|date("m/d/Y")}}</td>
+                  <td>{{user.sexe}}</td>
+                  <td>{{user.statut_affecter}}</td>
+                  <td></td> 
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td ></td>
+              </tr>
+            {% endfor %}
+
+          </tbody>
+
+      </table>
+  </div>
+
+</main>

@@ -1,0 +1,183 @@
+<!DOCTYPE html> {% do gantry.document.addFramework('mootools.core') %} {% do gantry.document.addFramework('mootools.more') %}
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    {{ include('include/all_head.html') }}
+
+    <link href='assets/vendor/fullcalendar/core/main.css' rel='stylesheet' />
+    <link href='assets/vendor/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='assets/vendor/fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href='assets/vendor/fullcalendar/list/main.css' rel='stylesheet' />
+
+</head>
+
+<body class="page-top">
+    <!--Affiche les variables twig -->
+    <!-- {% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+        {% if etat_inscrip is defined %}
+        {% endif %}
+    -->
+
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {{ include('include/sidebar_ul.html') }}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- ::DEBUT :: Topbar Navbar LIGNE D'ENTETE-->
+                {{ include('include/topbar.html') }}
+                <!-- ::FIN :: Topbar Navbar LIGNE D'ENTETE-->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- ::DEBUT :: HEDEAR PAGE (NOM UNIV ET TOST*)-->
+                    {{ include('include/header_page.html') }}
+                    <!-- ::FIN :: HEDEAR PAGE (NOM UNIV ET TOST*)-->
+
+
+                    {% block content %} {% endblock %}
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            {{ include('include/footer.html') }}
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Voulez vous vraiment vous déconnecter ?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+                </div>
+                <div class="modal-body">Cliquez sur "Fermer" si vous voulez mettre fin à la session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="index.php?p=logout">Fermer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% block javascript_footer %}
+    <!-- ALL SCRIPT-->
+    <!-- ::DEBUT :: Script commun aux pages-->
+    {{ include('include/allscript.html') }}
+    <!-- ::FIN :: Script commun aux pages-->
+
+    <script src='assets/vendor/fullcalendar/core/main.js'></script>
+    <script src='assets/vendor/fullcalendar/core/locales-all.js'></script>
+    <script src='assets/vendor/fullcalendar/interaction/main.js'></script>
+    <script src='assets/vendor/fullcalendar/daygrid/main.js'></script>
+    <script src='assets/vendor/fullcalendar/timegrid/main.js'></script>
+    <script src='assets/vendor/fullcalendar/list/main.js'></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                },
+                defaultDate: '2020-02-12',
+                navLinks: true, // can click day/week names to navigate views
+                businessHours: true, // display business hours
+                editable: true,
+                events: [{
+                        title: 'Business Lunch',
+                        start: '2020-02-03T13:00:00',
+                        constraint: 'businessHours'
+                    }, {
+                        title: 'Meeting',
+                        start: '2020-02-13T11:00:00',
+                        constraint: 'availableForMeeting', // defined below
+                        color: '#257e4a'
+                    }, {
+                        title: 'Conference',
+                        start: '2020-02-18',
+                        end: '2020-02-20'
+                    }, {
+                        title: 'Party',
+                        start: '2020-02-29T20:00:00'
+                    },
+
+                    // areas where "Meeting" must be dropped
+                    {
+                        groupId: 'availableForMeeting',
+                        start: '2020-02-11T10:00:00',
+                        end: '2020-02-11T16:00:00',
+                        rendering: 'background'
+                    }, {
+                        groupId: 'availableForMeeting',
+                        start: '2020-02-13T10:00:00',
+                        end: '2020-02-13T16:00:00',
+                        rendering: 'background'
+                    },
+
+                    // red areas where no events can be dropped
+                    {
+                        start: '2020-02-24',
+                        end: '2020-02-28',
+                        overlap: false,
+                        rendering: 'background',
+                        color: '#ff9f89'
+                    }, {
+                        start: '2020-02-06',
+                        end: '2020-02-08',
+                        overlap: false,
+                        rendering: 'background',
+                        color: '#ff9f89'
+                    }
+                ]
+            });
+
+            calendar.render();
+        });
+    </script>
+
+    {% endblock %} {% block javascript_footer_add %} {% endblock %}
+    <!-- ::DEBUT :: Script commun aux pages-->
+    {{ include('include/toastscript.html') }}
+    <!-- ::FIN :: Script commun aux pages-->
+
+</body>
+
+
+</html>

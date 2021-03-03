@@ -1,0 +1,663 @@
+{% extends "main_parent.html" %} 
+
+{% block title %}Home{% endblock %} 
+
+{% block content %}
+
+<!--{% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+
+
+
+   Main content -->
+
+  <section class="content">
+
+    <div class="container-fluid">
+
+      <div class="row">
+
+        
+
+        <!-- /.col -->
+
+        <div class="col-md-12">
+
+          <div class="card">
+
+            <div class="card-header p-2">
+
+              <ul class="nav nav-pills">
+
+                <li class="nav-item"><a class="nav-link active" href="#infos_parent" data-toggle="tab">Informations</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#agenda_parent" data-toggle="tab">Emploi du temps</a></li>
+
+                <li class="nav-item"><a  id="prof_emploitps_cal" class="nav-link" href="#absence_parent" data-toggle="tab">Absences</a></li>
+                <!--
+                <li class="nav-item" disabled=""><a class="nav-link" href="#convocation_parent" data-toggle="tab">Convocations</a></li>-->
+
+                <li class="nav-item" disabled=""><a class="nav-link" href="#note_parent" data-toggle="tab">Note</a></li>
+
+                <li class="nav-item" disabled=""><a class="nav-link" href="#moyenne_parent" data-toggle="tab">Moyenne</a></li>
+
+                <li class="nav-item" disabled=""><a class="nav-link" href="#pv_parent" data-toggle="tab">PV</a></li>
+
+              </ul>
+
+            </div><!-- Notifications -->
+
+            <div class="card-body">
+
+              <div class="tab-content">
+
+                <!-- /.card-header -->
+
+                <div class="active tab-pane" id="infos_parent">
+                    <div class="card-body">
+
+                      <div class="form-row">
+      
+                        <div class="col-4">
+                          <div class="text-center" id="div_user_tof">
+
+                            <img id="user_tof" class="profile-user-img img-fluid img-circle"
+                            src="{% if lien_photo_enfant is defined %}{{lien_photo_enfant}}{% elseif sexe == 'M' %}assets/img/m.png {% else %}assets/img/f.png {% endif %}"
+                            alt="User profile picture">
+
+                          </div>
+                        </div>
+                        <div class="col-8">
+
+                          {% if get_allEnfantBy is defined %}
+                          {% for key, value in get_allEnfantBy  %}
+                            {% if value.id_eleve_eleve == parent_enfant %}
+                                <div class="form-row">
+                                  <div class="col-6">
+                                    <dt>NOM PRENOM</dt>  
+                                    <dd>  {{ value.nom_prenom|upper  }} </dd>
+                                    <dt>SEXE</dt>  
+                                    <dd>  {{ value.sexe  }}  </dd>
+                                  </div>
+                                  <div class="col-6">
+                
+                                    <dt>EMAIL</dt>
+                                    <dd> {{ value.email  }} </dd>
+                                  </div>
+                                </div>
+                                <div class="form-row">
+                                  <div class="col-6">
+                                    <dt>DATE ET LIEU DE NAISSANCE</dt>
+                                    <dd> {{ value.date_naiss  }} à {{ value.lieu_naiss  }} </dd>
+                                  </div>
+                                  <div class="col-6">
+                                    <dt>CONTACT</dt>
+                                    <dd> {{ value.contact  }}  </dd>
+                                  </div>
+                                </div>
+                              {% endif %}
+                            {% endfor %} 
+                            {% endif %}
+      
+                        </div>
+      
+                      </div>
+      
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="agenda_parent">
+                  <div id="calendar"></div>
+                </div>
+
+                <!-- /.tab-pane >Emploi du temps-->
+
+                <div class="tab-pane" id="absence_parent">
+
+                  <div class="table-responsive">
+
+                    <table class="table table-striped" id="dataTable_list_fichier" width="100%" cellspacing="0" table>
+
+                        <thead>
+
+                            <tr>
+
+                              <th >Date</th>
+                              <th >Debut</th>
+                              <th >Fin</th>
+                              <th >Classe</th>
+                              <th >Matière</th>
+                              <th >Motif</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                          {% if get_eleve_abs is defined %}
+                          {% for key, value in get_eleve_abs  %}
+                          <tr> 
+
+                            <td> {{value.abs_date}}</td>
+                            <td> {{value.abs_debut}}</td>
+                            <td> {{value.abs_fin}}</td>
+                            <td> {{value.groupe_libelle}}</td>
+                            <td>{{value.code}}-{{value.mat_lib}}</td>
+                            <td> {{value.abs_motifs}}</td>
+
+
+                          </tr>
+                          
+                          {% endfor %} 
+                         
+                          {% endif %}
+
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                </div>
+
+                <!-- /.tab-pane Dossier-->
+
+                <div class="tab-pane" id="convocation_parent">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped" id="dataTable_list_fichier" width="100%" cellspacing="0" table>
+
+                            <thead>
+
+                                <tr>
+
+                                  <th >Date</th>
+
+                                  <th >Emis Par</th>
+
+                                  <th>Objet</th>
+
+                                  <th>Description</th>
+
+                                  <th>Action</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                              <tr> 
+
+                                <td> 25/03/2020</td>
+
+                                <td> Mr IRIE Davy</td>
+
+                                <td> ABSCENCES REPETEES</td>
+
+                                <td> Vous avez manqué plus de trois fois de suite mon cours.</td> 
+
+                                <td>
+
+                                  <button class="btn btn-sm btn-success"><i class="fas fa-file"></i></button>
+
+                                  <button class="btn btn-sm btn-info"><i class="fas fa-download"></i></button>
+
+                                </td>
+
+                              </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="tab-pane" id="note_parent">
+                  
+                  <div class="card shadow mb-4">
+
+                    <!-- Card Header - Dropdown -->
+
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+
+                        <h6 class="m-0 font-weight-bold text-primary">Mon Carnet de note</h6>
+
+                    </div>
+
+                    <!-- Card Body -->    <!-- DataTales Example -->
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-striped" id="dataTable_list_notesElev" width="100%" cellspacing="0" table>
+
+                                <thead>
+
+                                    <tr>
+
+                                      <th >Date</th>
+                                      <th >Session</th>
+                                      <th >Libelle de l'evaluation</th>
+                                      <th >Matière</th>
+                                      <th >Coef.</th>
+                                      <th >Note</th>
+                                      <th >Notation</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                  
+                                    {% if getAllEleveNoteBy is defined %}
+                                        {% for key, value in getAllEleveNoteBy  %}
+                                        <tr> 
+                                          <td> {{value.eval_date}} </td>
+                                          <td> {{value.Libelle_session}} </td>
+                                          <td> {{value.eval_libelle}} </td>
+                                          <td> {{value.lib_mat}} </td>
+                                          <td> {{value.coef}} </td> 
+                                          <td> {{value.note}} </td> 
+                                          <td>/ {{value.notation}} </td> 
+                                        </tr>
+                                        {% endfor %} 
+                                    {% endif %}
+
+                                  
+
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="tab-pane" id="moyenne_parent">
+
+                  <div class="card shadow mb-4">
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-striped" id="dataTable_list_elevmoy" width="100%" cellspacing="0" table>
+
+                                <thead>
+
+                                    <tr>
+                                      <th >Période</th>
+                                      <th >Session</th>
+                                      <th >Matière</th>
+                                      <th >Moyenne G</th>
+                                      <th >Appréciation</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                  {% if getAllEleve_Mat_MoyenneBy is defined %}
+                                  {% for key, value in getAllEleve_Mat_MoyenneBy  %}
+                                  <tr> 
+                                    <td> {{value.libele_partie}} </td>
+                                    <td> {{value.Libelle_session}} </td>
+                                    <td>{{value.mat_cod}}-{{value.mat_lib}} </td>
+                                    <td> {{value.moyenne}} </td>
+                                    <td>  
+                                      {% if 10 > value.moyenne %}
+                                        <div class="col" style="height: 10px;">
+                                          <div class="card bg-danger text-white shadow text-center">
+                                              Refuser
+                                              <div class="text-white-10 small"></div>
+                                          </div>
+                                        </div>
+                                        
+                                      {% else %}
+                                        
+                                        <div class="col">
+                                          <div class="card bg-success text-white shadow text-center">
+                                              Valider
+                                              <div class="text-white-50 small"></div>
+                                          </div>
+                                        </div>
+                                      {% endif %}
+                                    </td>
+                                  </tr>
+                                  {% endfor %} 
+                              {% endif %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="tab-pane" id="pv_parent">
+
+                  <script src='assets/vendor/html2pdf/html2pdf.bundle.min.js'></script>
+                  <script>
+                      function generatePDF() {
+                        // Choose the element that our invoice is rendered in.
+                        const element = document.getElementById("relever");
+                        // Choose the element and save the PDF for our user.
+                        html2pdf()
+                          .from(element)
+                          .save();
+                      }
+                  </script>
+                  <br>
+                  <div class="row">
+                      <div class="col-12">
+                          <form method="POST" class="form-row"> 
+                              <div class="input-group mb-3 col">
+                                  <div class="input-group-prepend ">
+                                      <button type="button" class="btn btn-primary">Période</button>
+                                  </div>
+                                  <select class="form-control" name="semmestre_id">
+                                      <option value="" disabled selected hidden>Choisissez une période</option>
+                                      {% if get_elevGrp_anneePart is defined %}
+                                      {% for key, value in get_elevGrp_anneePart  %}
+                                      <option value="{{value.id_annee_partie}}">{{value.libele_partie}}</option>
+                                      {% endfor %} 
+                                      {% endif %}
+                                  </select>
+                              </div>
+                              <div class="col">
+                                  <button type="submit" class="btn btn-primary btn-icon-split">
+                                      <span class="icon text-white-50">
+                                        <i class="fas fa-arrow-right"></i>
+                                      </span>
+                                      <span class="text">Générer</span>
+                                  </button>
+                              </div>
+                          </form>
+                      </div>
+                      <hr>
+                      <div class="col-12">
+
+                          <div class="callout callout-info">
+                              <h5><i class="fa fa-info"></i> Note :</h5><h7> Relever de note provisoire </h7>
+                              <button type="button"  onclick="generatePDF();" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                  <i class="fa fa-download"></i> Generer le PDF
+                              </button>
+                          </div>
+
+                      </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                      <div id="relever" class="container-fluid" style="color: black ;background-color:white ">
+                            <!-- Content Wrapper. Contains page content -->
+                          <div class="content-wrapper">
+                              <!-- Content Header (Page header) -->
+                              <section class="content-header">
+
+                              </section>
+
+                              <section class="content">
+                              <div class="container-fluid">
+                                  <div class="row">
+                                  <div class="col-12">
+
+                                      <!-- Main content -->
+                                      <div class="relever p-3 mb-3">
+                                      <!-- title row -->
+                                      <div class="row">
+                                          <div class="col-12">
+                                          <h4>
+                                              <i class="fa fa-globe"></i>                          
+                                              {% if univInfos is defined %}                 
+                                              {% for key, value in univInfos  %}
+                                                  <td>{{ value.non_univ }}</td>
+                                              {% endfor %} 
+                                              {% endif %}
+                                              <small class="float-right">Date: {{ "now"|date("d/m/Y") }}</small>
+                                          </h4>
+                                          </div>
+                                          <!-- /.col -->
+                                      </div>
+                                      <br>
+                                      <!-- info row -->
+                                      <div class="row invoice-info">
+                                          <div class="col-sm-4 invoice-col">
+                                          {% if get_allEnfantBy is defined %}
+                                          {% for key, value in get_allEnfantBy  %}
+                                            {% if value.id_eleve_eleve == parent_enfant %}
+                                            <strong>{{ value.nom_prenom|upper  }}</strong>
+                                            <address>
+                                                Née le : {{ value.date_naiss  }}   à  {{ value.lieu_naiss  }} <br>
+                                                Email: {{ value.email  }} 
+                                            </address>
+                                            {% endif %}
+                                          {% endfor %} 
+                                          {% endif %}
+                                          </div>
+                                          <!-- /.col -->
+                                          <div class="col-sm-4 invoice-col">
+                                  
+                                          </div>
+                                          <!-- /.col -->
+                                          <div class="col-sm-4 invoice-col">
+                                          <b>Annee Académique : {% if annee_libelle is defined %} {{annee_libelle}} {% endif %} </b><br>
+                                          <b>Période : </b>
+                                          {% if (get_elevGrp_anneePart is defined) and (semmestre_id is defined) %}
+                                          
+                                              {% for key, value in get_elevGrp_anneePart  %}
+                                                  {% if value.id_annee_partie == semmestre_id %} {{value.libele_partie}} {% endif %}
+                                              {% endfor %} 
+                                          {% endif %}
+                                          <br>
+                                          <b>Matricule &nbsp;   :</b> &nbsp;{% if matricule is defined %}{{ matricule  }}{% endif %}   <br>
+                                          <b>Fillère   &nbsp; &nbsp;&nbsp;&nbsp;  :</b> &nbsp; {% if class_lib is defined %}{{ class_lib  }}{% endif %}  <br>
+                                          <b>Groupe    &nbsp; &nbsp;&nbsp;  :</b> &nbsp; {% if groupe_libelle is defined %}{{ groupe_libelle  }}{% endif %} 
+                                          </div>
+                                          <!-- /.col -->
+                                      </div>
+                                      <!-- /.row -->
+                                      <br>
+                                      <!-- Table row -->
+                                      
+                                      <div class="row">
+                                          <div class="col-12    " >
+                                          <table class="table table-bordered table-condensed small">
+                                              <thead class="thead-dark">
+                                              <tr>
+                                              <th>Code</th>
+                                              <th>Unités d'Enseignement</th>
+                                              <th>Moyenne</th>
+                                              <th>Coef</th>
+                                              <th>Crédit</th>
+                                              <th>Session</th>
+                                              </tr>
+                                              </thead>
+                                              <tbody>
+                                                  {% set totalcredit = 0 %}
+                                                  {% set totalcredit_valide = 0 %}
+                                                  {% set totalcoef = 0 %}
+                                                  {% set totalmoyenne = 0 %}
+
+                                                  {% if getEleve_grpeMatParent is defined %}
+                                                  {% for key, value in getEleve_grpeMatParent  %}
+                      
+                                                      {% if (semmestre_id is defined) and ( (semmestre_id|number_format) == (value.part_annee_id_tmp|number_format) ) %}
+
+                                                          {% set totalcredit = totalcredit + (value.credit_tmp|number_format)  %}
+                                                          {% set totalcoef = totalcoef + (value.coeficient_tmp|number_format)  %}
+                                                          <tr class="table-primary" style="color: white; height: 5px;;"> 
+                                                              <td> {{value.mat_code}} </td>
+                                                              <td> {{value.mat_lib}} </td>
+                                                              <td>  {% set moyp = 0 %}{% set coefp = 0 %}
+                                                                  {% if value.matiere_fils is empty %}
+
+                                                                      {% set cle = (value.matiere_id_tmp) %}
+
+                                                                      {% if moyennes[cle] is defined %}
+                                                                          {% set moyp =  moyennes[cle].0.0 %}
+                                                                          {% set coefp = 1 %}
+                                                                      {% endif %}
+
+                                                                  {% elseif value.matiere_fils is defined %}
+
+                                                                      {% for keyfils, valuefils in value.matiere_fils  %}
+                                                                              {% set cle = (valuefils.matiere_id_tmp) %}
+                                                                              {% set coefp = coefp + (valuefils.coeficient_tmp|number_format) %}
+                                                                              {% set moyp = moyp + (moyennes[cle].0.0)*  (valuefils.coeficient_tmp|number_format)  %}
+                                                                      {% endfor %} 
+
+                                                                  {% endif %}
+
+                                                                  <!-- ::Moyennne arithmétique::Produit de la moy * coef -->
+                                                                  {% if coefp != 0 %} {% set moyp = moyp/coefp %} {% endif %}
+                                                                  {{moyp|number_format(2, ',', '.')}}
+
+                                                                  {% set totalmoyenne = totalmoyenne + moyp * (value.coeficient_tmp|number_format) %}
+
+                                                                  {% if (moyp > 10) or (moyp == 10) %} {% set totalcredit_valide = totalcredit_valide + (value.credit_tmp|number_format) %} {% endif %}
+                                                                  
+                                                              </td>
+                                                              <td>{{value.coeficient_tmp}}</td>
+                                                              <td>{{value.credit_tmp}} </td>
+                                                              <td> </td>
+                                                          </tr>
+
+                                                          {% if value.matiere_fils is defined %}
+                                                              {% for keyfils, valuefils in value.matiere_fils  %}
+                                                              <tr > 
+                                                                  <td> {{valuefils.mat_code}} </td>
+                                                                  <td> {{valuefils.mat_lib}} </td>
+                                                                  <td> {% set cle = (valuefils.matiere_id_tmp) %}
+                                                                      {% if moyennes[cle] is defined %}
+                                                                          {{ moyennes[cle].0.0 }}
+                                                                      {% else %}
+                                                                      
+                                                                      {% endif %}
+                                                                  </td>
+                                                                  <td>{{valuefils.coeficient_tmp}}</td>
+                                                                  <td> </td>
+                                                                  <td>{{ moyennes[cle].1.0 }}</td>
+                                                              </tr>
+                                                              {% endfor %} 
+                                                          {% endif %}
+
+                                                      
+                                                      {% endif %}
+
+                                                  {% endfor %} 
+                                                  {% endif %}
+
+                                              </tbody>
+                                          </table>
+                                          </div>
+                                          <!-- /.col -->
+                                      </div>
+                                      <!-- /.row -->
+                                      <hr>
+                                      <div class="row">
+                                          <!-- accepted payments column -->
+                                          <div class="col-6">
+                                          </div>
+                                          <!-- /.col -->
+                                          <div class="col-6">
+                                              <br>
+                                              <div class="table-responsive">
+                                                  <table class="table"  style="color: black ;">
+                                                  <tr class="">
+                                                      <th style="width:50%">Moyenne Générale:</th>
+                                                      <td>{% if totalcoef != 0 %} {% set totalmoyenne = totalmoyenne/totalcoef %} {% endif %}
+                                                          {{totalmoyenne|number_format(2, ',', '.')}}</td>
+                                                  </tr>
+                                                  <tr class="">
+                                                      <th style="width:50%">Total Crédit :</th>
+                                                      <td>{{totalcredit_valide}} / {{totalcredit}}</td>
+                                                  </tr>
+                                                  
+                                                  <tr class="table-{% if (totalmoyenne > 10) or (totalmoyenne == 10) %}success{% else %}danger{% endif %}">
+                                                      <th style="width:50%">Résultat provisoire:</th>
+                                                      <td>{% if (totalmoyenne > 10) or (totalmoyenne == 10) %}Admis(e){% else %}refuser{% endif %}</td>
+                                                  </tr>
+                                                
+                                                  </table>
+                                              </div>
+                                          </div>
+                                          <!-- /.col -->
+                                      </div>
+                                      <!-- /.row -->
+
+                                      <!-- this row will not appear when printing -->
+
+                                      </div>
+                                      <!-- /.invoice -->
+                                  </div><!-- /.col -->
+                                  </div><!-- /.row -->
+                              </div><!-- /.container-fluid -->
+                              </section>
+                              <!-- /.content -->
+                          </div>
+                      </div>
+                  </div>
+
+                </div>
+
+
+
+                <!-- /.tab-pane -->
+
+              </div>
+
+              <!-- /.tab-content -->
+
+            </div><!-- /.card-body -->
+
+          </div>
+
+          <!-- /.nav-tabs-custom -->
+
+        </div>
+
+        <!-- /.col -->
+
+      </div>
+
+      <!-- /.row -->
+
+    </div><!-- /.container-fluid -->
+
+  </section>
+
+  <!-- /.content -->
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript_footer_add %}
+
+<script src="assets/js/mescript_eleve.js"></script>
+
+{% endblock %} 
+

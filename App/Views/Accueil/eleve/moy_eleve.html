@@ -1,0 +1,85 @@
+{% extends "main_eleve.html" %} 
+
+{% block title %}Eleve - Moyenne{% endblock %} 
+
+{% block content %}
+
+<div class="row" style="
+    background-image: url('/public/assets/img/background/back_img5.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;padding-top: 20px; ">
+
+  <section class="content col-12">
+      <div class="card col-12">
+          <div class="card-header p-2">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link active" href="#activity_prof" data-toggle="tab">Mes moyennes</a></li>
+            </ul>
+          </div><!-- Notifications -->
+          <div class="card-body">
+            <div class="tab-content">
+              <!-- /.card-header -->
+              <div class="active tab-pane" id="activity_prof">
+                  <div class="table-responsive">
+                      <table id="dataTable_list_elevmoy" width="100%" cellspacing="0" class="table table-bordered table-hover table-sm table-striped" id="db_list_absence" style="font-size: small;" table>
+                          <thead class="bg-gradient-info text-white text-center">
+                              <tr>
+                                <th >Période</th>
+                                <th >Session</th>
+                                <th >Matière</th>
+                                <th >Moyenne</th>
+                                <th >Appréciation</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% if getAllEleve_Mat_MoyenneBy is defined %}
+                            {% for key, value in getAllEleve_Mat_MoyenneBy  %}
+                            <tr> 
+                              <td> {{value.libele_partie}} </td>
+                              <td> Session {{value.id_session}} </td>
+                              <td>{{value.code}}-{{value.libele}} </td>
+                              <td> {{value.moyenne}} </td>
+                              <td>  
+                                {% if 10 > value.moyenne %}
+                                  <div class="col" style="height: 10px;">
+                                    <div class="card bg-danger text-white shadow text-center">
+                                        Ajourner
+                                        <div class="text-white-10 small"></div>
+                                    </div>
+                                  </div>
+                                  
+                                {% else %}
+                                  
+                                  <div class="col">
+                                    <div class="card bg-success text-white shadow text-center">
+                                        Valider
+                                        <div class="text-white-50 small"></div>
+                                    </div>
+                                  </div>
+                                {% endif %}
+                              </td>
+                            </tr>
+                            {% endfor %} 
+                            {% endif %}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+            </div>
+          </div><!-- /.card-body -->
+      </div>
+  </section>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block javascript_footer_add %}
+
+<script src="assets/js/mescript_eleve.js"></script>
+
+{% endblock %} 
+

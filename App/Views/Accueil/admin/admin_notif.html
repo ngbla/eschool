@@ -1,0 +1,449 @@
+{% extends "main.html" %} 
+{% block title %}Notifications{% endblock %} 
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row"   style="background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px;padding-top: 20px; ">
+
+    <div class="card col-12">
+      <div class="card-header p-2">
+
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link  {% if tab_panel == 1 %}active{% else %}{% endif %}" href="#activity_prof" data-toggle="tab">Création de Notification</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if tab_panel == 1 %}{% else %}active{% endif %}" href="#infos_notifs" data-toggle="tab">Listes des Notifications</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Notifications -->
+
+      <div class="card-body">
+        <div class="container-fluid tab-content">
+          <!-- /.card-header -->
+          <div class="{% if tab_panel == 1 %}active{% else %}{% endif %} tab-pane" id="activity_prof">
+            <!-- Post -->
+
+            <form method="post" enctype="multipart/form-data" >
+              <!-- BEGIN SAMPLE FORM PORTLET-->
+              <div class="row">
+                  <div class="col-12">
+                      <div class="portlet box green">
+                          <div class="portlet-title">
+                              <div class="caption">
+                                  <i class="fa fa-gift"></i> &nbsp;  Ajouter une Information <br>
+                              </div>
+                          </div>
+                          <br>
+                          <div class="portlet-body form">
+                              <div class="form-body">
+                                  <div class="form-group">
+                                      <label class="control-label"><dt>Titre Info</dt></label>
+                                      <input type="text" id="info_infoBundle_Info_Info" name="info_infoBundle_Info[Info]" required="required" class="form-control">
+                                      <span class="help-block">
+                                           </span>
+                                  </div>
+                                  <div class="form-group">
+                                      <label class="control-label"><dt>Description</dt> </label>
+                                      <textarea id="info_infoBundle_Info_Description" name="info_infoBundle_Info[Description]" required="required" class="form-control" rows="3"></textarea>
+                                      <span class="help-block">
+                                           </span>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-md-6">
+                                          <div class="form-group">
+                                              <label class="control-label"><dt>Date début</dt> </label>
+                                              <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-viewmode="years">    
+                                                  <input type="date" id="info_infoBundle_Info_Datedebut" name="info_infoBundle_Info[Datedebut]" required="required" class="form-control">    
+                                                  <span class="input-group-btn">
+                                                      <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                  </span>
+                                              </div>
+                                              <span class="help-block">
+                                                   </span>
+                                          </div>
+                                      </div>
+
+                                      <div class="col-6">
+                                          <div class="form-group">
+                                              <label class="control-label"><dt>Date fin</dt> </label>
+                                              <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-viewmode="years">    
+                                                  <input type="date" id="info_infoBundle_Info_Datefin" name="info_infoBundle_Info[Datefin]" required="required" class="form-control">    
+                                                  <span class="input-group-btn">
+                                                      <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                  </span>
+                                              </div>
+                                              <span class="help-block">
+                                                   </span>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                        <label class="control-label col-12 text-left">
+                                            <div class="bg-primary text-white p-1 rotate-n-15 d-inline-block my-1">Image</div>
+                                        </label>
+                                      <div class="row">
+                                          <div class="col-md-9">
+                                              <div class="fileinput fileinput-new form-row" data-provides="fileinput">
+
+                                                  <div id="preview_thumbnail" class="fileinput-preview thumbnail col-9" data-trigger="fileinput" style="width:  400px; height: 300px;">
+                                                    <img style="width: auto; height: 300px;" id="preview_thumbnail_img" class="img-thumbnail mx-auto d-block" src="#" alt="notification image">
+                                                  </div>
+
+                                                  <div class="col-3">
+                                                      <span class="btn default btn-file" id="notif_input_prevue">
+                                                        <span class="fileinput-new">
+                                                            Sélectionner une image 
+                                                        </span>
+                                                        <span class="fileinput-exists">
+                                                        Changer 
+                                                        </span>
+                                                        <input type="file" id="info_infoBundle_Info_image_file" name="info_infoBundle_Info[image][file]">
+                                                      </span>
+                                                      <a href="javascript:;" class="btn btn-warning fileinput-exists" data-dismiss="fileinput">
+                                                      Retirer </a>
+                                                  </div>
+
+                                              </div>
+                                          </div>
+                                      </div>    
+                                  </div>
+                                <br><hr>
+
+                                <div class="row">
+                                    <label class="control-label col-12"><dt>Méthode d'envoi</dt> </label>
+                                    <div class="col-4">
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text">
+                                            <input name="input_methode_email" type="checkbox" style=" width: 20px;height: 20px; ">
+                                          </span>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" value="EMAIL" disabled>
+                                      </div>
+                                      <!-- /input-group -->
+                                    </div>
+                                    <!-- /.col-lg-6 -->
+                                    <div class="col-4">
+                                        <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                              <input name="input_methode_sms" type="checkbox" style=" width: 20px;height: 20px; ">
+                                            </span>
+                                          </div>
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-mobile"></i></span>
+                                          </div>
+                                          <input type="text" class="form-control" value="SMS" disabled>
+                                        </div>
+                                        <!-- /input-group -->
+                                      </div>
+                                    <!-- /.col-lg-6 -->
+                                    <!-- /.col-lg-6 -->
+                                    <div class="col-4">
+                                        <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                              <input name="input_methode_notif" type="checkbox" style=" width: 20px;height: 20px; ">
+                                            </span>
+                                          </div>
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-bell"></i></span>
+                                          </div>
+                                          <input type="text" class="form-control" value="NOTIF" disabled>
+                                        </div>
+                                        <!-- /input-group -->
+                                      </div>
+                                    <!-- /.col-lg-6 -->
+                                </div>
+                                <hr>
+
+                                  <div class="form-group">
+                                      <label class="control-label col-md-3"><dt> Cible</dt></label>
+                                      <select class="form-control" id="notif_cible" name="cible" required="required">
+                                          <option selected="" disabled="" value="">-- Sélectionner --</option>
+                                          <option value="all">Tout le monde</option>   
+                                          <option value="professeur">Professeur</option>   
+                                          <option value="eleves">Eléves / parents</option>   
+                                          <option value="Administration">Administration</option>   
+                                      </select>
+                                  </div>
+                                  
+                                  <div class="row">
+                                      <div class="col-md-6">
+                                          <div class="form-group">
+                                                <label class="control-label">Année Scolaire (* Elèves uniquement)</label>
+                                                <select class="form-control" id="notif_annee" name="notif_annee"  >
+                                                  <option selected="" disabled="" value="">-- Sélectionner une Année scolaire --</option>
+                                                  {% if univ_anneescol is defined %}
+                                                    {% for annee in univ_anneescol %}
+                                                      <option value="{{annee.id_anscol_annee_scolaire}}">{{annee.annee_libelle}}</option>
+                                                    {% endfor %}
+                                                  {% endif %}
+
+                                                </select>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                          <div class="form-group">
+                                                <label class="control-label">Groupe/Classe (* Elèves uniquement)</label>
+                                                <select id="notif_groupe" name="notif_groupe" class="form-control" >
+                                                    <option selected="" disabled="" value="">-- Sélectionner le groupe --</option>
+                                                </select>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="row" id="section-eleves" style="display: none;">
+                                       <div class="col-md-12">
+                                         <div class="form-group">
+                                              <table class="table table-striped table-bordered table-hover table-condensed"  style="width:100%" cellspacing="0" style="font-size: smaller;" id="list-eleves">
+                                                  <thead class="bg-gradient-info text-white text-center">
+                                                      <tr>
+                                                          <th>
+                                                            <span class="pull-right">
+                                                              Cocher tout
+                                                              <div class="checker" id="uniform-checkAlleleves">
+                                                                <span>
+                                                                  <input type="checkbox" name="checkAlleleves" id="checkAlleleves" >
+                                                                </span>
+                                                              </div>
+                                                            </span>
+                                                          </th>
+                                                          <th colspan="5">Liste des éleves
+                                                             
+                                                          </th>
+                                                      </tr>
+                                                  </thead>
+                                                  <tbody></tbody>
+                                              </table>
+                                          </div>
+                                       
+                                      
+                                      </div>
+                                  </div>
+
+                                  <div class="row" id="section-professeur" style="display: none;">
+                                      <div class="col-md-12">    
+                                          <div class="form-group">
+                                              <table class="table table-striped table-bordered table-hover table-condensed"  style="width:100%" cellspacing="0" style="font-size: smaller;" id="list-professeurs">
+                                                  <thead class="bg-gradient-info text-white text-center">
+                                                      <tr>
+
+                                                          <th>
+                                                                <div class="checker" id="uniform-checkAllprofesseurs">
+                                                                <span class="">
+                                                                <input type="checkbox" name="checkAllprofesseurs" id="checkAllprofesseurs"  /></span>
+                                                                <span class="pull-right">Cocher tout
+                                                                </span>
+                                                                </div>
+                                                            </th>
+                                                            <th colspan="3">Liste des professeurs
+                                                            </th>
+                                                      </tr>
+                                                  </thead>
+                                                  <tbody></tbody>
+                                              </table>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                  <div class="row" id="section-admin" style="display: none;">
+                                      <div class="col-md-12">    
+                                          <div class="form-group">
+                                              <table class="table table-striped table-bordered table-hover table-condensed"  style="width:100%" cellspacing="0" style="font-size: smaller;" id="list-admin">
+                                                  <thead class="bg-gradient-info text-white text-center">
+                                                      <tr>
+                                                          <th>
+                                                              <div class="checker" id="uniform-checkAlladmin">
+                                                              <span class="">
+                                                              <input type="checkbox" name="checkAlladmin" id="checkAlladmin"  /></span>
+                                                              <span class="pull-right">Cocher tout
+                                                              </span>
+                                                              </div>
+                                                          </th>
+                                                          <th colspan="3">Liste des Administrateurs
+                                                          </th>
+                                                      </tr>
+                                                  </thead>
+                                                  <tbody></tbody>
+                                              </table>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <hr>
+                                  <div class="form-group">
+                                      <label class="control-label"><dt>Piéce jointe</dt></label>
+                                      <div id="info_infoBundle_Info_document"><div><input type="text" id="info_infoBundle_Info_document_name" name="info_infoBundle_Info[document][name]" class="form-control hidden"></div><div><input type="file" id="info_infoBundle_Info_document_file" name="info_infoBundle_Info[document][file]"></div></div>
+                                      <span class="help-block"></span>
+                                  </div>
+
+                              </div>
+                              <div class="form-actions text-center">
+                                  <button type="submit" class="btn btn-info btn-icon-split" id="info_infoBundle_Info_submit" name="info_infoBundle_Info[submit]">
+                                    <span class="icon text-white-50">
+                                      <i class="fas fa-arrow-right"></i>
+                                    </span>
+                                    <span class="text">Envoyer</span>
+                                  </button>
+             	                           
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </form>
+
+
+            <!-- /.post -->
+          </div>
+
+          <div class="{% if tab_panel == 1 %}{% else %}active{% endif %} tab-pane" id="infos_notifs">
+            <!-- Post -->
+
+            <div class="card shadow">
+          
+                <!-- Card Body -->
+                  <div class="table-responsive" >
+                    <table class="table table-striped table-bordered table-hover table-condensed"  style="width:100%" cellspacing="0" style="font-size: smaller;" id="dataTable_list_notif">
+                      <thead class="bg-gradient-info text-white text-center">
+                        <tr>
+                          <th>Date création</th>
+                          <th>Titre</th>
+                          <th>Description</th>
+                          <th>Date Début</th>
+                          <th>Date Fin</th>
+                          <th>Méthode d'envoie</th>
+                          <th>Créateur</th>
+                          
+                          <th>Contact</th>
+                          <th>Action</th>
+                        </tr>
+              
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>Méthode d'envoie</th>
+                          <th>Titre</th>
+                          <th>Description</th>
+                          <th>Date Début</th>
+                          <th>Date Fin</th>
+                          
+                          <th>Créateur</th>
+                          <th>Contact</th>
+                          <th>Date création</th>
+                          <th>Action</th>
+                        </tr>
+                      </tfoot>
+                      <tbody >
+          
+          
+                        {% if get_allNotifs is defined %}
+          
+                        {% for notif in get_allNotifs %}
+                          <tr>  
+                            <td>{{ notif.date_creation_notif}}</td>
+                            <td>{{ notif.notif_titre }}</td>
+                            <td>{{ notif.notif_desc }}</td>
+                            <td>{{ notif.notif_debut }} </td>
+                            <td>{{ notif.notif_fin }}</td>
+                            <td>{{ notif.notif_methode }}</td>
+                            <td>{{ notif.nom_prenom }}</td>
+                            <td>{{ notif.contact }}</td>
+                            
+                            <td class="fieldtype_action field-152-td nowrap form-row">
+                              {% if  notif.notif_etat == 1 %}
+                                  <form action="" method="POST" col-6>
+                                    <button title="Désactiver" type="submit" name="btn_action_desact_notif" class="btn btn-success">
+                                      <input type="hidden" name="id_notif" value="{{ notif.id_notif }}">
+                                    <i class="fas fa-info"></i>
+                                    </button>
+                                  </form>
+                              {% else %}
+                                  <form action="" method="POST" col-6>
+                                    <button title="Activer" type="submit" name="btn_action_active_notif" class="btn btn-warning">
+                                      <input type="hidden" name="id_notif" value="{{ notif.id_notif }}">
+                                    <i class="fas fa-plus"></i>
+                                    </button>
+                                  </form>
+                              {% endif %}
+                                  <form action="" method="POST" col-6>
+                                    <button title="Suprimer" type="submit" name="btn_action_sup_notif" class="btn btn-danger">
+                                      <input type="hidden" name="id_notif" value="{{ notif.id_notif }}">
+                                    <i class="fas fa-trash"></i>
+                                    </button>
+
+                                </form>
+                            </td>
+          
+                          </tr>
+                        {% endfor %}
+          
+                        {% endif %}
+              
+                      </tbody>
+                    </table>
+                  </div>
+          
+            </div>
+
+            <!-- /.post -->
+          </div>
+
+        </div>
+        <!-- /.tab-content -->
+      </div><!-- /.card-body -->
+    </div>
+    <!-- /.nav-tabs-custom -->
+
+
+</div>
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+    $(document).ready(function() {
+
+        $('#dataTable_list_notif').DataTable({
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+    });
+</script>
+
+{% endblock %} 

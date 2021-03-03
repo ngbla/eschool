@@ -1,0 +1,1194 @@
+{% extends "main_prof.html" %} {% block title %}Admin - Notes{% endblock %} {% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> {% endif %}
+
+
+<div class="card-body" style="
+    background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;padding-top: 20px; 
+    padding-left: 0px;
+    padding-right: 0px;">
+
+        <!-- Nav pills -->
+        <ul class="nav nav-pills nav-tabs" role="tablist">
+ 
+            <li class="nav-item">
+                <a class="nav-link {% if (panel is defined) and (panel == 1) %}active{% else %}{% endif %}" data-toggle="pill" href="#eval_menu1">Evaluation</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if (panel is defined) and (panel == 2) %}active{% endif %}" data-toggle="pill" href="#eval_home">Saisir les notes</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if (panel is defined) and (panel == 3) %}active{% endif %}" data-toggle="pill" href="#bilan_note">Bilan notes</a>
+            </li>
+
+        </ul>
+
+        <!-- Content Row -->
+        <div class="tab-content">
+
+            <div id="eval_menu1" class="row col-12 container tab-pane {% if (panel is defined) and (panel == 1) %}active{% else %}{% endif %}"><br>
+
+                <form method="POST" class="was-validated row col-12">
+
+                    <div class="col-6 row">
+
+                        <div class="input-group mb-3 col-12">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Année scolaire</button>
+                            </div>
+                            <select class="form-control" id="moy_annee" name="moy_annee" required>
+                                {% if (evalinfos is defined) and (evalinfos is defined) %}                 
+                                    <option value="{{evalinfos.id_anneeScolaire}}">Année scolaire</option>
+                                {% endif %}
+                                <option value="0">Choisissez l'année</option>
+                                {% if allannee is defined %}                 
+                                    {% for key, value in allannee  %}
+                                    <option value="{{value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                    {% endfor %} 
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-3 col-12">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Classe</button>
+                            </div>
+                           <select class="form-control " id="moy_classe" name="moy_classe" required>
+                                {% if (evalinfos is defined) and (evalinfos is defined) %}                 
+                                    <option selected value="{{evalinfos.id_groupe}}">{{evalinfos.groupe_libelle}}</option>
+                                    <option value=" "  hidden>Choisissez une classe</option>
+                                {% else %}
+                                <option value=" "  selected hidden>Choisissez une classe</option>
+                                {% endif %}
+                                {% if (moy_classe is defined) and (moy_classe_lib is defined) %}                 
+                                    <option value="{{moy_classe}}">{{ moy_classe_lib }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        
+                        <div class="input-group mb-3 col-12">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Associer d'autre classes</button>
+                            </div>
+                           <select multiple class="form-control " id="moy_classe_multiple" name="moy_classe_multiple[]" >
+                                <option value=" "  selected hidden>Choisissez une classe</option>
+                                {% if (moy_classe is defined) and (moy_classe_lib is defined) %}                 
+                                    <option value="{{moy_classe}}">{{ moy_classe_lib }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                         
+
+                        <div class="input-group mb-3 col-12">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Période</button>
+                            </div>
+                            <select name="prof_eval_periode" class="col form-control" id="prof_eval_periode" required>
+                                {% if evalinfos.fk_idpartAneeScol is defined %}
+                                <option value="{{ evalinfos.fk_idpartAneeScol }} " selected>{{ evalinfos.libele_partie }}</option>
+                                <option  disabled  hidden>Choisissez une Période</option>
+                                {% else %}
+                                <option  disabled selected hidden>Choisissez une Période</option>
+                                {% endif %}
+                            </select>
+                        
+                        </div>
+
+                        <div class="input-group mb-3 col-12">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Matière</button>
+                            </div>
+                            <select name="prof_eval_mat" id="prof_eval_select_mat" class="col form-control" required>
+                                {% if evalinfos.libele is defined %}
+                                <option value="{{ evalinfos.id_mat }} " selected>{{ evalinfos.libele }}</option>
+                                <option  disabled  hidden>Choisissez une matière</option>
+                                {% else %}
+                                <option  disabled selected hidden>Choisissez une matière</option>
+                                {% endif %}
+                            </select>
+                        
+                        </div>
+
+
+                        <div class="input-group mb-3 col-12">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Session</button>
+                            </div>
+                            <select name="session_id" id="session_id" class="col form-control" required>
+                                 {% if evalinfos.eval_session is defined %}
+                                <option value="{{ evalinfos.eval_session }} " selected>{{ evalinfos.eval_session }}</option>
+                                <option value=" " disabled  hidden>Choisissez une Session</option>
+                                {% else %}
+                                <option value=" " disabled selected hidden>Choisissez une Session</option>
+                                 {% endif %}
+                                {% if allSession is defined %} 
+                                {% for infos in allSession %}
+                                    <option value="{{ infos.id_session_session }} ">{{ infos.Libelle_session }}</option>
+                                {% endfor %} 
+                                {% else %}
+                                    <option value=" " disabled selected hidden>Choisissez une Session</option>
+                                {% endif %}
+
+                                
+
+                            </select>
+                        
+                        </div>
+
+                        <div class="input-group mb-3 col-12">
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Type d'évaluation</button>
+                            </div>
+                            <select name="prof_eval_select_type" id="prof_eval_select_type" class="form-control col" required>
+                                {% if (evalinfos.eval_type) is defined %}
+                                     
+                                    {% if evalinfos.eval_type == 'classe' %} 
+                                            <option value="classe">En Classe  </option>
+                                    {% elseif evalinfos.eval_type == 'online_QCM' %}
+                                            <option value='online_QCM'>En Ligne - QCM</option>
+                                    {% elseif evalinfos.eval_type == 'online_UPLOAD' %}
+                                            <option value='online_UPLOAD'>En Ligne - Envoi de Fichier</option>
+                                    {% else %}{% endif %}
+                                 
+                                    <option value=" " disabled  hidden>Choisissez un type</option>
+                                {% else %}
+                                    <option value=" " disabled selected hidden>Choisissez un type</option>
+                                {% endif %}
+
+                                <option value="online_QCM">En Ligne - QCM</option>
+                                <option value="online_UPLOAD">En Ligne - Envoi de Fichier</option>
+                                <option value="classe">En Classe  </option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-6 row">
+
+                        <div class="col-12 form-row">
+
+                            <div class="form-group col"> 
+                                <label >Date : &nbsp; </label><br>
+                                <input type="date" name="prof_eval_date" class="form-control" 
+                                {% if evalinfos.eval_date is defined %} 
+                                {% set dateTime = evalinfos.eval_date|replace({ '/': "-"}) %} 
+                                value="{{ dateTime|date('Y-m-d') }}" 
+                                {% endif %} required>
+                            </div>
+
+                            <div class="form-group col">
+                                <label >Heure debut : &nbsp; </label><br>
+                                <input type="time" min="06:00:00" max="20:00:00" name="prof_eval_hDebut" id="prof_eval_hDebut" class="form-control " {% if evalinfos.eval_hDebut is defined %}value="{{evalinfos.eval_hDebut}}" {% else %}value="07:00" {% endif %} required>
+                            </div>
+
+                            <div class="form-group col">
+                                <label>Heure Fin : &nbsp; </label> <br>
+                                <input type="time" name="prof_eval_hFin" id="prof_eval_hFin" class="form-control " {% if evalinfos.eval_hFin is defined %}value="{{evalinfos.eval_hFin}}" {% else %}value="07:00" {% endif %} required>
+                            </div>
+
+                            <div class="form-group col">
+                                <label>Durée  : &nbsp; </label> <br>
+                                <input type='text' id="prof_eval_durée" class="form-control " disabled />
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 form-row">
+
+                            <div class="form-group col-6 form-row">
+                                <label>Libele de l'evaluation : &nbsp; </label> <br>
+                                <input type='text' name="prof_eval_libelle" class="form-control " {% if evalinfos.eval_libelle is defined %}value="{{evalinfos.eval_libelle}}" {% endif %} required />
+                            </div>
+
+
+                            <div class="form-group col-6">
+                                <label>Description de l'evaluation : &nbsp; </label> <br>
+                                <textarea name="prof_eval_desc" >
+                                    {% if evalinfos.eval_desc is defined %}
+                                    {{evalinfos.eval_desc}} 
+                                    {% endif %}</textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group col-12 row">
+
+                            <div class="form-group form-inline col">
+                                <label class="text-right"> Coefficient (<span class="text-warning">* 0,5 pour note/10 ; 2 pour note/40  ...</span> ): &nbsp; </label> <br>
+                                <div class="form-group">
+                                    <input type="number" step="0.01" name="coef" class="form-control" {% if evalinfos.eval_libelle is defined %}value="{{evalinfos.coef}}" {% endif %} required>
+                                </div>
+                            </div>
+                            <div class="form-group form-inline col">
+                                <label class="text-right">Notation : &nbsp; </label>
+                                <div class="form-group">
+                                    <input type="number" readonly value="20" name="notation" class="form-control" {% if evalinfos.eval_libelle is defined %}value="{{evalinfos.notation}}" {% endif %} required>
+                                </div>
+                            </div>
+                            <div class="form-group form-inline col">
+                                {% if evalinfos.prof_eval_id is defined %}
+                                <button type="submit" value="{{evalinfos.prof_eval_id}}" name="prof_eval_btnmodif" class="btn btn-info btn-icon-split ">
+                                        <span class="icon text-white-50 ">
+                                            <i class="fas fa-edit "></i>
+                                        </span>
+                                        <span class="text ">Modifier</span>
+                                </button> 
+                                {% else %}
+                                <button type="submit" name="prof_eval_btnsubmit" class="btn btn-warning btn-icon-split">
+                                    <span class="icon text-white-50 ">
+                                        <i class="fas fa-check "></i>
+                                    </span>
+                                    <span class="text ">Creer</span>
+                                </button>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </form>
+
+                <div class="row col-12">
+                    <hr style="border: 2px solid #f8f9fc;width: 100%;">
+                    <br>
+                    Filtres :
+                    <br>
+                    <div class="input-group mb-3 col">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Année scolaire</button>
+                        </div>
+                        <select class="form-control" id="moy_annee_filtre" name="moy_annee_filtre" required>
+      
+                            <option value="0">Choisissez l'année</option>
+                            {% if allannee is defined %}                 
+                                {% for key, value in allannee  %}
+                                <option value="{{value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                {% endfor %} 
+                            {% endif %}
+
+                        </select>
+                    </div>
+     
+                </div>
+
+                <div class="row col-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="dataTable_list_evalnonprog" width="100%" cellspacing="0" table style="background: #f8f9fc;font-size:smaller">
+                            <thead class="bg-gradient-info text-white text-center">
+                                <tr>
+                                    <th>Période</th>
+                                    <th>Date</th>
+                                    <th>H Debut</th>
+                                    <th>H Fin</th>
+                                    <th>Session</th>
+                                    <th>Libelle</th>
+                                    <th>Classe</th>
+                                    <th>Matière</th>
+                                     <th>Coef.</th>
+                                    <th>Description</th>
+                                    <th>Créateur</th>
+                                    <th>Soumettre</th>
+                                </tr>
+
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Période</th>
+                                    <th>Date</th>
+                                    <th>H Debut</th>
+                                    <th>H Fin</th>
+                                    <th>Session</th>
+                                    <th>Libelle</th>
+                                    <th>Classe</th>
+                                    <th>Matière</th>
+                                    <th>Coef.</th>
+                                    <th>Description</th>
+                                    <th>Créateur</th>
+                                    <th>Soumettre</th>
+                                </tr>
+                            </tfoot>
+                            <tbody style="color: #0a1a4a;    font-weight: bold !important;">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div id="eval_home" class="row col-12 container tab-pane {% if (panel is defined) and (panel == 2) %}active{% endif %}">
+                <br>
+
+                <!-- SAISIE DE NOTES -->
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Liste des notes des élèves</h6>
+                    </div>
+                    <!-- Card Body -->    <!-- DataTales Example -->
+                    <div class="card-body">
+                        
+                        <!-- Infos exam -->
+                        <div class="row no-gutters align-items-center">
+                
+                            <dl class="col" style="font-size: small;">
+                            
+                                <dt><strong>Libelle de l'évaluation</strong></dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].eval_libelle}}{% endif %}</dd>
+
+                                <dt> <strong>Classe</strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].groupe_libelle}}{% endif %}</dd>
+
+                                <dt><strong>Matiere</strong></dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].code}} - {{evalinfos[0].libele}}{% endif %}</dd>                                
+
+                            </dl>
+                            <dl class="col" style="font-size: small;">
+
+                                <dt> <strong>Session</strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].eval_session}}{% endif %}</dd>
+                                                                
+                                <dt> <strong>Coefficient</strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].coef}}{% endif %}</dd>
+                                 
+                                <dt> <strong>Période </strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].libele_partie}}{% endif %}</dd>
+                                                         
+                            </dl>                            
+                            <dl class="col" style="font-size: small;">
+
+                                <dt> <strong>Date</strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].eval_date}}{% endif %}</dd>
+                                <dt> <strong>Début </strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].eval_hDebut}}{% endif %}</dd>
+                                <dt> <strong>Fin</strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].eval_hFin}}{% endif %}</dd>
+                               
+                            </dl>
+                            <dl class="col" style="font-size: small;">
+                                <dt> <strong>Créer le </strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].date_creation_eval}}{% endif %}</dd>
+                                <dt> <strong>Salle</strong> </dt>
+                                <dd>{% if evalinfos[0].libelle is defined %} {{evalinfos[0].libelle}}{% endif %}</dd>
+                                <dt> <strong>Statut</strong> </dt>
+                                <dd>{% if evalinfos is defined %} 
+                                        {% if evalinfos[0].etat_evalTps==0 %} Non Programmer
+                                        {% else %}Programmer{% endif %}
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                            <dl class="col" style="font-size: small;">
+                                <dt> <strong>Créer par </strong> </dt>
+                                <dd>{% if evalinfos is defined %} {{evalinfos[0].nom_prenom}}{% endif %}</dd>
+                                <dt> <strong>Etat Eval.</strong> </dt>
+                                <dd>
+                                    {% if evalinfos[0].eval_etat is defined %} 
+                                    {% if evalinfos[0].eval_etat == 3 %} <span class="text-danger">Désactiver</span>  {% else %}<span class="text-success">Activer</span>  {% endif %}
+                                    {% endif %}
+                                </dd>
+                                <dt> <strong>Changer Etat</strong> </dt>
+                                <dd>
+                                    {% if evalinfos[0].eval_etat is defined %} 
+                                    {% if evalinfos[0].eval_etat == 3 %} 
+                                    <form  method="post">
+                                    <input type="hidden" name="btn_notes_eval" value="{{evalinfos[0].prof_eval_id}}">
+                                    <input type="hidden" name="btn_notes_evalname" value="{{evalinfos[0].eval_libelle}} de {{evalinfos[0].groupe_libelle}} matiere de {{evalinfos[0].libele}}">
+                                    <button name="btn_active_eval" type="submit" class="btn btn-outline-info">Activer</button>
+                                    </form>
+                                    {% else %}
+                                    <form  method="post">
+                                    <input type="hidden" name="btn_notes_eval" value="{{evalinfos[0].prof_eval_id}}">
+                                    <input type="hidden" name="btn_notes_evalname" value="{{evalinfos[0].eval_libelle}} de {{evalinfos[0].groupe_libelle}} matiere de {{evalinfos[0].libele}}">
+                                    <button name="btn_desactive_eval" type="submit" class="btn btn-outline-warning">Désactiver</button>
+                                    </form>
+                                    {% endif %}
+                                    {% endif %}
+                                </dd>
+                            </dl>                            
+                        </div>
+
+        
+                        <div class="table-responsive">
+                            <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="dataTable_list_annee" width="100%" cellspacing="0" style="font-size: small; caption-side: top;"  table>
+
+                                <caption>
+                                    <table>
+                                        <tr>
+                                            <td>Classe : {% if evalinfos is defined %} {{evalinfos[0].groupe_libelle}}{% endif %} | </td>
+                                            <td>Matiere :{% if evalinfos is defined %} {{evalinfos[0].code}} - {{evalinfos[0].libele}}{% endif %} | </td>
+                                            <td>Evaluation : {% if evalinfos is defined %} {{evalinfos[0].eval_libelle}}{% endif %} | </td>
+                                            <td>Période : {% if evalinfos is defined %} {{evalinfos[0].libele_partie}}{% endif %}  |  Session : {% if evalinfos is defined %} {{evalinfos[0].eval_session}}{% endif %}</td>
+                                        </tr>
+                                    </table>  
+                                </caption>
+                                <thead class="bg-gradient-info text-white text-center">
+                                    <tr>
+                                        <!-- <th >Photo</th>-->
+                                        <th>Matricule</th>
+                                        <th>Nom et Prénom</th>
+                                        <th>Sexe</th>
+                                        <th>Saisi par</th>
+                                        <th>Note</th>
+                                        <th>Autoriser</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <!-- <th >Photo</th>-->
+                                        <th>Matricule</th>
+                                        <th>Nom et Prénom</th>
+                                        <th>Sexe</th>
+                                        <th>Saisi par</th>
+                                        <th>Note</th>
+                                        <th>Autoriser</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                
+                                {% if prof_eval_grpEleve is defined %}
+                                    {% for key, value in prof_eval_grpEleve  %}
+                                    <tr>
+                                        <!-- <td> 
+                                            <img id="user_tof_mini" class="img-profile img-thumbnail" src="/files/{{value[0].id_pers_personne}}/tiny{{value[0].id_pers_personne}}.jpg" alt="photo etudiant">
+                                            <br>  Tel : {{ value[0].contact }}
+
+                                        </td>-->
+                                        <td>{{ value[0].matricule }}</td>
+                                        
+                                        <td>
+                                            {{ value[0].nom_prenom }} 
+                                        </td>
+                                        <td>{{ value[0].sexe }}</td>
+                                        <td>{{ value[0].createur }}</td>
+                                        <td class="text-right"> 
+                                            <span>{{ value[0].note }}</span>
+                                            {% if value[0].etat_note == 0 %}
+                                            <input type="number" step="any" value="{{ value[0].note }}" class="input_note_eleve form-control form-control-sm input-sm" id="{{ value[0].id_type}}_{{value[0].id_evaluation}}" > 
+                                            {% endif %}
+                                            
+                                        </td>
+                                        <td class="text-center">
+                                            {% if value[0].etat_note == 0 %}{% else %}
+                                            <button type="button" id="btn_mod_note_{{ value[0].id_type}}" value="{{ value[0].id_type}}_{{value[0].id_evaluation}}"  class="btn btn-outline-warning btn-sm btn_mod_note">Modifier</button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %} 
+                                {% endif %}
+            
+                                </tbody>
+                            </table>
+                        </div>
+                    
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="bilan_note" class="row col-12 container-fluid tab-pane {% if (panel is defined) and (panel == 3) %}active{% endif %}">
+                <br>
+
+                    <div class="row col-12 card border-left-primary shadow h-100 py-2">
+                        <div class="row col-12 card-body">
+                            <div class="row col-12 no-gutters align-items-center">
+                                <div class="col-12 mr-2" >
+                                    <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800"><a href="#">Filtres</a>
+                                    </div>
+                                    <br>
+                                    <dl class="form-row">
+                                                    
+                                        <form method="POST" class="col-12 form-row">
+
+                                                <div class="col-4">
+                                                    <div class="input-group mb-3 ">
+                                                        <div class="input-group-prepend ">
+                                                            <button type="button" class="btn btn-primary">Classe</button>
+                                                        </div>
+                                                        <select class="form-control" id="notes_classe" name="notes_classe" required>
+                                                            {% if eval_info is defined %}
+                                                            <option value="{{ eval_info.id_groupe }}">{{ eval_info.lib_groupe }}</option>
+                                                            <option  disabled>Choisissez la classe</option>
+                                                            {% else %}
+                                                            <option selected disabled>Choisissez la classe</option>
+                                                            {% endif %}
+                                                            {% if allgroupeBy is defined %}
+                                                            {% for key, value in allgroupeBy  %}
+                                                                <option value="{{ value.groupe_id }}">{{ value.groupe_libelle }}</option>
+                                                            
+                                                            {% endfor %}
+                                                            {% endif %}
+                                                            
+                                                        </select>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <div class="input-group mb-3 ">
+                                                        <div class="input-group-prepend ">
+                                                            <button type="button" class="btn btn-primary">Période</button>
+                                                        </div>
+                                                        <select class="form-control" id="notes_période" name="notes_période" required>
+
+                                                                                                                                                                              {% if eval_info is defined %}
+                                                            <option value="{{ eval_info.id_partannee }}">{{ eval_info.lib_part_anne }}</option>
+                                                            <option  disabled>Choisissez la Période</option>
+                                                            {% else %}
+                                                            <option selected disabled>Choisissez la Période</option>
+                                                            {% endif %}
+
+                                                            {% if allpartanneeBy is defined %}
+                                                            {% for key, value in allpartanneeBy  %}
+                                                                <option value="{{ value.id_annee_partie }}">{{ value.libele_partie }}</option>
+                                                            
+                                                            {% endfor %}
+                                                            {% endif %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <div class="input-group mb-3 ">
+                                                        <div class="input-group-prepend ">
+                                                            <button type="button" class="btn btn-primary">Matière</button>
+                                                        </div>
+                                                        <select class="form-control" id="notes_mat" name="notes_mat" required>
+
+                                                            <option value="0" selected disabled>Choisissez la Matière</option>
+                                                      
+                                                            {% if (moy_mat is defined) and (moy_mat_lib is defined) %}                 
+                                                                <option value="{{moy_mat}}">{{ moy_mat_lib }}</option>
+                                                            {% endif %}
+                                                            
+                                                            {% if grpematiere is defined %}
+                                                            {% for key, value in grpematiere  %}
+                                                                <option value="{{ value.id_matiere }}">{{ value.lib_mat }}</option>
+                                                            {% endfor %} 
+                                                            {% endif %}
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <div class="input-group mb-3 ">
+                                                        <div class="input-group-prepend ">
+                                                            <button type="button" class="btn btn-primary">Session</button>
+                                                        </div>
+                                                        <select class="form-control" id="notes_session" name="notes_session" required>
+
+                                                                                                                                                                              {% if eval_info is defined %}
+                                                            <option value="{{ eval_info.id_session }}">{{ eval_info.lib_session }}</option>
+                                                            <option  disabled>Choisissez la session</option>
+                                                            {% else %}
+                                                           <option  selected disabled>Choisissez la session</option>
+                                                            {% endif %}
+                                                                 
+                                                                {% if (allSession is defined)  %}   
+                                                                {% for info in allSession %}              
+                                                                    <option value="{{info.id_session_session}}">{{ info.Libelle_session }}</option>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                               
+                                                            </select>
+                                                    </div>
+                                                </div>                                                
+                                                <button name="btn_notes_bilan" type="submit" class="btn btn-outline-primary col-1">Afficher</button>
+                                        </form>
+
+
+                                    </dl> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+
+
+
+                    <div class="row col-12 card shadow mb-4">
+                        <div class="row col-12"> 
+                            <br> 
+                                <div class="well well-sm alert alert-info col-12 text-center">
+                                    Classe : <strong>{{eval_info.lib_groupe}}</strong> </strong>  &nbsp;&nbsp;&nbsp; &  &nbsp;&nbsp;&nbsp;
+                                    Session : <strong>{{eval_info.lib_session}}</strong> &nbsp;&nbsp;&nbsp; &  &nbsp;&nbsp;&nbsp;
+                                    Période  : <strong>{{eval_info.lib_part_anne}}</strong> &nbsp;&nbsp;&nbsp; &  &nbsp;&nbsp;&nbsp;
+                                    Matière  : <strong>{{eval_info.lib_mat}} </strong>
+                                </div> 
+                        </div>                        
+ 
+                        <!-- Card Header - Dropdown -->
+                        <form method="POST">
+
+                            <input type="hidden" name="btn_notes_bilan" value="">
+                            <input type="hidden" name="notes_période" value="{{eval_info.id_partannee}}">
+                            <input type="hidden" name="notes_classe" value="{{eval_info.id_groupe}}">
+                            <input type="hidden" name="notes_mat" value="{{eval_info.id_mat}}">
+                            <input type="hidden" name="notes_session" value="{{eval_info.id_session}}">
+                            <input type="hidden" name="notes_annee" value="">
+
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Liste des moyennes des élèves</h6> :  
+                                
+                                {% if getetat_envoimoy is defined %} 
+                                    <span class="text"><strong>Etat moyenne : </strong></span>
+                                    {% if getetat_envoimoy == 1 %}
+                                    <span class="badge badge-success">  <i class="fa fa-check"></i> Enregistrer par {{saisi_pers}} ({{saisi_pers_tel}}) </span>
+                                    {% elseif getetat_envoimoy == 0 %}
+                                    <span class="badge badge-primary">   <i class="fa fa-info"></i> En attente </span>
+                                    {% else %}
+                                    <span class="badge badge-danger">   <i class="fa fa-exclamation-triangle"></i> En attente 
+                                    </span>  {% endif %}
+                                {% endif %}
+                                    <button class="btn btn-warning" name="btn_eleve_matmoy" type="submit">Enregistrer</button>
+                            </div>
+                            <!-- Card Body -->    <!-- DataTales Example -->
+                            {% if getAllElevByGrp is defined %}
+                            <div class="card-body">
+                
+                                <div class="table-responsive">
+                                    <table id="dataTable_bilanok" class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" cellspacing="0" style="width:100%;font-size: x-small;">
+                                        <caption>
+                                            <div class="well well-sm alert alert-info col-12 text-center">
+                                                Classe : <strong>{{eval_info.lib_groupe}}</strong> </strong>  &nbsp;&nbsp;&nbsp; &  &nbsp;&nbsp;&nbsp;
+                                                Session : <strong>{{eval_info.lib_session}}</strong> &nbsp;&nbsp;&nbsp; &  &nbsp;&nbsp;&nbsp;
+                                                Période  : <strong>{{eval_info.lib_part_anne}}</strong> &nbsp;&nbsp;&nbsp; &  &nbsp;&nbsp;&nbsp;
+                                                Matière  : <strong>{{eval_info.lib_mat}} </strong>
+                                            </div>
+                                        </caption>
+                                        <thead class="bg-gradient-info text-white text-center">
+                                            <tr>
+                                                <th >Matricule</th>
+                                                <th >Nom et Prénom</th>
+                                                <th >Sexe</th>
+                                                {% if get_infos_eval_By is defined %}
+                                                
+                                                    {% set tab_evalid = [] %}
+                                            
+                                                    {% for key, value in get_infos_eval_By  %}
+                                                        <th>
+                                                            {{ value.eval_libelle|upper }} <br>
+                                                            Notation : {{ value.notation }}<br>
+                                                            Coef : {{ value.coef }}
+                                                        </th>
+                                                    {% endfor %} 
+
+                                                    {% for key, value in get_infos_eval_By  %}
+                                                        {% set tab_evalid = tab_evalid|merge({ ( value.eval_libelle ~ value.eval_id ) : (value.eval_id)})   %}
+                                                    {% endfor %} 
+
+                                                {% endif %}
+                                                <th >Moyenne</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if getAllElevByGrp is defined %}
+                                            <!-- FOR SUR LISTE ELEVE DU GRPE-->
+                                        {% for keyelv, valueelv in getAllElevByGrp  %}
+
+                                            {% set moyenne = 0 %}
+                                            {% set coefmoy = 0 %}
+                                            <tr>
+                                                <td>{{ valueelv.matricule }}</td>
+                                                <td>{{ valueelv.nom_prenom }}</td>
+                                                <td>{{ valueelv.sexe }}</td>
+                                                {% set testkey = 0 %}
+                                                {% if get_infos_eval_By is defined %}
+                                                <!-- FOR SUR LISTES EVAL-->
+                                                {% for eval_key, eval in get_infos_eval_By  %}
+                                                    <!-- FOR SUR LISTES NOTES :: SI note definie-->
+                                                    {% for elv_key, eleve in eval.notes_eleves  %}
+                                                        <!-- TESTE SI ID ELEVE = ID ELEVE DS NOTE-->
+                                                        
+                                                        {% if  eleve.id_eleve_eleve == valueelv.id_eleve_eleve %}
+                                                            {% set testkey = 1 %}
+                                                            {% if  eleve.note is defined %}
+                                                                {% set moyenne = moyenne + eleve.note * eval.coef %}
+                                                                {% set coefmoy = coefmoy + eval.coef %}
+                                                                <td class="text-right"> {{ eleve.note }}</td>
+                                                            {% else %}
+                                                                <td class="text-right"> {{"aucune note" }} </td>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                        <!-- FOR SUR LISTES NOTES :: SINON note non definie -->
+                                                        <!-- /FOR SUR LISTES NOTES :: FIN SI -->
+                                                        <!-- fin /FOR SUR LISTES NOTES :: -->
+                                                    {% endfor %} 
+                                                {% endfor %} 
+                                                {% endif %}
+                                                {% if testkey==0 %}<td>{{"aucune note" }}</td> {% endif %}
+
+                                                <td class="text-right">
+                                                    {% if coefmoy > 0 %}{% set moyenne = moyenne / coefmoy %}
+                                                    {% else %}{% set moyenne = moyenne %}{% endif %}
+                                                    {{ moyenne|format_number(locale='fr') }} 0
+                                                    <input type="hidden" name="input_eleve_matmoy[]" value="{{eval_info.id_groupe}}_{{valueelv.id_eleve_eleve}}_{{eval_info.id_mat}}_{{eval_info.id_session}}_{{moyenne}}_{{eval_info.id_partannee}}">
+                                                </td>
+                                            </tr>
+                                        {% endfor %} 
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                            </div>
+                            {% endif %}
+                        </form>
+
+                    </div>
+
+            </div>
+
+        </div>
+
+</div>
+
+
+
+
+{% endblock %} 
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+    $(document).ready(function() {
+
+        $('table tfoot th').each(function() {
+            var title = $(this).text();
+            $(this).html('<input style="width: 100%;" type="text" placeholder="Search ' + title + '" />');
+        });
+        // Setup - add a text input to each footer cell
+        var dataTable_list_evalnonprog = $('#dataTable_list_evalnonprog').DataTable({
+            dom: 'Blfrtip',
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+            },
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    title: 'Evaluations',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+        var dataTable_bilanok = $('#dataTable_bilanok').DataTable({
+            dom: 'Blfrtip',
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+            },
+            "order": [[1, "asc"]],
+            "pageLength": 50,
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    title: 'Evaluations',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+
+
+        $(document.body).on("change", "#moy_classe", function(e) {
+            //doStuff
+            //alert('change prof_eval_select_groupe');
+ 
+            var id_groupe = $('#moy_classe').val();
+            //alert(id_prof,id_groupe);
+
+            if (id_groupe == 0 || id_groupe == "") {} 
+            else {
+
+                url_info = liens + 'App/Models/Prof_AjaxOnline.php';
+                values_info = 'action=get_anneepartie_ByGrpe&id_groupe=' + id_groupe+'&global_admin='+$('#global_admin').val()+'&global_univ='+$('#global_univ').val();
+                idelemt = "#moy_classe";
+                root_AjaxMethod(url_info, values_info, fct_Getanneepart, idelemt);
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=getGrpeClassMatiere&groupeid=' + id_groupe+'&global_admin='+$('#global_admin').val()+'&global_univ='+$('#global_univ').val();
+                idelemt = "#moy_classe";
+                root_AjaxMethod(url_info, values_info, fct_GetClasseMat, idelemt);
+
+            }
+
+
+            function fct_Getanneepart(jsondata) {
+                $('#prof_eval_periode').html(' <option value=" " disabled selected hidden>Choisissez une Période</option>');
+                if (typeof(jsondata) != undefined && jsondata != "") {
+                    jsondata = JSON.parse(jsondata);
+                    for (var x in jsondata) {
+                        $('#prof_eval_periode').append(' <option value="' + jsondata[x].id_annee_partie + '">' + jsondata[x].libele_partie + '</option>');
+                    }
+                }
+
+            }
+
+            function fct_GetClasseMat(jsondata) {
+                $('#prof_eval_select_mat').html(' <option value=" " disabled selected hidden>Choisissez une Matière</option>');
+                if (typeof(jsondata) != undefined && jsondata != "") {
+                    jsondata = JSON.parse(jsondata);
+                    for (var x in jsondata.grpematiere) {
+                        $('#prof_eval_select_mat').append(' <option value="' + jsondata.grpematiere[x].id_matiere_matiere + '">' + jsondata.grpematiere[x].lib_mat + '</option>');
+                        
+                    }
+                }
+
+            }
+
+        });
+
+
+        $(document.body).on("change", "#prof_eval_hDebut", function(e) {
+            if (typeof($('#prof_eval_hDebut').val()) != undefined && typeof($('#prof_eval_hFin').val()) != undefined) {
+
+                if ($('#prof_eval_hDebut').val() != "" && $('#prof_eval_hFin').val() != "") {
+                    timedebut = $('#prof_eval_hDebut').val();
+                    timefin = $('#prof_eval_hFin').val();
+                    timeoperation(timedebut, timefin);
+
+                }
+
+            }
+        });
+        $(document.body).on("change", "#prof_eval_hFin", function(e) {
+
+            if (typeof($('#prof_eval_hDebut').val()) != undefined && typeof($('#prof_eval_hFin').val()) != undefined) {
+
+                if ($('#prof_eval_hDebut').val() != "" && $('#prof_eval_hFin').val() != "") {
+                    timedebut = $('#prof_eval_hDebut').val();
+                    timefin = $('#prof_eval_hFin').val();
+                    timeoperation(timedebut, timefin);
+
+                }
+
+            }
+
+
+        });
+
+        function dateDiff(date1, date2) {
+            var diff = {} // Initialisation du retour
+            var tmp = date2 - date1;
+
+            tmp = Math.floor(tmp / 1000); // Nombre de secondes entre les 2 dates
+            diff.sec = tmp % 60; // Extraction du nombre de secondes
+
+            tmp = Math.floor((tmp - diff.sec) / 60); // Nombre de minutes (partie entière)
+            diff.min = tmp % 60; // Extraction du nombre de minutes
+
+            tmp = Math.floor((tmp - diff.min) / 60); // Nombre d'heures (entières)
+            diff.hour = tmp % 24; // Extraction du nombre d'heures
+
+            tmp = Math.floor((tmp - diff.hour) / 24); // Nombre de jours restants
+            diff.day = tmp;
+
+            return diff;
+        }
+
+
+        function timeoperation(timedebut, timefin) {
+
+            timedebut_tab = timedebut.split(":");
+            timefin_tab = timefin.split(":");
+
+            //year, month, day, hour, minute
+            var ddebut = new Date(2020, 07, 15, timedebut_tab[0], timedebut_tab[1]);
+            var dfin = new Date(2020, 07, 15, timefin_tab[0], timefin_tab[1]);
+
+            titre = "evenement sur: #prof_eval_hDebut // #prof_eval_hFin";
+            info = "Heure debut = " + ddebut + " && Heure Fin = " + dfin;
+
+            diff = dateDiff(ddebut, dfin);
+
+            valueur = diff.hour + "H : " + diff.min + "Min";
+
+            consoleInfo(envi, titre, info, valueur);
+            $('#prof_eval_durée').val(valueur);
+
+        }
+
+        $(document.body).on("change", "#moy_annee_filtre", function(e) {
+
+            if (typeof($('#moy_annee_filtre').val()) != undefined && typeof($('#moy_annee_filtre').val()) != undefined) {
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=get_annee_eval&annee_id=' +$('#moy_annee_filtre').val() +'&global_admin='+$('#global_admin').val()+'&global_univ='+$('#global_univ').val();
+                idelemt = "#moy_annee_filtre";
+                root_AjaxMethod(url_info, values_info, fct_get_annee_eval, idelemt);
+            }
+
+
+        });
+        function fct_get_annee_eval(jsondata) {
+
+            jsondata = JSON.parse(jsondata);
+            
+            dataTable_list_evalnonprog.clear().draw();
+
+            titre = "//evenement Change sur: fct_get_annee_eval";
+            info = "  // jsondata --> ";
+            valueur =jsondata;
+            consoleInfo(envi, titre, info, valueur);
+            var btn_qcm='';
+            var btn_info='';
+
+
+
+
+            for (var x in jsondata.get_eval_adminevalBy) {
+
+                if (jsondata.get_eval_adminevalBy[x].eval_type =='online_QCM' ) {
+                    btn_qcm='<p class="col-12"><a title="QCM" href="quiz/add.php?eval='+jsondata.get_eval_adminevalBy[x].prof_eval_id+'" class="btn btn-primary " target="_blank"> <i class="fas fa-plus"></i> </a></p>';
+                }
+                else{btn_qcm='';}
+
+                btn_info='<div class="form-row text-center">'+btn_qcm+' <form class="col-12" method="POST"><button title="Modifier" name="btn_edit_eval" type="submit" value="'+jsondata.get_eval_adminevalBy[x].prof_eval_id+'" class="btn btn-info"><i class="fas fa-edit"></i></button></form>                        <div class="col-12">  -  </div>       <form class="col-12" method="POST"><button title="Supprimer" name="btn_del_eval" type="submit" value="'+jsondata.get_eval_adminevalBy[x].prof_eval_id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button></form>   </div> ';
+                    
+                var rowNode = dataTable_list_evalnonprog
+                    .row.add([jsondata.get_eval_adminevalBy[x].libele_partie,jsondata.get_eval_adminevalBy[x].eval_date,jsondata.get_eval_adminevalBy[x].eval_hDebut,jsondata.get_eval_adminevalBy[x].eval_hFin,jsondata.get_eval_adminevalBy[x].eval_session,jsondata.get_eval_adminevalBy[x].eval_libelle+'<form class="col-12" method="POST" target="_blank"><button title="Notes" name="btn_notes_eval" type="submit" value="'+jsondata.get_eval_adminevalBy[x].prof_eval_id+'" class="btn btn-success"><i class="fas fa-edit"></i></button></form>',jsondata.get_eval_adminevalBy[x].groupe_libelle,jsondata.get_eval_adminevalBy[x].libele ,jsondata.get_eval_adminevalBy[x].coef, jsondata.get_eval_adminevalBy[x].eval_desc,jsondata.get_eval_adminevalBy[x].nom_prenom,btn_info])
+                    .draw()
+                    .node();
+
+            }
+            
+            for (var x in jsondata.get_eval_profevalBy) {
+
+                if (jsondata.get_eval_profevalBy[x].eval_type =='online_QCM' ) {
+                    btn_qcm='<p class="col-12"><a title="QCM" href="quiz/add.php?eval='+jsondata.get_eval_profevalBy[x].prof_eval_id+'" class="btn btn-primary " target="_blank"> <i class="fas fa-plus"></i> </a></p>';
+                }
+                else{btn_qcm='';}
+
+                btn_info='<div class="form-row text-center"></div>'+btn_qcm+' <form class="col-12" method="POST">  <button title="Modifier" name="btn_edit_eval" type="submit" value="'+jsondata.get_eval_profevalBy[x].prof_eval_id+'" class="btn btn-info">  <i class="fas fa-edit"></i>  </button> </form>           <div class="col-12">  -  </div>    <form class="col-12" method="POST"><button title="Supprimer" name="btn_del_eval" type="submit" value="'+jsondata.get_eval_profevalBy[x].prof_eval_id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button></form> </div> ';
+
+                var rowNode = dataTable_list_evalnonprog
+                    .row.add([jsondata.get_eval_profevalBy[x].libele_partie, jsondata.get_eval_profevalBy[x].eval_date,jsondata.get_eval_profevalBy[x].eval_hDebut,jsondata.get_eval_profevalBy[x].eval_hFin,jsondata.get_eval_profevalBy[x].eval_session,jsondata.get_eval_profevalBy[x].eval_libelle+'<form class="col-12" method="POST" target="_blank"><button title="Notes" name="btn_notes_eval" type="submit" value="'+jsondata.get_eval_profevalBy[x].prof_eval_id+'" class="btn btn-success"><i class="fas fa-edit"></i></button></form>',jsondata.get_eval_profevalBy[x].groupe_libelle,jsondata.get_eval_profevalBy[x].libele,jsondata.get_eval_profevalBy[x].coef, jsondata.get_eval_profevalBy[x].eval_desc,jsondata.get_eval_profevalBy[x].nom_prenom, btn_info])
+                    .draw()
+                    .node();
+
+                /*$(rowNode)
+                    .css('color', '#858796')
+                    .animate({ color: '#858796' });*/
+            }
+            
+        }
+
+
+        $('#dataTable_list_annee .input_note_eleve').on('change', function(event) {
+
+            if (typeof(event.target.id) != undefined) {
+
+                titre = "::Admin EVENT:::  Change sur:(.input_note_eleve)";
+                info = "  //ID Valeur= " + event.target.id;
+                valueur = $('#dataTable_list_annee #' + event.target.id + '').val();
+                consoleInfo(envi, titre, info, valueur);
+
+                result_split = (event.target.id).split("_");
+                note = $('#dataTable_list_annee #' + event.target.id).val();
+                //id_eleve_eleve  & _ & eval_id
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=Set_eleve_eval_notes&id_eleve_eleve=' + result_split[0] + '&eval_id=' + result_split[1] + '&note_val=' + note+'&global_univ='+$('#global_univ').val()+'&global_admin='+$('#global_admin').val();
+ 
+                idelemt = '#dataTable_list_annee #' + event.target.id;
+                root_AjaxMethod(url_info, values_info, fct_Set_eleve_eval_notes_result, idelemt);
+
+            } 
+            else {
+                titre = "::Admin EVENT:::  Change sur:(.input_note_eleve)";
+                info = "  // Valeur  event.target.id undefined ";
+                valueur = event.target.id;
+                consoleInfo(envi, titre, info, valueur);
+                $('#'+event.target.id).css("border", "1px solid red");
+            }
+
+
+        });
+
+        
+        function fct_Set_eleve_eval_notes_result(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                jsondata_split = (jsondata).split("_");
+
+                switch (jsondata_split[0]) {
+                    case "majnote":
+                        if (jsondata_split[1] == 'ok') { $(idelemt).css("border", "1px solid green"); } else { $(idelemt).css("border", "1px solid red"); }
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+            else{$(idelemt).css("border", "1px solid red");}
+
+        }
+
+        $('#dataTable_list_annee .btn_mod_note').on('click', function(event) {
+
+             titre = "::Admin EVENT:::  Change sur:(.btn_mod_note)";
+                info = "  // Valeur  event.target.id undefined ";
+                valueur = event.target.id;
+                consoleInfo(envi, titre, info, valueur);
+
+            if (typeof(event.target.id) != undefined) {
+                
+                infos_elv = $('#dataTable_list_annee #' + event.target.id).val();
+                result_split = (infos_elv).split("_");
+                //id_eleve_eleve  & _ & eval_id
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=Set_activemod_eleve_notes&id_eleve_eleve=' + result_split[0] + '&eval_id=' + result_split[1] +'&global_univ='+$('#global_univ').val()+'&global_admin='+$('#global_admin').val();
+ 
+                idelemt = '#dataTable_list_annee #' + event.target.id;
+                root_AjaxMethod(url_info, values_info, fct_Set_activemod_eleve_notes_result, idelemt);
+            } 
+            else {
+                titre = "::Admin EVENT:::  Change sur:(.btn_mod_note)";
+                info = "  // Valeur  event.target.id undefined ";
+                valueur = event.target.id;
+                consoleInfo(envi, titre, info, valueur);
+            }
+
+
+        });
+
+        function fct_Set_activemod_eleve_notes_result(jsondata) {
+            if (typeof(jsondata) != undefined && jsondata != "") {
+                jsondata = JSON.parse(jsondata);
+                switch (jsondata) {
+                    case "1":
+                         $(idelemt).css("display", "hidden"); 
+                         $(idelemt).hide();
+                    break;
+                    case 1:
+                         $(idelemt).css("display", "hidden"); 
+                         $(idelemt).hide();
+                    break;
+                    default:
+                    break;
+                }
+            }
+        }
+
+        //AJAX RECUP INFOS AUTO
+        $('#notes_annee').on('change', function(event) {
+
+            if (typeof($('#notes_annee').val()) != undefined && $('#notes_annee').val() != 0 && typeof($('#global_admin').val()) != undefined && $('#global_admin').val() != "") {
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=attribution_emlploiTps_getPeriode&annee_id=' + $('#notes_annee').val() + '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+                idelemt = "#notes_annee";
+
+                root_AjaxMethod(url_info, values_info, fctajax_notes_classe, idelemt);
+
+            }
+
+        });
+
+        function fctajax_notes_classe(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+                $('#notes_classe').html('<option ></option><option value="" disabled selected>Choisissez la classe</option>');
+
+                $('#notes_période').html('<option ></option><option value="" disabled selected>Choisissez la période</option>');
+                
+                jsondata = JSON.parse(jsondata);
+
+                for (var x in jsondata.getAllGrpBy) {
+                    $('#notes_classe').append('<option value="' + jsondata.getAllGrpBy[x].groupe_id + '">' + jsondata.getAllGrpBy[x].groupe_libelle + '</option>');
+                }
+                for (var x in jsondata.getAllpartAnneeBy) {
+                    $('#notes_période').append('<option value="' + jsondata.getAllpartAnneeBy[x].id_annee_partie + '">' + jsondata.getAllpartAnneeBy[x].libele_partie + '</option>');
+                }
+            }
+
+        }
+
+        $('#notes_période').on('change', function(event) {
+
+            if (typeof($('#notes_classe').val()) != undefined && typeof($('#notes_période').val()) != undefined &&  typeof($('#global_admin').val()) != undefined && typeof($('#global_univ').val()) != undefined && $('#notes_classe').val() != 0) {
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=get_Matiere_by_gpePeriode&groupeid=' + $('#notes_classe').val() + '&periode=' + $('#notes_période').val() + '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+                idelemt = "#moy_mat";
+
+                root_AjaxMethod(url_info, values_info, fctajax_notes_mat, idelemt);
+
+            }
+
+        });
+
+        function fctajax_notes_mat(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+                $('#notes_mat').html('<option ></option><option value="" disabled selected>Choisissez la Matière</option>');
+                jsondata = JSON.parse(jsondata);
+                //Date	Groupe	matière	Professeur	Action
+                for (var x in jsondata.grpematiere) {
+                    $('#notes_mat').append('<option value="' + jsondata.grpematiere[x].id_matiere + '">' + jsondata.grpematiere[x].code_mat + '-' + jsondata.grpematiere[x].lib_mat + '</option>');
+                }
+
+            }
+
+        }
+
+      
+    });
+</script>
+{% endblock %} 

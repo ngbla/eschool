@@ -1,0 +1,255 @@
+{% extends "main.html" %} {% block title %}Information Élève / Étudiant{% endblock %} {% block content %}
+
+
+<div class="row" style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; min-height: 1024px; ">
+
+
+    <!--<div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary"> Attribution des élèves à une classe </h6>
+      </div>-->
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <!-- INFOS CLASSES -->
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Body -->
+                    <div class="card-body">
+
+                        <div class="container row">
+                            <div class="col-12 row">
+
+                                <div class="col-9">
+
+                                    <dl class="dl-horizontal form-horizontal">
+
+                                        <div class="row">
+                                            <div class="input-group mb-3 input-group-sm col-9 text-center">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Nom : </dt> </span>
+                                                </div>
+                                                
+                                                <span style="text-align:center" class="text-center"> 
+                                                    <br>   
+                                                   &nbsp;&nbsp; <strong> <b> {{  get_elevBy.0.nom_prenom}}</b> </strong>
+                                                </span>
+                                            </div>
+                                            <div class="input-group mb-3 input-group-sm col-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Matricule : </dt> </span>
+                                                </div>
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  etud_infos_pers" id="{{get_elevBy.0.id_eleve_eleve}}µnom_prenom" value="{{  info_eleve.0.matricule}}" readonly>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="input-group mb-3 input-group-sm col-6">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Nationalité : </dt> </span>
+                                                </div>
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  etud_infos" id="{{get_elevBy.0.id_eleve_eleve}}µnationnalite" value="{{  info_eleve.0.nationnalite}}" readonly>
+                                            </div>
+
+                                            <div class="input-group mb-3 input-group-sm col-6">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Situation : </dt> </span>
+                                                </div>
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  etud_infos" id="{{get_elevBy.0.id_eleve_eleve}}µstuationmat" value="{{  info_eleve.0.stuationmat}}" readonly>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <div class="row">
+
+                                            <div class="input-group mb-3 input-group-sm col-6">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Née le : </dt> </span>
+                                                </div>
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  etud_infos_pers" id="{{get_elevBy.0.id_eleve_eleve}}µdate_naiss" value="{{  get_elevBy.0.date_naiss}}" readonly>
+                                            </div>
+
+                                            <div class="input-group mb-3 input-group-sm col-6">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>à : </dt> </span>
+                                                </div>
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  etud_infos_pers" id="{{get_elevBy.0.id_eleve_eleve}}µlieu_naiss" value="{{  get_elevBy.0.lieu_naiss}}" readonly>
+                                            </div>
+
+                                        </div>
+                                        <br>
+                                        <div class="row">
+
+                                            <div class="input-group mb-3 input-group-sm col-6">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Email : </dt> </span>
+                                                </div>
+
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm form-control-plaintext  etud_infos_pers" id="{{get_elevBy.0.id_eleve_eleve}}µemail" value="{{get_elevBy.0.email}}" readonly>
+                                            </div>
+                                            <div class="input-group mb-3 input-group-sm col-6">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Tel : </dt> </span>
+                                                </div>
+
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm form-control-plaintext etud_infos_pers" id="{{get_elevBy.0.id_eleve_eleve}}µcontact" value="{{ get_elevBy.0.contact}}" readonly>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="input-group mb-3 input-group-sm col-6">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Commune : </dt> </span>
+                                                </div>
+
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm form-control-plaintext etud_infos" id="{{get_elevBy.0.id_eleve_eleve}}µcommune" value="{{ info_eleve.0.commune}}" readonly>
+                                            </div>
+
+                                            <div class="input-group mb-3 input-group-sm col-6">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <dt>Quartier : </dt> </span>
+                                                </div>
+
+                                                <input type="text" style="text-align:center" type="text text-center" class="input-sm form-control-plaintext etud_infos" id="{{get_elevBy.0.id_eleve_eleve}}µquartie" value="{{ info_eleve.0.quartie}}" readonly>
+                                            </div>
+
+                                        </div>
+                                    </dl>
+
+                                </div>
+
+                                <div class="col-3">
+
+
+                                    <img id="user_tof_mini" class="img-profile
+                                        img-thumbnail" src="{{base_liens}}files/{{
+                                        get_elevBy.0.id_pers_personne}}/{{
+                                        get_elevBy.0.id_pers_personne}}.jpg" alt="Photo {{
+                                        get_elevBy.0.nom_prenom}}">
+                                    <br>
+                                    <div class="row" style="text-align:center">
+                                        <div class="input-group mb-3 input-group-sm col">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Sexe</span>
+                                            </div>
+                                            <input style="text-align:center" type="text text-center" class="input-sm form-control-plaintext etud_infos_pers" id="{{get_elevBy.0.id_eleve_eleve}}µsexe" value="{{ get_elevBy.0.sexe}}" readonly>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+
+                        <dt><strong> <u> ABSENCES</u> </strong></dt> <br>
+                        <table class="table table-bordered table-hover table-sm table-striped" id="tble_absence" style="font-size: small;">
+                            <thead class="bg-gradient-info text-white text-center">
+                                <tr>
+                                    <th>Période</th>
+                                    <th>Date et Heure</th>
+                                    <th>Matière</th>
+                                    <th>Prof</th>
+                                    <th>Motif</th>
+                                    <th>Absence</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if get_all_absence_elev is defined %} {% for abs in get_all_absence_elev %}
+                                <tr>
+                                    <td>{{abs.libele_partie}}</td>
+                                    <td>{{abs.emploitps_date|format_date(locale='fr') }} a {{abs.emploitps_h_debut}}- {{abs.emploitps_h_fin}}</td>
+                                    <td>{{abs.mat_libelle}}</td>
+                                    <td>{{abs.nom_prenom}}</td>
+                                    <td>{{abs.abs_motifs}}</td>
+                                    <td>
+                                        {% if abs.abs_justif==1 %}
+                                        <span class="label btn-info">Justifier</span>
+                                        {% else %}
+                                        <span class="label btn-danger">Non Justifier</span>
+                                        {% endif %}
+                                    </td>
+                                    
+                                </tr>
+                                {% endfor %} {% endif %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %} 
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_prof.js"></script>
+<script>
+
+  // Setup - add a text input to each footer cell
+  $('#tble_absence tfoot th').each( function () {
+      var title = $(this).text();
+      $(this).html( '<input type="text" placeholder=" '+title+'" />' );
+  } );
+  
+  var tble_absence = $('#tble_absence').DataTable({
+    initComplete: function() {
+        // Apply the search
+        this.api().columns().every(function() {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change clear', function() {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+    },
+    dom: 'Blfrtip',
+    buttons: [{
+            extend: 'copyHtml5',
+            text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+            title:'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+            titleAttr: 'Copy'
+        },
+        {
+            extend: 'excelHtml5',
+            text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+            title:'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+            titleAttr: 'Excel'
+        },
+        {
+            extend: 'csvHtml5',
+            text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+            title:'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+            titleAttr: 'CSV'
+        },
+        {
+            extend: 'pdfHtml5',
+            text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+            title:'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+            titleAttr: 'PDF'
+        }
+
+    ]
+  });
+
+</script>
+{% endblock %}

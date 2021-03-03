@@ -1,0 +1,108 @@
+ {% for values in get_cour_partie %} {% if values.id_parent_plan == value.id_cours_plan %}
+<ul class="section img-text" style="list-style: none;">
+    <li class="activity forum modtype_forum " id="module-421">
+        <div>
+            <div class="mod-indent-outer">
+                <div class="mod-indent"></div>
+                <div>
+
+                    <div class="activityinstance">
+                        <h4 class="partiename">
+                            <a class="" href="#"> 
+                                <i class="fa fa-asterisk"></i> 
+                                <u> {{values.plan_titre}}</u> 
+                            </a>
+                            <a href="#">
+                                <i class="fa fa-trash text-danger text-xs cour_partiedel" id="delpartie_{{values.id_cours_plan}}" valeur="{{values.id_cours_plan}}"></i> 
+                            </a>
+                            &nbsp; 
+                            <a href="#" data-toggle="modal" data-target="#modal_cour_modif"><i title="Modifier" class="fa fa-edit text-info text-xs mod_cour_info" id="{{values.id_cours_plan}}" valeur="{{values.id_cours_plan}}"></i> </a>
+
+                            &nbsp; 
+                            <span class="input-group-addon">
+                                <i title="Modifier" class="fa fa-arrows text-warning text-xs " ></i> 
+                            </span>
+                            <input class="input-sm text-xs col-1 possection" type="number" id="pospartie_{{values.id_cours_plan}}" value="{{values.plan_position_num}}">
+
+                        </h4>
+                        {% if groupeid is defined %}
+                        <p style="text-align: right;">
+                            <input type="checkbox" id="inputetat_{{values.id_cours_plan}}" class="form-check-input input_coursuivie_etat" name="input_coursuivie" title="Cocher si Terminer" {% if values.etat_progression==1 %}checked{% endif %}>
+                        </p>
+                        <p style="text-align: left;">
+                            <a href="#" title="Autoriser la classe à voir" class="btn_active_courplan_classe_a"><i class="fa fa-eye btn_active_courplan_classe" id="btnvoir_{{values.id_cours_plan}}"  aria-hidden="true" style="font-size:20px;color:{% if values.vue_groupe == 1 %} green {% else %} red {% endif %}  ;"></i></a>
+                        </p>
+
+                        {% endif %}
+
+                    </div>
+                    <div class="contentafterlink">
+                        <div class="no-overflow">
+                            <div class="no-overflow">
+                                <p>
+                                    {{values.plan_description|raw }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  RESSOURCES -->
+                    {% if get_matiere_docsvideo is defined %}
+                    <ul style="list-style: none; " class="border-left-warning">
+                        <div class="mod-indent mod-indent-outer w-100">
+                            <p>
+                                <h6> <strong style="color: #f98012;font-weight: 400;">  <i class="fa fa-archive" aria-hidden="true"> RESSOURCES</i></strong></h6>
+                            </p>
+                        </div>
+
+                        {% for videodocs in get_matiere_docsvideo %} {% if values.id_cours_plan == videodocs.courplan_id %} {{ include('Elearning/Prof/include/include_ressources.html') }} {% endif %} {% endfor %}
+                    </ul>
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+        </div>
+    </li>
+</ul>
+{% endif %} {% endfor %}
+
+
+<script>
+    $(document).ready(function() {
+
+        $('.cour_partiedel').on('click', function(event) {
+
+            titre = "//evenement Change sur:include_partie.html == .cour_partiedel";
+            info = "  // Valeur=id --> " + event.target.id;
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=delete_courlement&infos=' + event.target.id;
+            idelemt = '#' + event.target.id;
+
+            root_AjaxMethod(url_info, values_info, ajax_deleteresult_toast, idelemt);
+
+        });
+
+        function ajax_deleteresult_toast(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                if (jsondata == 1) {
+                    classtype = "alert-success";
+                    infos_stat = "Cour partie supprimer";
+                    window.location.reload();
+                } else {
+                    classtype = "alert-danger";
+                    infos_stat = "erreur lier à la suppression de la partie du cour";
+                }
+
+                root_fct_showinfos_toast(infos_stat, classtype);
+            }
+
+        }
+
+    });
+</script>

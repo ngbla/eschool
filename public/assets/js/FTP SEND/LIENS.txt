@@ -1,0 +1,5 @@
+var liens = 'http://eproject.html-5.me/';
+
+http://uges.x-pertizgroup.com/
+
+var liens = 'http://localhost:8083/timeflow/elearning-pronote/';

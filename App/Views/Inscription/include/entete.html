@@ -1,0 +1,17 @@
+<div class="row no-margin">
+    <div class="alert alert-warning col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center;height: 50px;">
+        <h4><b>ESPACE SCOLARITE   {% if non_univ is defined %}  {{ non_univ }} {% endif %} - {% if contact_univ is defined %} {{ contact_univ }} {% endif %} </b></h4>
+    </div>
+</div>
+<div id="header" class="row no-margin">
+    <div class="col-2">
+        <img src="/public/assets/img/univ/mesrs.jpg" style="min-height: 110px;" style="max-height: 120px;" alt="MESRS" class="img-fluid float-left">
+    </div>
+    <div class="col-8">
+        <h4 style="text-align : center;" class="text-warning"><b><i class="fa fa-info"></i> &nbsp;&nbsp; INSCRIPTION  <strong>{% if non_univ is defined %}  {{ non_univ }} {% endif %} </strong> <br>  2020-2021</b></h4>
+    </div>
+    <div class="col-2">
+        <img src="/public/assets/img/univ/{% if id_univ is defined %}{{ initiale_univ  }}/{{ id_univ }}{% endif %}.png" style="max-height: 100px;" alt="{% if non_univ is defined %}  {{ non_univ }} {% endif %} " class="img-fluid float-right">
+    </div>
+</div>
+

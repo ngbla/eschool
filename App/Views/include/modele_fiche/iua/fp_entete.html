@@ -1,0 +1,64 @@
+<header class="site-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8">
+                <br>Ministère de de l'Enseignement Supérieur et de le Recherche Scientifique
+                <br>Institut universitaire d'Abidjan
+            </div>
+            <div class="col-4 text-center">
+                <br>République de COTE D'IVOIRE
+                <br>Union-Discipline-Travail
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <img src="/public/assets/img/univ/1.png" style="max-width: 90%;" class="img-responsive img-thumbnail">
+            </div>
+            <div class="col-6">
+                01 BP 12159 Abidjan 01
+                <br> Tel : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+225) 22422265/07231862
+                <br> Fax : &nbsp;&nbsp;&nbsp;&nbsp;(+225) 225 22 42 27 24
+                <br> E-mail :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; iua@iua-ci.org
+                <br> Site web : &nbsp;&nbsp; wwww.iua-ci.org
+            </div>
+            <div class="col-4 text-center">
+                <br>
+                <br>
+                <B><hr color="black" width="100" align="center"></B>
+            </div>
+        </div>
+        <p class="text-center">
+            <h4 class="text-center"><b style="padding: 10px;" id="fp_titre_etente">FEUILLE DE PRESENCE</b></h4>
+        </p>
+    </div>
+
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr style="border :2px solid black;color:black; ">
+                    <td>
+                        <table class="table-borderless table-sm">
+                            <tr>
+                                <td>Année Scolaire</td>
+                                <td> : <strong> {{annescol}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Classe</td>
+                                <td> : <strong> {{info_groupe.0.groupe_libelle}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Effectif</td>
+                                <td> : <strong> {{effectif_groupe}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td> : <strong> <b><input type="date" min="2020-01-01" max="2022-12-31" style="border: none;"></b> </strong></td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</header>

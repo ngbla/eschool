@@ -1,0 +1,112 @@
+<!DOCTYPE html> {% do gantry.document.addFramework('mootools.core') %} {% do gantry.document.addFramework('mootools.more') %}
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}E-SCHOOL - MOTS DE PASSE OUBLIER {% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="X-PERTIZ GROUPE">
+    <meta name="author" content="X-PERTIZ GROUPE TEAMS">
+    <link rel="icon" href="assets/img/favicon.ico" type="image/ico"> {% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" />
+    <link rel="stylesheet" type="text/css" href="assets/css/sb-admin-2.css" /> {% endblock %}
+</head>
+
+<body style="background-color: #1d4a85;">
+
+    <div class="container-fluid">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="row col-12">
+                        <div class="col-12 text-center d-flex justify-content-center align-self-center">
+                            <h1> {% if univInfos is defined %} {{univInfos.0.non_univ}} {% endif %}</h1>
+                        </div>
+                    </div>
+                    <div class="row col-12">
+                        <div class="col-12 text-center d-flex justify-content-center align-self-center">
+                            <h6> Email : {% if univInfos is defined %} {{univInfos.0.email_univ}} - Tel : {{univInfos.0.contact_univ}} {% endif %}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" style="background-image: url(assets/img/insc3.jpg);  background-size: cover;background-repeat: no-repeat; background-position: center; min-height: 512px; ">
+                        <div class="container">
+
+                            <div class="row justify-content-center" style="margin-top: 20%;">
+                                <div class="col-12 text-center" style="color: #1d4a85;">
+                                    <!---->
+                                    <h1 style="color: #1d4a85;" class="d-flex justify-content-center align-self-center"> <strong>E-SCHOOL</strong> </h1>
+                                    {% if get_infos.type_user is defined %}
+                                    <h5 style="color: #1d4a85;" class="d-flex justify-content-center align-self-center">Espace {% if get_infos.type_user==1 %}Elève{% endif %}{% if get_infos.type_user==2 %}Professeur{% endif %} {% if get_infos.type_user==3 %}Parent{% endif %}{% if get_infos.type_user==4 %}Administrateur{% endif %} </h5>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4  mb-4 text-primary">
+                                    Réinitialisation de mots de passe
+                                    <br>
+                                    <span class="text-warning" style="font-size: small;">Vérifiez votre email , le code de réinitialisation  vous a été envoyer par email valide 1 jour</span>
+                                    <br>
+                                    <span class="text-warning" style="font-size: small;">{{reps}}</span>
+                                    
+
+                                </h1>
+                            </div>
+                            <form class="user" method="POST">
+                
+                                <div class="form-group">
+                                    <input readonly type="email_reset" name="email_reset" value="{{email_reset}}" class="form-control" id="email_reset" placeholder="Email Address" required />
+                                </div>
+                                <div class="form-group form-row">
+                                    <label for="code_reset" class="col-6 text-right text-primary"> <br> Saisissez le code reçu :</label>
+                                    <input type="text" name="code_reset" class="form-control col-6" id="code_reset" placeholder="" required />
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" name="pass1" class="form-control" id="exampleInputPassword" placeholder="Mots de passe" required />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" name="pass2" class="form-control" id="exampleRepeatPassword" placeholder="Répéter" required />
+                                    </div>
+                                </div>
+                                <hr />
+                                <button class="btn btn-primary btn-user btn-block" type="submit">Valider</button>
+                                <hr />
+                            </form>
+                            <hr />
+                            {% if get_infos.type_user is defined %}    
+                            <div class="text-center">
+                            <a class="small" href="index.php?type_user={{get_infos.type_user}}&verif=9ce5bbd2560d90e4238fb3afe1f30a28cb9ac938&cible={{get_infos.cible}}">Vous avez un compte ? Connectez vous!</a >
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block javascript_footer %}
+    <!-- Bootstrap core JavaScript-->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="assets/js/sb-admin-2.min.js"></script>
+    <script src="assets/js/mescript.js"></script>
+
+    {% endblock %}
+  </body>
+</html>

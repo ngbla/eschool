@@ -1,0 +1,315 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} {% block title %}Mes Evaluations {% endblock %} {% block content %}
+
+
+<input type="hidden" name="id_personne" value="{% if id_pers_personne is defined %}{{id_pers_personne}}{% endif %}" id="id_personne">
+
+
+<div class="card">
+
+
+    <div class="card-body" style="
+				        background-image: url('/public/assets/img/background/back_img5.jpg');
+				        background-repeat: no-repeat;
+				        background-attachment: fixed;
+				        background-size: cover;padding-top: 20px; ">
+
+
+        <div class="container">
+
+
+            <li class="list-group-item card border-left-primary shadow h-100 py-2">
+
+                <a href="#">
+
+                    <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+
+							<i class="fas fa-folder fa-2x text-primary-300"></i>
+							&nbsp; Evaluation :
+							{{get_Eval_by.eval_libelle}}
+
+						</b>
+
+                </a>
+                <a class="float-right"></a>
+
+            </li>
+
+
+            <div class="container pb-filemng-template">
+
+                <div class="row">
+
+                    <div class="col-12">
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-body pb-filemng-panel-body">
+
+                                <div class="row">
+
+                                    <div class="col-4 pb-filemng-template-treeview" style="font-size: 2em;">
+
+                                        <div class="" id="treeview-toggle">
+
+                                            <div id="treeview" class="tabbable tabs-left">
+
+                                                <ul id="menu-accordeon" style="color: white;font-size: small;">
+
+                                                    <li>
+                                                        <a href="#" class="btn-primary">Classe</a>
+                                                        <dt>{{get_Eval_by.groupe_libelle}}</dt>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="btn-primary">Professeur</a>
+                                                        <dt>{{get_Eval_by.nom_prenom}}</dt>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="btn-primary">Matière</a>
+                                                        <dt>{{get_Eval_by.mat_code}}-{{get_Eval_by.libele}}</dt>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="#" class="btn-primary">Date :
+																{{get_Eval_by.eval_date}}</a>
+                                                        <dd>{{get_Eval_by.eval_hDebut}} - {{get_Eval_by.eval_hFin}}
+                                                        </dd>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="#" class="btn-primary">Coéficient</a>
+                                                        <dt>Coef :
+																{{get_Eval_by.coef}}
+																- Noté : /{{get_Eval_by.notation}}</dt>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="#" class="btn-primary">Informations</a>
+                                                        <dt style=" background-color: #e0e0e0; color: black;  text-align: left; padding-left: 3px;  padding-right: 3px;">
+																{{get_Eval_by.eval_desc}}
+															</dt>
+                                                    </li>
+
+
+                                                </ul>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-8 card">
+
+
+                                        <div class="card-header p-2">
+
+                                            <ul class="nav nav-pills">
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" href="#docs" data-toggle="tab">Documents</a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#file_upload" data-toggle="tab">Importer de Documents</a>
+                                                </li>
+
+                                            </ul>
+
+                                        </div>
+
+                                        <!-- Notifications -->
+
+
+                                        <div class="card-body">
+
+                                            <div class="tab-content">
+
+                                                <div class=" active tab-pane docs_video_div" id="docs">
+
+
+                                                    <caption>
+                                                        <b> <dt> Supports du Professeur </dt> </b>
+                                                    </caption>
+                                                    <hr>
+                                                    <table class="table table-striped dataTable" id="prof_docs" width="100%">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Format</th>
+                                                                <th>Titre</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="filemng_prof"></tbody>
+                                                    </table>
+                                                    <br>
+                                                    <hr>
+                                                    <caption>
+                                                        <b>
+																<dt>
+																	Mes Documents
+																</dt>
+															</b>
+                                                    </caption>
+                                                    <hr>
+                                                    <table class="table table-striped dataTable" id="dataTable_list_evalnonprog" width="100%">
+
+                                                        <thead>
+
+                                                            <tr>
+                                                                <th>Format</th>
+                                                                <th>Titre</th>
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <tbody class="pb-filemng-template-body"></tbody>
+
+                                                    </table>
+
+
+                                                </div>
+
+
+                                                <div class="tab-pane" id="file_upload">
+
+                                                    <div class="form-group">
+
+                                                        <span class="text-warning">* Import de Documents (.pdf, .xls, .xlsx, .doc, .docx, .ppt,  .pptx )</span>
+                                                        <br>
+                                                        <div class="progress progress-sm mb-2">
+                                                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                        <form class="needs-validation" novalidate>
+                                                            <input class="form-control" name="file" type="file" id="file_input" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/pdf, .xlsx, .docx, .pptx" />
+                                                            <br>
+
+                                                            <br>
+                                                            <input class="form-control" name="file" type="hidden" id="eval_id" value="{{get_Eval_by.eval_id}}" />
+
+                                                            <a href="#" id="upload-button_eval" class="btn btn-primary btn-icon-split">
+
+                                                                <span class="icon text-white-50">
+																		<i class="fas fa-arrow-up"></i>
+																	</span>
+                                                                <span class="text">Import de Documents</span>
+                                                            </a>
+                                                        </form>
+                                                        <hr>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %} {% block javascript_footer_add %}
+
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+
+
+<script type="text/javascript" src="assets/js/mescript_eleve_eval.js"></script>
+
+
+<script>
+    $(function() {
+
+        var dataSrc = [
+            {% if get_matEnseigners is defined %} {% for key, value in get_matEnseigners %}
+                {
+                "text": "{{ value.code }}-{{ value.libele }}",
+                "iconCls": "fa fa-book",
+                "matiereid": "{{ value.id_matiere_matiere }}"
+                },
+            {% endfor %} {% endif %}
+        ]
+
+
+        var folderData = [
+
+            {% if files_get is defined %}{% for key, value in files_get %}
+                {% if (value .1 == 'docx')  or(value .1 == 'doc') %}
+                    {% set extentionss = 'docx' %}
+                {% elseif(value .1 == 'xls') or (value .1 == 'xlx') or(value .1 == 'xlsx') %}
+                {% set extentionss = 'xlx' %}
+                {%  else %}
+                    {% set extentionss = 'pdf' %}
+                {% endif %} {
+                    "icon": "<img style=\"width:20px;\" class=\"img-responsive\" src=\"assets/img/{{extentionss}}.png\">",
+                    "liens": "{{ value.0 }}",
+                    "text": "{{ key }}"
+                },
+            {% endfor %} {% endif %}
+
+        ];
+        for (var key in folderData) {
+            $(".pb-filemng-template-body").append('<tr><td>' + folderData[key].icon + ' </td><td><a href="' + folderData[key].liens + '"  download="' + folderData[key].text + '"><i class="fa fa-download" aria-hidden="true"></i></a> &nbsp; ' + folderData[key].text + '</td></tr>');
+        }
+
+        for (var key in dataSrc) { 
+            $("#treeview_test").append('<li><form action="" method="POST"><a href="index.php?p=elearning_prof&id_prof=' + {{ id_pers_personne }} + '&action=getcoursdocs&id_matiere=' + dataSrc[key].matiereid + '&matiere_select=' + dataSrc[key].text + '" name="id_personne" title="Modifier" type="submit" value="mat_id" class=""><i class="fa fa-folder" aria-hidden="true"></i>' + dataSrc[key].text + '	</a></form></li>');
+        }
+
+
+        var folderData_prof = [
+            {% if filesprof_get is defined %}{% for key, value in filesprof_get %}
+                
+            {% if (value .1 == 'docx') or(value .1 == 'doc') %} 
+                {% set extentionss ='docx' %} 
+            {% elseif(value .1 =='xls') or(value .1 == 'xlx') or(value .1 == 'xlsx') %} 
+                {% set extentionss ='xlx' %} 
+            {% else %} 
+                {% set extentionss ='pdf' %} 
+            {% endif %}
+
+            { "icon": "<img style=\"width:20px;\" class=\"img-responsive\" src=\"assets/img/{{extentionss}}.png\">", "liens": "{{ value.0 }}", "text": "{{ key }}" },
+            {% endfor %} {% endif %}
+        ];
+
+        for (var key in folderData_prof) {
+
+            $(".filemng_prof").append(
+                '<tr><td>' + folderData_prof[key].icon + ' </td><td><a href="' + folderData_prof[key].liens + '"  download="' + folderData_prof[key].text + '"><i class="fa fa-download" aria-hidden="true"></i></a> &nbsp; ' + folderData_prof[key].text + '</td></tr>'
+
+            );
+
+        }
+
+
+    });
+</script>
+
+
+{% endblock %} 

@@ -1,0 +1,211 @@
+{% extends "main.html" %} {% block title %}Gestion des Classes , filière{% endblock %} {% block content %} {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"> Créer une Groupe </h6>
+    </div>
+
+    <div class="card-body">
+
+        <fieldset>
+
+            <div class="col-12 row">
+                <div class="col-xl-6 col-md-6 mb-6">
+                    <div class="card mb-4 py-3 border-bottom-primary">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Choix Année Scolaire</div>
+                                <select class="form-control" id="attribution_annee_id" name="attribution_annee" required>
+                                <option value="0"></option>
+                                {% if allAnneeScolaire is defined %}
+                                    {% for key, value in allAnneeScolaire  %}
+                                    <option value="{{ value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                    {% endfor %} 
+                                {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-md-6 mb-6">
+                    <div class="card mb-4 py-3 border-bottom-primary">
+
+                        <div class="form-group">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Choix filière</div>
+                            <select class="form-control" id="attribution_classe_id" name="attribution_classe" required>
+                    <option  disabled selected>Choisissez une Filière</option>
+
+                    {% if allclasses is defined %}
+                      {% for key, value in allclasses  %}
+                      <option value="{{ value.id_classe_classe }}">{{ value.libelle }}</option>
+                      {% endfor %} 
+                    {% endif %}
+                  </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Choix Niveau</div>
+                            <select class="form-control" id="attribution_id_niveau" name="attribution_id_niveau" required>
+                    <option   disabled selected>Choisissez un Niveau</option>
+                    {% if allniveau is defined %}
+                      {% for key, value in allniveau  %}
+                      <option value="{{ value.id_niveau }}">{{ value.libelle_niveau }}</option>
+                      {% endfor %} 
+                    {% endif %}
+                  </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col control-label" for="textinput">Nom du Groupe</label>
+                            <div class="col">
+                                <input class="form-control" id="attribution_groupe_nom" name="attribution_groupe_nom" placeholder="GECOM 1" type="text" required/>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+
+                            <button id="btn_creer_groupe" type="submit" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-arrow-right"></i>
+                    </span>
+                    <span class="text">Valider</span>
+                  </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+
+</div>
+{% endif %}
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"> Liste des Groupes </h6>
+        <h6 class="text-danger">* Veuillez Organiser les matières ( via 'Répartition des Matières' du menu : Gestion des filières) De la filière choisie avant de créer le groupe !!</h6>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body" style="padding: 1rem 0.30rem;">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-condensed" id="dtb_classe_matCoef" style="width:100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Année Scolaire</th>
+                        <th>Filière</th>
+                        <th>Niveau</th>
+                        <th>Groupe</th>
+                        <th>Organiser</th>
+                    </tr>
+
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Année Scolaire</th>
+                        <th>Filière</th>
+                        <th>Niveau</th>
+                        <th>Groupe</th>
+                        <th>Organiser</th>
+                    </tr>
+                </tfoot>
+                <tbody id="eleve_attrib_classe_ListElvClss">
+
+                    {% if allGroupe is defined %} {% for groupe in allGroupe %}
+                    <tr>
+                        <td>{{ groupe.annee_libelle}}</td>
+                        <td>{{ groupe.libelle }}</td>
+                        <td>{{ groupe.libelle_niveau }}</td>
+                        <td>{{ groupe.groupe_libelle }}</td>
+                        <td class="row">
+                            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+                            <form action="" method="POST" class="col">
+                                <button title="Gerer les matières" name="btn_admin_classe_voirmat" type="submit" value="{{ groupe.id_anscol_annee_scolaire}}_{{ groupe.groupe_id }}_{{ groupe.id_classe_classe }}_{{ groupe.groupe_libelle }}" class="btn btn-success">
+                                    <i class="fas fa-info"></i>
+                                </button>
+                            </form>
+                            
+                            <form action="" method="POST" class="col">
+                                <button title="Arrimer des classes" name="arrimer_classe" type="submit" value="{{ groupe.groupe_id }}" class="btn btn-warning">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </form>
+
+                            {% endif %}
+                    </tr>
+                    {% endfor %} {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+    $(document).ready(function() {
+
+
+    // DataTable
+    var dtb_classe_matCoef = $('#dtb_classe_matCoef').DataTable({
+        initComplete: function() {
+            // Apply the search
+            this.api().columns().every(function() {
+                var that = this;
+
+                $('input', this.footer()).on('keyup change clear', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        },
+        dom: 'Blfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                titleAttr: 'Copy'
+            },
+            {
+                extend: 'excelHtml5',
+                text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                titleAttr: 'Excel'
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                titleAttr: 'CSV'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                titleAttr: 'PDF'
+            }
+
+        ]
+    });
+
+
+
+
+
+    });
+</script>
+{% endblock %}

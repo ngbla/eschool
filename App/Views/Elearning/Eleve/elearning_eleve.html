@@ -1,0 +1,335 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} 
+
+{% block title %}E-learning{% endblock %} 
+
+{% block content %}
+
+<!--{% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+
+
+
+   Main content -->
+
+
+
+    <div class="card">
+
+      <div class="card-body">
+
+        <div class="container">
+
+          <div class="container pb-filemng-template">
+              <div class="row">
+                  <div class="col-12">
+          
+                  <div class="panel panel-default">
+                          <div class="panel-body pb-filemng-panel-body">
+                              <div class="row">
+                                  <div class="col-0 pb-filemng-template-treeview" style="font-size: 2em;">
+                                      <div class="" id="treeview-toggle">
+                                          <div id="treeview">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-12 card">
+                                    <div class="card-header p-2">
+                                      <ul class="nav nav-pills">
+                                        <li class="nav-item"><a class="nav-link active" href="#coursresents" data-toggle="tab">COURS RECENTS</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#coursavenir" data-toggle="tab">COURS A VENIR</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#ensembledescours" data-toggle="tab">ENSEMBLE DES COURS</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#videos" data-toggle="tab">Vidéos</a></li>
+                                      </ul>
+                                    </div>
+                                    <!-- Notifications -->
+                                    
+                                    <div class="card-body">
+                                      <div class="tab-content">
+                                        <div class="pb-filemng-template-body active tab-pane" id="coursresents">
+                                           <div class="card-body">
+                                              <div class="table-responsive">
+                                                  <table class="table table-striped" id="dataTablecoursresents" width="100%" cellspacing="0" table>
+                                                      <thead>
+                                                          <tr>
+                                                            <th >Matière</th>
+                                                            <th >Enseignant</th>
+                                                            <th >Debut</th>
+                                                            <th >Fin</th>
+                                                            <th >Action</th>
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                        <tr> 
+                                                            <td>
+                                                              <img src="assets/img/img-wma.jpg" style="width: 30%">
+                                                              <a href="">MANAGEMENT DE L'INFORMATION</a>
+                                                            </td>
+                                                            <td>KACOU PHILIPE</td>
+                                                            <td>01-06-2020</td>
+                                                            <td>12-08-2020</td>
+                                                            <td><a href="" class="btn btn-success">VOIR LE COURS</a></td>
+                                                        </tr>
+                                                        <tr> 
+                                                            <td>
+                                                              <img src="assets/img/img-wma.jpg" style="width: 30%">
+                                                              <a href="">COMPTABILITE GENERALE</a>
+                                                            </td>
+                                                            <td>LUCIE KONE</td>
+                                                            <td>10-06-2020</td>
+                                                            <td>12-08-2020</td>
+                                                            <td><a href="" class="btn btn-success">VOIR LE COURS</a></td>
+                                                        </tr>
+                                                      </tbody>
+                                                  </table>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="tab-pane" id="coursavenir">
+                                           <div class="card-body">
+                                              <div class="table-responsive">
+                                                  <table class="table table-striped" id="dataTablecoursavenir" width="100%" cellspacing="0" table>
+                                                      <thead>
+                                                          <tr>
+                                                            <th >Matière</th>
+                                                            <th >Enseignant</th>
+                                                            <th >Debut</th>
+                                                            <th >Fin</th>
+                                                            <th >Action</th>
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                        <tr> 
+                                                            <td>
+                                                              <img src="assets/img/img-wma.jpg" style="width: 30%">
+                                                              <a href="">COMPTABILITE GENERALE</a>
+                                                            </td>
+                                                            <td>LUCIE KONE</td>
+                                                            <td>10-06-2020</td>
+                                                            <td>12-08-2020</td>
+                                                            <td><a href="" class="btn btn-success">VOIR LE COURS</a></td>
+                                                        </tr>
+                                                        <tr> 
+                                                            <td>
+                                                              <img src="assets/img/img-wma.jpg" style="width: 30%">
+                                                              <a href="">COMPTABILITE GENERALE</a>
+                                                            </td>
+                                                            <td>LUCIE KONE</td>
+                                                            <td>10-06-2020</td>
+                                                            <td>12-08-2020</td>
+                                                            <td><a href="" class="btn btn-success">VOIR LE COURS</a></td>
+                                                        </tr>
+                                                      </tbody>
+                                                  </table>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="tab-pane" id="ensembledescours">
+                                           <div class="card-body">
+                                              <div class="table-responsive">
+                                                  <table class="table table-striped" id="dataTableensembledescours" width="100%" cellspacing="0" table>
+                                                      <thead>
+                                                          <tr>
+                                                            <th >Matière</th>
+                                                            <th >Enseignant</th>
+                                                            <th >Debut</th>
+                                                            <th >Fin</th>
+                                                            <th >Action</th>
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                        <tr> 
+                                                            <td>
+                                                              <img src="assets/img/img-wma.jpg" style="width: 30%">
+                                                              <a href="">MANAGEMENT DE L'INFORMATION</a>
+                                                            </td>
+                                                            <td>KACOU PHILIPE</td>
+                                                            <td>01-06-2020</td>
+                                                            <td>12-08-2020</td>
+                                                            <td><a href="" class="btn btn-success">VOIR LE COURS</a></td>
+                                                        </tr>
+                                                        <tr> 
+                                                            <td>
+                                                              <img src="assets/img/img-wma.jpg" style="width: 30%">
+                                                              <a href="">COMPTABILITE GENERALE</a>
+                                                            </td>
+                                                            <td>LUCIE KONE</td>
+                                                            <td>10-06-2020</td>
+                                                            <td>12-08-2020</td>
+                                                            <td><a href="" class="btn btn-success">VOIR LE COURS</a></td>
+                                                        </tr>
+                                                        <tr> 
+                                                            <td>
+                                                              <img src="assets/img/img-wma.jpg" style="width: 30%">
+                                                              <a href="">MANAGEMENT DE L'INFORMATION</a>
+                                                            </td>
+                                                            <td>KACOU PHILIPE</td>
+                                                            <td>01-06-2020</td>
+                                                            <td>12-08-2020</td>
+                                                            <td><a href="" class="btn btn-success">VOIR LE COURS</a></td>
+                                                        </tr>
+                                                        <tr> 
+                                                            <td>
+                                                              <img src="assets/img/img-wma.jpg" style="width: 30%">
+                                                              <a href="">COMPTABILITE GENERALE</a>
+                                                            </td>
+                                                            <td>LUCIE KONE</td>
+                                                            <td>10-06-2020</td>
+                                                            <td>12-08-2020</td>
+                                                            <td><a href="" class="btn btn-success">VOIR LE COURS</a></td>
+                                                        </tr>
+                                                      </tbody>
+                                                  </table>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="tab-pane" id="videos">
+                                          {% if base_liens is defined %}
+                                            <video  
+                                              id="my-video" 
+                                              class="video-js" 
+                                              controls 
+                                              preload="auto"  
+                                              width="auto"  
+                                              height="100" 
+                                              fullscreen
+                                              poster="http://{{base_liens}}Videos/test.jpg" 
+                                              data-setup="{}"  >
+                                              <source src="http://{{base_liens}}Videos/test.mp4" type="video/mp4" />
+                                            </video>
+                                          {% endif %}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript_footer_add %}
+<style>
+
+  .pb-filemng-template {
+    margin-top: 40px;
+    font-family: 'Sansita', sans-serif;
+  }
+
+  .pb-filemng-navbar {
+    margin-bottom: 0;
+  }
+
+  .treeview-toggle-btn {
+    margin-left: 15px;
+  }
+
+  .pb-filemng-template-btn {
+    background-color: Transparent;
+      background-repeat:no-repeat;
+      border: none;
+      cursor:pointer;
+      outline:none;
+      color: gray;
+      padding: 0px 13px 0px 13px;
+  }
+
+  .pb-filemng-active {
+    border-bottom: 2px solid #6d97db;
+    color: #5f6977;
+  }
+
+  .pb-filemng-template-btn:hover {
+    color: blue;
+  }
+
+  .pb-filemng-body-folders > img:hover {
+    cursor: pointer;
+  }
+
+  .btn-align {
+    margin-top: 7px;
+  }
+
+  .pb-filemng-template-treeview {
+    border-right: 1px solid gray;
+  }
+
+  .pb-filemng-folder {
+    color: orange;
+    padding-bottom: 3px;
+  }
+
+  .pb-filemng-paragraphs {
+    margin-top: -20px;
+    text-align: center;
+  }
+
+  .img-responsive {
+    margin: 0 auto;
+  }
+
+@media screen and (max-width: 767px) {
+
+.pb-filemng-template-treeview {
+  border-right: none;
+}
+
+#options {
+  text-align: center;
+}
+
+#options > li {
+  display: inline-block;
+}
+
+#pb-filemng-navigation > ul {
+  text-align: center;
+}
+
+#pb-filemng-navigation > ul > li {
+  display: inline-block;
+}
+
+}
+</style>
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+<script type="text/javascript" src="assets/js/shieldui-all.min.js"></script>
+<script type="text/javascript" src="assets/js/fileManagerData.js"></script>
+<script src="assets/js/mescript_eleve.js"></script>
+<script >
+
+  $(function () {
+      $("#treeview").shieldTreeView({
+          dataSource: dataSrc
+      });
+
+      for (var key in folderData) {
+          $(".pb-filemng-template-body").append(
+              '<div class=\"col-3 pb-filemng-body-folders\">' +
+              folderData[key].icon + '<br />' + 
+              '<p class="pb-filemng-paragraphs">' + folderData[key].text + '</p>' + 
+              '</div>'
+          );
+      }
+  });
+
+</script>
+	
+
+{% endblock %} 
+

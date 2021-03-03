@@ -1,0 +1,294 @@
+{% extends "main.html" %} {% block title %}Home{% endblock %} {% block content %}
+<script src='assets/vendor/html2pdf/html2pdf.bundle.min.js'></script>
+<script>
+    function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("relever");
+        // Choose the element and save the PDF for our user.
+        html2pdf()
+            .from(element)
+            .save();
+    }
+</script>
+<br>
+<div class="row">
+    <div class="col-12">
+        <form method="POST" class="form-row">
+            <div class="input-group mb-3 col">
+                <div class="input-group-prepend ">
+                    <button type="button" class="btn btn-primary">Période</button>
+                </div>
+                <select class="form-control" name="semmestre_id">
+                    <option value="" disabled selected hidden>Choisissez une période</option>
+                    {% if get_elevGrp_anneePart is defined %}
+                    {% for key, value in get_elevGrp_anneePart  %}
+                    <option value="{{value.id_annee_partie}}">{{value.libele_partie}}</option>
+                    {% endfor %} 
+                    {% endif %}
+                </select>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-arrow-right"></i>
+                    </span>
+                    <span class="text">Générer</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="col-12">
+
+        <div class="callout callout-info">
+            <h5><i class="fa fa-info"></i> Note :</h5>
+            <h7> Relever de note provisoire </h7>
+            <button type="button" onclick="generatePDF();" class="btn btn-primary float-right" style="margin-right: 5px;">
+                <i class="fa fa-download"></i> Generer le PDF
+            </button>
+        </div>
+
+    </div>
+</div>
+<hr>
+<div class="row">
+
+    <div id="relever" class="container-fluid" style="color: black ;background-color:white ">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+
+            </section>
+
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+
+                            <!-- Main content -->
+                            <div class="relever p-3 mb-3">
+
+                                <div class="row">
+                                    <div class="col-12"> <br></div>
+
+                                    <div style="width: 10%; text-align: left;">
+                                        <br> {% if fk_iduniv is defined %} <img class="img-responsive" style="width: 75%;" src="/public/assets/img/univ/{{ fk_iduniv  }}.png">{% else %}<i class="fa fa-globe"></i>{% endif %}
+
+                                    </div>
+
+                                    <div style="width: 60%; text-align: left;">
+                                        <p>
+                                            <small>
+                                            RÉPUBLIQUE DE COTE D'IVOIRE
+                                            <br> MINISTÈRE DE L'ÉDUCATION NATIONALE DE L'ENSEIGNEMENT TECHNIQUE  
+                                            <br>ET DE LA FORMATION PROFESSIONNELLE
+                                            </small>
+                                        </p>
+                                        <h6><strong>  {% if univInfos is defined %} {% for key, value in univInfos %}
+                                            {{ value.non_univ }}
+                                            {% endfor %} {% endif %}</strong></h6>
+                                    </div>
+
+                                    <div style="width: 20%; text-align: right;">
+                                        <small> Adresse: <strong>28 BP 1087 ABJ 28</strong> <br> Telephone : <strong> 
+                                            {% if contact_univ is defined %}  {{ contact_univ }}  {% endif %}</strong></small>
+                                    </div>
+
+                                    <div style="width: 10%; text-align: right;">
+                                        <small>Code: <strong>875054</strong><br>Statut:<strong>Privé</strong></small>
+                                    </div>
+
+                                </div>
+
+                                <br>
+                                <br>
+
+                                <div class="row">
+                                    <div class="col-3">
+                                        <h5><b><strong>BULLETIN DE NOTES</strong></b></h5>
+                                    </div>
+                                    <br>
+                                    <hr>
+                                    <div class="col-3" style="text-align: left;">
+                                        <strong>  {% if (get_elevGrp_anneePart is defined) and (semmestre_id is defined) %} {% for key, value in get_elevGrp_anneePart %} {% if value.id_annee_partie == semmestre_id %} {{value.libele_partie}} {%
+                                            endif %} {% endfor %} {% endif %}</strong>
+                                    </div>
+                                    <div class="col-3">
+                                    </div>
+                                    <div class="col-3">
+                                        Annee Académique : <strong>  <b> {% if annee_libelle is defined %} {{annee_libelle}} {% endif %} </b><br></strong>
+                                    </div>
+                                </div>
+                                <hr style="border:2px solid black"><br>
+                                <!-- title row -->
+
+                                <!-- info row -->
+                                <div class="row invoice-info">
+
+                                    <div class="col-sm-12 invoice-col">
+                                        <h4><b><strong>{% if nom_prenom is defined %}{{ nom_prenom|upper  }}{% endif %} </strong></b></h4>
+                                    </div>
+
+                                    <!-- /.col -->
+                                    <div class="col-sm-4 invoice-col">
+                                        <br>
+                                        <tr>
+                                            <td>Matricule &nbsp; : &nbsp;</td>
+                                            <td> <b>{% if matricule is defined %}{{ matricule }}{% endif %}</b></td>
+                                        </tr>
+                                        <br>
+                                        <tr>
+                                            <td>Groupe &nbsp; : &nbsp;</td>
+                                            <td> <b>{% if groupe_libelle is defined %}{{ groupe_libelle }}{% endif %}</b></td>
+                                        </tr>
+                                        <br>
+                                        <tr>
+                                            <td>Filière &nbsp; : &nbsp;</td>
+                                            <td> <b> {% if class_lib is defined %}{{ class_lib }}{% endif %}</b></td>
+                                        </tr>
+                                        <br>
+                                        <tr>
+                                            <td>Effectif &nbsp; : &nbsp;</td>
+                                            <td> <b>1</b></td>
+                                        </tr>
+                                    </div>
+                                    <div class="col-sm-4 invoice-col">
+                                        <address>
+                                            <br>
+                                            Née le : <b>{% if date_naiss is defined %}{{ date_naiss  }}{% endif %}       à    {% if lieu_naiss is defined %}{{ lieu_naiss  }}{% endif %}</b>        <br>
+                                            Email: <b>{% if email is defined %}{{ email  }}{% endif %}  </b>  <br>
+                                            Sexe : <b>{% if sexe is defined %}{{ sexe  }}{% endif %}  </b>  <br>
+                                            Contact : <b>{% if contact is defined %}{{ contact  }}{% endif %}  </b>  <br>
+                                            Nationalité:<strong>IVOIRIENNE</strong>
+                                        </address>
+                                    </div>
+                                    <div class="col-sm-2 invoice-col">
+                                        <address>
+                                            Redoublant: <strong>OUI</strong>
+                                            <br>Boursier: <strong>NON</strong>
+                                            <br>Affecté: <strong>AFF</strong>
+                                        </address>
+                                    </div>
+                                    <!-- /.col -->
+                                    <!-- /.col -->
+                                    <div class="col-sm-2 invoice-col text-right">
+                                        <img src="{% if lien_photo is defined %}{{lien_photo}}{% else %}/public/assets/images/bulletin/m.png{% endif %}" height="90px" class="img-responsive">
+                                    </div>
+
+
+
+                                </div>
+                                <!-- /.row -->
+                                <br>
+                                <!-- Table row -->
+
+                                <div class="row">
+                                    <div class="col-12    ">
+                                        <table class="table table-bordered table-condensed small">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Code</th>
+                                                    <th>Unités d'Enseignement</th>
+                                                    <th>Moyenne</th>
+                                                    <th>Coef</th>
+                                                    <th>Crédit</th>
+                                                    <th>Session</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% set totalcredit = 0 %} {% set totalcredit_valide = 0 %} {% set totalcoef = 0 %} {% set totalmoyenne = 0 %} {% if getEleve_grpeMatParent is defined %} {% for key, value in getEleve_grpeMatParent %} {% if (semmestre_id is defined) and ( (semmestre_id|number_format)
+                                                == (value.part_annee_id_tmp|number_format) ) %} {% set totalcredit = totalcredit + (value.credit_tmp|number_format) %} {% set totalcoef = totalcoef + (value.coeficient_tmp|number_format) %}
+                                                <tr class="table-primary" style="color: white; height: 5px;;">
+                                                    <td> {{value.mat_code}} </td>
+                                                    <td> {{value.mat_lib}} </td>
+                                                    <td> {% set moyp = 0 %}{% set coefp = 0 %} {% if value.matiere_fils is empty %} {% set cle = (value.matiere_id_tmp) %} {% if moyennes[cle] is defined %} {% set moyp = moyennes[cle].0.0 %} {% set coefp = 1
+                                                        %} {% endif %} {% elseif value.matiere_fils is defined %} {% for keyfils, valuefils in value.matiere_fils %} {% set cle = (valuefils.matiere_id_tmp) %} {% set coefp = coefp + (valuefils.coeficient_tmp|number_format)
+                                                        %} {% set moyp = moyp + (moyennes[cle].0.0)* (valuefils.coeficient_tmp|number_format) %} {% endfor %} {% endif %}
+
+                                                        <!-- ::Moyennne arithmétique::Produit de la moy * coef -->
+                                                        {% if coefp != 0 %} {% set moyp = moyp/coefp %} {% endif %} {{moyp|number_format(2, ',', '.')}} {% set totalmoyenne = totalmoyenne + moyp * (value.coeficient_tmp|number_format) %} {% if (moyp > 10) or (moyp == 10) %} {% set totalcredit_valide = totalcredit_valide
+                                                        + (value.credit_tmp|number_format) %} {% endif %}
+
+                                                    </td>
+                                                    <td>{{value.coeficient_tmp}}</td>
+                                                    <td>{{value.credit_tmp}} </td>
+                                                    <td> </td>
+                                                </tr>
+
+                                                {% if value.matiere_fils is defined %} {% for keyfils, valuefils in value.matiere_fils %}
+                                                <tr>
+                                                    <td> {{valuefils.mat_code}} </td>
+                                                    <td> {{valuefils.mat_lib}} </td>
+                                                    <td> {% set cle = (valuefils.matiere_id_tmp) %} {% if moyennes[cle] is defined %} {{ moyennes[cle].0.0 }} {% else %} {% endif %}
+                                                    </td>
+                                                    <td>{{valuefils.coeficient_tmp}}</td>
+                                                    <td> </td>
+                                                    <td>{{ moyennes[cle].1.0 }}</td>
+                                                </tr>
+                                                {% endfor %} {% endif %} {% endif %} {% endfor %} {% endif %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+                                <hr>
+                                <div class="row">
+                                    <!-- accepted payments column -->
+                                    <div class="col-6">
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-6">
+                                        <br>
+                                        <div class="table-responsive">
+                                            <table class="table" style="color: black ;">
+                                                <tr class="">
+                                                    <th style="width:50%">Moyenne Générale:</th>
+                                                    <td>{% if totalcoef != 0 %} {% set totalmoyenne = totalmoyenne/totalcoef %} {% endif %} {{totalmoyenne|number_format(2, ',', '.')}}</td>
+                                                </tr>
+                                                <tr class="">
+                                                    <th style="width:50%">Total Crédit :</th>
+                                                    <td>{{totalcredit_valide}} / {{totalcredit}}</td>
+                                                </tr>
+
+                                                <tr class="table-{% if (totalmoyenne > 10) or (totalmoyenne == 10) %}success{% else %}danger{% endif %}">
+                                                    <th style="width:50%">Résultat provisoire:</th>
+                                                    <td>{% if (totalmoyenne > 10) or (totalmoyenne == 10) %}Admis(e){% else %}refuser{% endif %}</td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+
+                                <!-- this row will not appear when printing -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4>
+                                            <!-- <i class="fa fa-globe"></i> -->
+                                            <small class="float-right">Date: {{ "now"|date("d/m/Y") }}</small>
+                                        </h4>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <br>
+
+                            </div>
+                            <!-- /.invoice -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "main.html" %} {% block title %}Admin - Création de Matière{% endblock %} {% block content %}
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+<div class="row" style="
+background-image: url('/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; ">
+
+    <div class="card shadow mb-4">
+
+        <div class="card-body row">
+
+            <!-- Pie Chart -->
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Création</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <form method="POST" class="row">
+                            <div class="form-group form-inline col-3">
+                                <label>Code Matière : &nbsp; </label>
+                                <div class="form-group">
+                                    <div class='input-group date'>
+                                        <input type='text' name="cree_matiere_code" class="form-control" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-inline col-3">
+                                <label>Titre Matière : &nbsp; </label>
+                                <div class="form-group">
+                                    <div class='input-group date'>
+                                        <input type='text' name="cree_matiere_titre" class="form-control" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-inline col-4">
+                                <label>Description Matière : &nbsp; </label>
+                                <div class="form-group">
+                                    <div class='input-group date'>
+                                        <textarea name="cree_matiere_infos" id="" cols="30" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+
+                                <button type="submit" name="cree_matiere_btn" class="btn btn-primary btn-icon-split ">
+                                <span class="icon text-white-50">
+                                  <i class="fas fa-check"></i>
+                                </span>
+                                <span class="text">Créer</span>
+                              </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Area Chart -->
+            <div class="col-12">
+                <div class="card shadow mb-4">
+
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Liste Matières</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <!-- DataTales Example -->
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable_list_creermatiere" width="100%" cellspacing="0" table>
+                                <thead>
+                                    <tr>
+                                        <th>Code Matière</th>
+                                        <th>Nom Matière</th>
+                                        <th>Description Matière</th>
+                                        <th>Logo Matière</th>
+                                    </tr>
+
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Code Matière</th>
+                                        <th>Nom Matière</th>
+                                        <th>Description Matière</th>
+                                        <th>Logo Matière</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    {% if allmatiere is defined %} {% for key, value in allmatiere %} {% if (value.code != '0') and (value.libele != 'aucun') %}
+
+                                    <tr>
+                                        <td>{{ value.code }}</td>
+                                        <td>{{ value.libele }}</td>
+                                        <td>{{ value.description }}</td>
+                                        <td>
+                                            <div class="row">
+
+                                                <div class="col-4">
+
+                                                    <img style="max-width: 100px; " {% if value.liens is defined %}src="{{value.liens}}" {% else %} src="/public/assets/img/background/back_img1.jpg" {% endif %} alt="logo" class="img-thumbnail">
+
+                                                </div>
+                                                <div class="col-8">
+                                                    <form method="POST" class="row" enctype="multipart/form-data">
+                                                        <div class="col-12">
+                                                            <input type="file" id="photo_mat" name="photo_mat" accept="image/*" required>
+                                                            <input type="hidden" name="id_matiere" value="{{ value.id_matiere_matiere }}" required>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button type="submit" name="btn_matimg" class="btn btn-outline-warning">Changer</button>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                    {% endif %} {% endfor %} {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+{% endblock %}

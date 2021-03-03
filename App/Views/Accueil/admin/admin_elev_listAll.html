@@ -1,0 +1,159 @@
+{% extends "main.html" %} {% block title %}Administration - Liste Étudiants{% endblock %} {% block content %}
+
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row" style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; min-height: 1024px; ">
+
+    <div class="card shadow mb-4 col-12">
+
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary"> Liste des Étudiants </h6>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body" style="padding: 1rem 0.30rem;">
+            <div class="table-responsive">
+                <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="dataTable_attrib_listeElev_class" style="width:100%" cellspacing="0">
+                    <thead class="bg-gradient-info text-white text-center">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Matricule</th>
+                            <th>Nom/Prénom</th>
+                            <th>Date et lieu de Naiss.</th>
+                            <th>Sexe</th>
+                            <th>Contact</th>
+                            <th>Statut AFF.</th>
+                            <th>Statut BOURS.</th>
+                            <th>Statut RED.</th>
+                            <th>Statut INTER.</th>
+                            <th >Classe</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Matricule</th>
+                            <th>Nom/Prénom</th>
+                            <th>Date et lieu de Naiss.</th>
+                            <th>Sexe</th>
+                            <th>Contact</th>
+                            <th>Statut AFF.</th>
+                            <th>Statut BOURS.</th>
+                            <th>Statut RED.</th>
+                            <th>Statut INTER.</th>
+                            <th >Classe</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                        {% if allEleves is defined %} {% for eleve in allEleves %}
+                        <tr>
+                            <td>
+                                <img id="user_tof_mini" class="img-profile img-thumbnail" src="/files/{{ eleve.id_pers_personne}}/tiny{{ eleve.id_pers_personne}}.jpg" alt="photo etudiant">
+                            </td>
+                            <td>{{ eleve.matricule }}</td>
+                            <td>{{ eleve.nom_prenom }}</td>
+                            <td>{{ eleve.date_naiss }} à {{ eleve.lieu_naiss }}</td>
+                            <td>{{ eleve.sexe }}</td>
+                            <td>{{ eleve.contact}}</td>
+                            <td>{{ eleve.statut_affecter}}</td>
+                            <td>{{ eleve.statut_redoublant}}</td>
+                            <td>{{ eleve.satut_brourse}}</td>
+                            <td>{{ eleve.statut_interne_externe}}</td>
+                            <td>
+                                {% if eleve.grpe_elev is defined %} {% for grp in eleve.grpe_elev %}
+                                <br><strong><b>  {{ grp.groupe_libelle}} </b> </strong>
+                                <br><br> Niveau :<b> {{ grp.libelle_niveau}} </b>
+                                <br><br> Filière :<b> {{ grp.libelle}} </b>
+                                <hr> {% endfor %} {% endif %}
+                            </td>
+
+                            <td class="fieldtype_action field-152-td nowrap">
+
+                                {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+                                <form action="" method="POST">
+                                    <button title="Voir" type="submit" name="btn_voir_eleve" class="btn btn-info">
+                                      <input type="hidden" name="id_eleve" value="{{ eleve.id_eleve_eleve }}">
+                                    <i class="fas fa-info"></i>
+                                    </button>
+
+                                    <button name="btn_setuser" type="submit" value="{{ eleve.id_eleve_eleve }}" title="Se Connecter" class="btn btn-warning ">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+
+
+                            </td>
+
+                        </tr>
+                        {% endfor %} {% endif %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+    $(document).ready(function() {
+
+        $('#dataTable_attrib_listeElev_class').DataTable({
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            },
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL'
+                }
+
+            ]
+        });
+
+    });
+</script>
+{% endblock %}

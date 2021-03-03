@@ -1,0 +1,103 @@
+{% extends "main.html" %} {% block title %}Relever de note{% endblock %} {% block content %}
+<script src='assets/vendor/html2pdf/html2pdf.bundle.min.js'></script>
+<script>
+    function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("relever");
+        //margin: 0, - 1
+        //filename:'Bulletin',
+        //image: {type:'jpeg', quality: 0.98}, 0-1
+        //html2canvas: {scale:2},
+        //jsPDF: {unit:'in',format:'letter - A4,orientation:'portrait'}
+        var opt ={
+            margin: 0,
+            filename:'Bulletin.pdf',
+            image: {type:'jpeg', quality: 1},
+            html2canvas: {scale:2},
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            // {unit:'in',format:'A4',orientation:'portrait'}
+
+        }
+        // Choose the element and save the PDF for our user.
+        html2pdf()
+            .set(opt)
+            .from(element)
+            .save();
+    }
+</script>
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+<br>
+<div class="row">
+    <div class="col-12">
+        <form method="POST" class="form-row">
+            <div class="input-group mb-3 col">
+                <div class="input-group-prepend ">
+                    <button type="button" class="btn btn-primary">Période</button>
+                </div>
+                <select class="form-control" name="semmestre_id">
+                    <option value="" disabled selected hidden>Choisissez une période</option>
+                    {% if get_anneScol_Partie_By is defined %}
+                    {% for key, value in get_anneScol_Partie_By  %}
+                    <option value="{{value.id_annee_partie}}">{{value.libele_partie}}</option>
+                    {% endfor %} 
+                    {% endif %}
+                </select>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-arrow-right"></i>
+                    </span>
+                    <span class="text">Générer</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <hr>
+
+    <div class="col-12">
+
+        <div class="callout callout-info">
+            <h5><i class="fa fa-info"></i> Note :</h5>
+            <h7> Relever de note provisoire </h7>
+            <!--<button type="button" onclick="generatePDF();imprimer();" class="btn btn-primary float-right" style="margin-right: 5px;"> -->
+            <button type="button" onclick="imprimer();" class="btn btn-primary float-right" style="margin-right: 5px;">
+                <i class="fa fa-download"></i> Generer le PDF
+            </button>
+        </div>
+
+    </div>
+</div>
+<hr>
+<div class="row">
+
+    <div id="relever" class="container-fluid" style="color: black ;background-color:white ">
+        <!-- Content Wrapper. Contains page content -->
+        {% if get_grpeWithBultinInfos_By is defined %} 
+        {{ include('include/modele_relever/'~univInfos.0.initiale_univ~'/'~get_grpeWithBultinInfos_By.libelle_bulletin~'.html') }} 
+        {% endif %}
+        <!-- /.content -->
+    </div>
+</div>
+
+ 
+
+<script type="text/javascript">     
+var allhead =' <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css" /> <link rel="stylesheet" type="text/css" href="assets/css/font-awesome-animation.min.css" /> <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"> <link rel="stylesheet" type="text/css" href="assets/css/sb-admin-2.css" /> <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css" /><link href="assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> <link href="assets/vendor/datatables/buttons.dataTables.min.css" rel="stylesheet"> <link rel="stylesheet" href="assets/vendor/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"> <link rel="stylesheet" type="text/css" href="assets/css/intlTelInput.css" /> ';
+
+function imprimer() {    
+	var imprimer = document.getElementById('relever');
+	var popupcontenu = window.open('', '_blank');
+	popupcontenu.document.open();
+	popupcontenu.document.write('<html><head>'+allhead+' </head><body onload="window.print()" style="margin: 1px 5px 5px 15px !important;">' + imprimer.innerHTML + '</html>');
+	popupcontenu.document.close();
+}
+</script>
+
+{% endblock %}
+
+
+

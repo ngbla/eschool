@@ -1,0 +1,504 @@
+{% extends "main.html" %} {% block title %}Admin - Activation de Comptes{% if menu is defined %} {{ menu }} ( {{ sousmenu }}) {% endif %} {% endblock %} {% block content %} {% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> {% endif %}
+
+<!-- Style content N°1-->
+<section class="content">
+    <div class="container-fluid">
+
+        <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+            <li class="nav-item">
+                <!-- Onglet - Eleve -->
+                <a class="nav-link active" id="custom-content-couverture-tab" data-toggle="pill" href="#custom-content-couverture" role="tab" aria-controls="custom-content-couverture" aria-selected="true">Eleve</a>
+            </li>
+            <li class="nav-item">
+                <!-- Onglet - Prof -->
+                <a class="nav-link" id="custom-content-domaine-tab" data-toggle="pill" href="#custom-content-domaine" role="tab" aria-controls="custom-content-domaine" aria-selected="false">Professeur</a>
+            </li>
+            <li class="nav-item">
+                <!-- Onglet - Parent -->
+                <a class="nav-link" id="custom-content-services-tab" data-toggle="pill" href="#custom-content-services" role="tab" aria-controls="custom-content-services" aria-selected="false">Parent</a>
+            </li>
+            {% if (id_role is defined) and (id_role == 1) %}
+            <li class="nav-item">
+                <!-- Onglet - Admin -->
+                <a class="nav-link" id="custom-content-apropos-tab" data-toggle="pill" href="#custom-content-apropos" role="tab" aria-controls="custom-content-apropos" aria-selected="false">Administrateur</a>
+            </li>
+
+            <li class="nav-item">
+                <!-- Onglet - Admin -->
+                <a class="nav-link" id="allcomptes" data-toggle="pill" href="#allcomptes_tab" role="tab" aria-controls="allcomptes_tab" aria-selected="false">Comptes Activés</a>
+            </li>
+            
+            {% endif %}
+
+
+        </ul>
+
+        <div class="tab-content" id="custom-content-above-tabContent">
+
+            <!-- Contenu - Eleve -->
+            <div class="tab-pane fade show active" id="custom-content-couverture" role="tabpanel" aria-labelledby="custom-content-couverture-tab" style="margin-top: 20px !important;">
+
+                <div class="row col card">
+                    <!-- DataTales Example -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Comptes en attente d'activation</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-bordered" id="dataTableeleve" width="100%" cellspacing="0" style="text-align: center;font-size: 0.8em;">
+                                <thead>
+                                    <tr>
+                                        <th>Matricule</th>
+                                        <th>Nom et Prénom</th>
+                                        <th>Date et lieu Naiss.</th>
+                                        <th>Sexe</th>
+                                        <th>Email</th>
+                                        <th>Filière</th>
+                                        <th>Niveau</th>
+                                        <th>Contact</th>
+                                        <th>Classe</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if allCpteElev is defined %} {% for info in allCpteElev %}
+                                    <tr>
+                                        <td>
+                                            <input class="eleve_matricule" id="{{info.id_eleve_eleve}}" type="text" value="{{info.matricule}}" name="mat_tmp_eleve">
+                                        </td>
+                                        <td>{{info.nom_prenom}}</td>
+                                        <td>Née {{info.date_naiss}} à {{info.lieu_naiss}} </td>
+                                        <td>{{info.sexe}}</td>
+                                        <td>{{info.email}}</td>
+                                        <td>{{info.parcours}}</td>
+                                        <td>{{info.niveauetude}}</td>
+                                        <td>{{info.contact}}</td>
+                                        <td >
+                                            <div class="row">
+                                            <select name="tmp_eleve_filliere" class="col-12 tmp_eleve_filliere" id="select_{{info.id_eleve_eleve}}">
+												{% if info.groupe_libelle is null %}
+													<option value="" disabled selected>Classe</option>
+												{% else %}
+													<option value="" disabled selected>{{info.groupe_libelle}}</option>
+													<option value="" disabled>Classe</option>
+												{% endif %}
+
+												{% if getAnneeScolaire is defined %}
+													{% if getAllGroupe is defined %}
+														{% for key, value in getAllGroupe %}
+															{% for keys, values in getAnneeScolaire %}
+																{% if value.groupe_annee == values.id_anscol_annee_scolaire %}
+																	<option value="{{info.id_eleve_eleve}}_{{value.groupe_id}}">
+																		({{values.annee_libelle}})-{{value.groupe_libelle}}
+																	</option>
+																{% endif %}
+															{% endfor %}
+														{% endfor %}
+													{% endif %}
+												{% endif %}
+											</select></div>
+                                        </td>
+
+                                        <td>
+                            
+                                            <button class="modif_doc_rev btn btn-success btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_1_1">Activer</button>
+                                
+                                            <button class="modif_doc_rev btn btn-danger	 btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_1_0">Rejeter</button>
+                                
+                                
+                                        </td>
+                                    </tr>
+                                    {% endfor %} {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Contenu - Prof -->
+            <div class="tab-pane fade show" id="custom-content-domaine" role="tabpanel" aria-labelledby="custom-content-domaine-tab" style="margin-top: 50px !important;">
+
+                <div class="row col card">
+
+                    <!-- DataTales Example -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Comptes en attente d'activation</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTableprof" width="100%" cellspacing="0" style="text-align: center;font-size: 0.8em;">
+                                <thead>
+                                    <tr>
+                                        <th>Nom et Prénom</th>
+                                        <th>Date et lieu Naiss.</th>
+                                        <th>Sexe</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                        <th>Année Scolaire</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if allCpteProf is defined %} {% for info in allCpteProf %}
+
+                                    <tr>
+                                        <td>{{info.nom_prenom}}</td>
+                                        <td>Née {{info.date_naiss}} à {{info.lieu_naiss}}
+                                        </td>
+                                        <td>{{info.sexe}}</td>
+                                        <td>{{info.email}}</td>
+                                        <td>{{info.contact}}</td>
+                                        <td>{{info.anneeScolaire}}</td>
+                                        <td>
+                          
+                                            <button class="modif_doc_rev btn btn-success btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_2_1">Activer</button>
+                            
+                                            <button class="modif_doc_rev btn btn-danger btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_2_0">Rejeter</button>
+                    
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% endfor %} {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Contenu - Parent -->
+            <div class="tab-pane fade" id="custom-content-services" role="tabpanel" aria-labelledby="custom-content-services-tab" style="margin-top: 50px !important;">
+
+                <div class="row col card">
+                    <!-- DataTales Example -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Comptes en attente d'activation</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTableparent" width="100%" cellspacing="0" style="text-align: center;font-size: 0.8em;">
+                                <thead>
+                                    <tr>
+                                        <th>Matricule des Enfants</th>
+                                        <th>Nom et Prénom</th>
+                                        <th>Date et lieu Naiss.</th>
+                                        <th>Sexe</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                      
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if allCpteParent is defined %} {% for info in allCpteParent %}
+
+                                    <tr>
+
+                                        <td>{{info.matricule}}</td>
+                                        <td>{{info.nom_prenom}}</td>
+                                        <td>Née {{info.date_naiss}} à {{info.lieu_naiss}}
+                                        </td>
+                                        <td>{{info.sexe}}</td>
+                                        <td>{{info.email}}</td>
+                                        <td>{{info.contact}}</td>
+                                      
+                                        <td>
+                                  
+                                            <button class="modif_doc_rev btn btn-success btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_3_1">Activer</button>
+                                    
+                                            <button class="modif_doc_rev btn btn-danger btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_3_0">Rejeter</button>
+                
+                                        </td>
+
+                                    </tr>
+
+                                    {% endfor %} {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {% if (id_role is defined) and (id_role == 1) %}
+            <!-- Contenu - Admin -->
+            <div class="tab-pane fade" id="custom-content-apropos" role="tabpanel" aria-labelledby="custom-content-apropos-tab" style="margin-top: 50px !important;">
+
+                <div class="row col card">
+                    <!-- DataTales Example -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Comptes en attente d'activation</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTableadmin" width="100%" cellspacing="0" style="text-align: center;font-size: 0.8em;">
+                                <thead>
+                                    <tr>
+                                        <th>Nom et Prénom</th>
+                                        <th>Date et lieu Naiss.</th>
+                                        <th>Sexe</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                        <th>Rôle</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %}
+                                    <tr>
+
+                                        <td>{{info.nom_prenom}}</td>
+                                        <td>Née {{info.date_naiss}} à {{info.lieu_naiss}}
+                                        </td>
+                                        <td>{{info.sexe}}</td>
+                                        <td>{{info.email}}</td>
+                                        <td>{{info.contact}}</td>
+                                        <td>
+                                            <select name="admin_role_{{info.id_pers_personne}}" id="admin_role_{{info.id_pers_personne}}">
+												<option value="0" disabled selected hidden>Choisissez un Rôle</option>
+												{% if getRole is defined %}
+													{% for key,value in getRole %}
+														<option value="{{value.id_role}}">{{value.lib_role}}</option>
+													{% endfor %}
+												{% endif %}
+											</select>
+                                        </td>
+                                        <td>
+                              
+                                            <button class="modif_doc_rev btn btn-success btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_4_1">Activer</button>
+        
+                                            <button class="modif_doc_rev btn btn-danger btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_4_0">Rejeter</button>
+		 
+                                        </td>
+
+                                    </tr>
+
+                                    {% endfor %} {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contenu - Admin -->
+            <div class="tab-pane fade" id="allcomptes_tab" role="tabpanel" aria-labelledby="allcomptes_tab" style="margin-top: 50px !important;">
+
+                <div class="row col card">
+                    <!-- DataTales Example -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Comptes activés</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="tble_allcpteactive" width="100%" cellspacing="0" style="text-align: center;font-size: 0.8em;">
+                                <thead class="bg-gradient-info text-white text-center">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Nom et Prénom</th>
+                                        <th>Date et lieu Naiss.</th>
+                                        <th>Sexe</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                        <th class="text-warning">Changer le <br> Mots de passe</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if get_allactivecompte is defined %} {% for info in get_allactivecompte %}
+                                    {% if (info.etat_pers == 1) or (info.etat_pers == 3) or (info.etat_pers == 99) %}
+
+                                    <tr>
+
+                                        <td>
+                                            {% if info.type_pers == 1 %} Élève / Étudiant
+                                            {% elseif info.type_pers == 2 %} Professeur
+                                            {% elseif info.type_pers == 3 %} Parent
+                                            {% elseif info.type_pers == 4 %} Administrateur
+                                            {% endif %}
+                                        </td>
+                                        <td>{{info.nom_prenom}}</td>
+                                        <td>Née {{info.date_naiss}} à {{info.lieu_naiss}}
+                                        </td>
+                                        <td>{{info.sexe}}</td>
+                                        <td>{{info.email}}</td>
+                                        <td>{{info.contact}}</td>
+                                        <td> 
+                                            <input type="text" class="compte_action_changepass" name="pass" id="{{info.id_pers_personne}}" height="30px" option="compte_opt_changepass">  
+                                           
+                                        </td>
+                                        <td>
+                                            {% if info.etat_pers == 1  %}
+                                            
+                                            <button id="btn_{{info.id_pers_personne}}_desac" class="compte_action btn btn-warning btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_{{info.id_type}}_0" option="compte_action">Désactiver</button>
+                                            {% elseif info.etat_pers == 99 %}
+                                            <button id="btn_{{info.id_pers_personne}}_active" class="compte_action btn btn-success btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_{{info.id_type}}_1" option="compte_action">Activer</button>
+                                            {% endif %}
+                                            <button id="btn_{{info.id_pers_personne}}_sup" class="compte_action btn btn-danger btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_{{info.id_type}}_2" option="compte_action">Supprimer</button>
+                                        </td>
+
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %} {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>            
+            {% endif %}
+
+            
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+{% endblock %}{% block javascript_footer_add %}
+
+
+
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+    $(document).ready(function() {
+
+
+        document.addEventListener("change", function(event) {
+            //event.preventDefault();
+
+            if (typeof(event.target.id) != undefined && event.target.id != "" && typeof($('#' + event.target.id).attr('option')) != undefined && event.target.tagName == "INPUT" && $('#' + event.target.id).attr('option')=="compte_opt_changepass") {
+
+                info =  "Event onchange:::  Option =" + $('#' + event.target.id).attr('option');
+                info = info + "  tag name =" + event.target.tagName ;
+                info = info + "  Information =" + $('#' + event.target.id).val() ;
+
+                titre = "//CHANGE";
+                valueur = event.target.id;
+                //consoleInfo(envi, titre, info, valueur);
+
+                var cpte_chgpass_infos = $('#' + event.target.id).val() ;
+                
+                var r =confirm("Confirmer le nouveau mots de passe : "+cpte_chgpass_infos);
+
+                if (r == true) { 
+                    //0-DESACTIVER     1-ACTIVER      2-SUPRIMER (66)
+                    titre = "//evenement Change sur: .compte_desac";
+                    info = "  //  Valeur= --> " + event.target.id;
+                    valueur = cpte_chgpass_infos;
+                    //consoleInfo(envi, titre, info, valueur);
+                    
+                    url_info = liens + 'App/Models/info.model.php';
+                    values_info = 'action=compte_modif_pass&pass=' + cpte_chgpass_infos + '&id_personne=' + event.target.id+ '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+                    idelemt = $('#'+event.target.id);
+                    root_AjaxMethod(url_info, values_info, ajax_result_toast, idelemt);
+                } 
+                else {}
+
+
+
+            }
+
+        });
+        document.addEventListener("click", function(event) {
+
+            if (typeof(event.target.id) != undefined && event.target.id != "" && typeof($('#' + event.target.id).attr('option')) != undefined && event.target.tagName == "BUTTON" && $('#' + event.target.id).attr('option')=="compte_action") {
+
+                //console.log(event.target.tagName);
+                var compte_action_infos = ( $('#' + event.target.id).val()).split("_");
+            
+                //0-DESACTIVER     1-ACTIVER      2-SUPRIMER (66)
+
+                titre = "//evenement Change sur: .compte_desac";
+                info = "  //PARENT "+(($('#' + event.target.id).parentsUntil("tbody"))[1]).tagName +"  Valeur=id --> " + event.target.id;
+                valueur = compte_action_infos;
+                //consoleInfo(envi, titre, info, valueur);
+
+                //console.log(compte_action_infos[3]);
+                if (compte_action_infos[3] == 2) {
+                    
+                    var r =confirm("«Un grand pouvoir implique de grandes responsabilités» \n Êtes vous certains de suprimer ?");
+                    if (r == true) { (($('#' + event.target.id).parentsUntil("tbody"))).hide();$('#' + event.target.id).hide(); } 
+                    else {}
+
+                            
+                }
+                else { $('#' + event.target.id).hide();}
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=compte_actions&infos=' + $('#' + event.target.id).val() + '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+                idelemt = $('#' + event.target.id);
+
+                root_AjaxMethod(url_info, values_info, ajax_result_toast, idelemt);
+
+            
+
+            }
+
+        });
+
+        // Setup - add a text input to each footer cell
+        var tble_allcpteactive = $('#tble_allcpteactive').DataTable({
+            dom: 'Blfrtip',
+
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+
+           
+        function ajax_result_toast(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                if (jsondata == "success") {
+                    classtype = "alert-success";
+                     infos_stat = "Opération éffectuée avec succèss";
+                } else {
+                    classtype = "alert-danger";
+                    infos_stat = "Veuillez réessayer l'Opération n'a pu aboutir";
+                }
+               
+                root_fct_showinfos_toast(infos_stat, classtype);
+            }
+
+        }
+
+    });
+</script>
+{% endblock %}

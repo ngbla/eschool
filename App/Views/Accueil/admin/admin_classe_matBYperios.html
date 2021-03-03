@@ -1,0 +1,159 @@
+{% extends "main.html" %} {% block title %}Administration - Repartition des matières du groupe {% endblock %} {% block content %}
+
+<input type="hidden" id="input_grpid" value="{% if idgroup is defined %} {{ idgroup }} {% endif %}">
+<input type="hidden" id="input_classeid" value="{% if group_partAnnee is defined %} {{ idclasse }} {% endif %}">
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="card shadow mb-4 row" style="
+background-image: url('/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; ">
+
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"> Liste des matières repartie par période du groupe : {{groupe_libelle}}</h6>
+    </div>
+
+    <div class="card card-body">
+
+        <fieldset id="attribution_grpmat_infos">
+
+
+            <div class="row">
+                <div class="col-xl-12 col-md-12 mb-12">
+                    <!-- Card Content - Collapse -->
+                    <!-- DataTales Example -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable_attrib_grpMat" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Période</th>
+                                    <th>matière</th>
+                                    <th>Coéfficient</th>
+                                    <th>Crédit</th>
+                                    <th>matière parent</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Nom Partie</th>
+                                    <th>matière</th>
+                                    <th>Coéfficient</th>
+                                    <th>Crédit</th>
+                                    <th>matière parent</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody id="dataTable_grpmat_tbody">
+
+
+                                {% if get_grp_MatRepartie_By is defined %} {% for groupe in get_grp_MatRepartie_By %}
+                                <tr>
+                                    <td>{{ groupe.libele_partie}}</td>
+                                    <td>({{ groupe.code }})-{{ groupe.libele }}</td>
+                                    <td>{{ groupe.coeficient_tmp }}</td>
+                                    <td>{{ groupe.credit_tmp }}</td>
+                                    <td></td>
+                                    <td>
+                                        <form method="POST">
+                                            <input type="hidden" name="btn_admin_classe_voirmat" value="{{btn_admin_classe_voirmat}}">
+                                            <input type="hidden" name="supMat_groupe_matiere_coef_id" value="{{ groupe.groupe_matiere_coef_id }}">
+                                            <button title="Suprimer" name="sup_groupe_mat" type="submit" id="{{ groupe.groupe_id }}" class="btn btn-danger ">
+                                                    <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %} {% endif %} {% if get_grp_MatRepartie_WithMP_By is defined %} {% for groupe in get_grp_MatRepartie_WithMP_By %}
+                                <tr>
+                                    <td>{{ groupe.libele_partie}}</td>
+                                    <td>({{ groupe.code }})-{{ groupe.libele }}</td>
+                                    <td>{{ groupe.coeficient_tmp }}</td>
+                                    <td>{{ groupe.credit_tmp }}</td>
+                                    <td>{{ groupe.MatP_lib }}</td>
+                                    <td>
+                                        <form method="POST">
+                                            <input type="hidden" name="btn_admin_classe_voirmat" value="{{btn_admin_classe_voirmat}}">
+                                            <input type="hidden" name="supMat_groupe_matiere_coef_id" value="{{ groupe.groupe_matiere_coef_id }}">
+                                            <button title="Suprimer" name="sup_groupe_mat" type="submit" id="{{ groupe.groupe_id }}" class="btn btn-danger ">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %} {% endif %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </fieldset>
+        <!--{# {% for key, value in classe_voirmat  %} <br> {{ key }}---- {% for keys, val in value  %}{{ keys }}-{{ val }} {% endfor %} {% endfor %} #} -->
+
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+    $(document).ready(function() {
+
+
+        // DataTable
+        var dataTable_attrib_grpMat = $('#dataTable_attrib_grpMat').DataTable({
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            },
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+
+
+
+
+    });
+</script>
+{% endblock %}

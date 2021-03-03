@@ -1,0 +1,226 @@
+{% extends "main.html" %} {% block title %}Admin - Attribution Classe à Etudiant{% endblock %} {% block content %}
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<!-- ATTRIBUTION ELEVES A UNE CLASSE -->
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"> Attribution des élèves à une classe </h6>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            <!-- Content Row -->
+            <div class="row">
+
+                <!-- INFOS CLASSES -->
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Choix de la Année Scolaire </h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-danger btn-xs">Année Scolaire</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <select class="form-control btn-xs" id="eleve_attrib_classe_select_annee">
+                                    <option value="" disabled selected>Choisissez une année Scolaire</option>
+                                  {% if allUniqAnneeScolaire is defined %}
+                                    {% for info in allUniqAnneeScolaire %}
+                                      <option value="{{ info.id_anscol_annee_scolaire }}">{{ info.annee_libelle }}</option>
+                                    {% endfor %}
+                                  {% endif %}
+                                
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Choix de la classe</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-danger btn-xs">Classe</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <select class="form-control btn-xs" id="eleve_attrib_classe_select_classe">
+                                <option disabled selected>Choisissez une classe</option>
+                              </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <!-- LISTE ELEVES DE LA CLASSE  -->
+                <div class="col-xl-6 col-lg-6">
+
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Liste des élèves de la classe</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body" style="padding: 1rem 0.30rem;">
+
+                            <div class="table-responsive" style="font-size: 0.7em;">
+                                <!-- Card Body dataTable_attrib_listeElev_classnews-->
+                                <table class="table table-bordered" id="dt_attrib_listeElev_class" style="width:100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Matricule</th>
+                                            <th>Nom/Prénom</th>
+                                            <th>Sexe</th>
+                                            <th>Contact</th>
+                                            <th>Action</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Matricule</th>
+                                            <th>Nom/Prénom</th>
+                                            <th>Sexe</th>
+                                            <th>Contact</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- lISTE MATIERE A AJOUTER -->
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Liste des élèves sans classe à ajouter</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+
+                            <div class="table-responsive" style="font-size: 0.7em;">
+                                <table class="table table-bordered" id="dataTable_attrib_listeElev_NOclass" style="width:100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Matricule</th>
+                                            <th>Nom/Prénom</th>
+                                            <th>Sexe</th>
+                                            <th>Contact</th>
+                                            <th>Action</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Matricule</th>
+                                            <th>Nom/Prénom</th>
+                                            <th>Sexe</th>
+                                            <th>Contact</th>
+                                            <th>Action</th>
+
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="eleve_attrib_classe_ListElvSansClss">
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+$(document).ready(function() {
+
+        // DataTable with search colom
+        var dt_attrib_listeElev_class = $('#dt_attrib_listeElev_class').DataTable({
+        initComplete: function() {
+            // Apply the search
+            this.api().columns().every(function() {
+                var that = this;
+
+                $('input', this.footer()).on('keyup change clear', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        },
+        dom: 'Blfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                titleAttr: 'Copy'
+            },
+            {
+                extend: 'excelHtml5',
+                text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                titleAttr: 'Excel'
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                titleAttr: 'CSV'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                titleAttr: 'PDF'
+            }
+
+        ]
+    });
+
+});
+</script>
+{% endblock %}

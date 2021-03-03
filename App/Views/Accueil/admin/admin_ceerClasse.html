@@ -1,0 +1,314 @@
+{% extends "main.html" %} {% block title %}Admin Gestion Filières{% endblock %} {% block content %}
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+<ul class="nav nav-pills">
+    {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+    <li class="nav-item"><a class="nav-link" href="#creer_fill" data-toggle="tab">Créer</a></li>
+    {% endif %}
+    <!--<li class="nav-item"><a class="nav-link" href="#mod_fill" data-toggle="tab">Modifier</a></li>-->
+    <li class="nav-item"><a class="nav-link active" href="#liste_fill" data-toggle="tab">Liste</a></li>
+</ul>
+<hr>
+<!-- Notifications -->
+
+<div class="tab-content">
+
+    <div class=" tab-pane" id="creer_fill">
+
+        <form method="POST">
+            <!-- Content Row -->
+
+            <div class="row">
+
+                <!-- INFOS CLASSES -->
+                <div class="col-12">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Information </h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+
+                            <div class="form-group from-row row">
+
+                                <div class="form-group col-4">
+                                    <label>Nom de la filière : &nbsp; </label>
+                                    <div class='input-group date'>
+                                        <input type='text' name="cree_classe_nom" class="form-control form-control-sm" required/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-8">
+                                    <label>Description de la filière : &nbsp; </label>
+                                    <div class='input-group date'>
+                                        <textarea name="cree_classe_INFOS" id="" cols="70"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-12">
+                                <hr> </div>
+
+                            <div class="form-group col-12">
+                                <label>Département : &nbsp; </label>
+
+                                <select name="departement" id="departement_id" required>
+                        <option value="" disabled selected>Veuillez choisir le département de la filière</option>
+                        {% if get_all_departBy is defined %}
+                            {% for depart in get_all_departBy  %}<li>{{ key}}</li>
+                            <option value="{{depart.id_depat}}">{{depart.lib_depat}}</option>
+                        {% endfor %}         
+                        {% endif %}
+
+
+                      </select>
+                            </div>
+
+                            <hr>
+                            <button type="submit" name="cree_classe_btn" class="btn btn-primary btn-icon-split">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span class="text">Valider</span>
+                    </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="tab-pane" id="mod_fill">
+
+        <form method="POST">
+
+            <div class="row">
+
+                <!-- INFOS CLASSES -->
+                <div class="col-12">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Information </h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+
+                            <label for="select_modfi_classe"> Modification de filière : &nbsp; &nbsp; </label>
+                            <select class="form-control col-5" id="select_modfi_classe" name="select_modfi_classe" width="50px;">
+                      <option value="0">Veuillez choisir une filière</option>
+                      {% if allclasses is defined %}
+                        {% for key, value in allclasses  %}
+                          <option value="{{ value.id_classe_classe }}">{{ value.libelle }}</option>
+                        {% endfor %}
+                    {% endif %}
+                    </select>
+
+                            <button type="submit" name="modif_classe_btn" id="modif_classe_btn" class="btn btn-warning btn-icon-split col-2">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span class="text">Modifier</span>
+                    </button>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- LISTE CLASSE MATIERE -->
+                <div class="col-xl-6 col-lg-6">
+
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Matières ajouter </h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body" style="padding: 1rem 0.30rem;">
+
+                            <div class="table-responsive" style="font-size: 0.7em;">
+                                <table class="table table-bordered" id="dataTable_classe_classMat" style="width:100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Code Matière</th>
+                                            <th>Nom Matière</th>
+                                            <th>Action</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Code Matière</th>
+                                            <th>Nom Matière</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="dataTable_classe_classMat_tbody">
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- lISTE MATIERE A AJOUTER -->
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Panier de Matières</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+
+                            <div class="table-responsive" style="font-size: 0.7em;">
+                                <table class="table table-bordered" id="dataTable_classe_list_annee" style="width:100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Code Matière</th>
+                                            <th>Nom Matière</th>
+                                            <th>Description Matière</th>
+                                            <th>Action</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Code Matière</th>
+                                            <th>Nom Matière</th>
+                                            <th>Description Matière</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <!--                 cree_matiere_etat             
+                          {% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+                              {% if etat_inscrip is defined %}
+                          {% endif %} {% set annee = 'bar' %}{% set varannee = allAnneeScolaire[0].annee_libelle %}
+                              {{ varannee }}
+                          -->
+                                        {% if allmatiere is defined %} {% for key, value in allmatiere %}
+                                        <tr>
+
+                                            <!--
+                                <td>{{ value.id_annee_partie }}</td>
+                                <td>{{ value.id_anneeScolaire }}</td>
+                                  <td>{{ value.id_anscol_annee_scolaire }}</td> 
+                                -->
+                                            <td>{{ value.code }}</td>
+                                            <td>{{ value.libele }}</td>
+                                            <td>{{ value.description }}</td>
+
+                                            <td class="fieldtype_action field-152-td nowrap">
+                                                <a title="Ajouter Matière" class="btn-default btn-xs purple " href="#">
+                                                    <i class="fa fa-plus cree_matiere_btn_add" id="{{ value.id_matiere_matiere }}_{{ value.code }}" value="{{ value.code }}/_/{{ value.libele }}/_/{{ value.description }}" option="cree_matiere_btn_add"></i>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                        {% endfor %} {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="active tab-pane" id="liste_fill">
+        <!-- LISTE DES CLASSES -->
+
+        <div class="card shadow mb-4">
+
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">filières</h6>
+            </div>
+            <!-- Card Body -->
+            <!-- DataTales Example -->
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable_list_fillierenews" width="100%" cellspacing="0" table>
+                        <thead>
+                            <tr>
+                                <th>Département</th>
+                                <th>Filière</th>
+                                <th>Description </th>
+                                <th></th>
+                            </tr>
+
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Département</th>
+                                <th>Filière</th>
+                                <th>Description </th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <!--{#                  cree_matiere_etat                
+                  {% for key, value in _context  %}<li>{{ key}}</li>{% endfor %}
+                  {% for key, value in allclasses  %}<li>{{ key}}-> {% for keys, val in value  %}<li>{{ keys}}->{{ val}}</li>{% endfor %}  </li>{% endfor %}  #}-->
+
+
+                            {% if allclasses is defined %} {% for key, value in allclasses %}
+                            <tr>
+
+                                <td>{{ value.lib_depat }}</td>
+                                <td>{{ value.libelle }}</td>
+                                <td>{{ value.infos }}</td>
+
+                                <td>
+                                    {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+                                    <form method="POST">
+                                        <button type="submit" value="{{ value.id_classe_classe }}" class="btn btn-danger btn-circle" name="btn_sup_classe">
+                                          <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                            {% endfor %} {% endif %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+{% endblock %}

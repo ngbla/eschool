@@ -1,0 +1,62 @@
+
+  {% for values in get_cour_partie  %}
+    {% if values.id_parent_plan == value.id_cours_plan %}
+    {% if values.vue_groupe ==1 %}
+    <ul class="section img-text" style="list-style: none;">
+      <li class="activity forum modtype_forum " id="module-421">
+        <div>
+          <div class="mod-indent-outer">
+            <div class="mod-indent"></div>
+            <div>
+
+              <div class="activityinstance">
+                <h4 class="partiename"><a class=""  href="#"> <i class="fa fa-asterisk"></i> <u> {{values.plan_titre}}</u> </a></h4>
+                <p style="text-align: right;"> 
+                  {% if values.etat_progression ==1 %}
+                  <i class="fa fa-check text-success" aria-hidden="true"></i>
+                  {% else %}
+                  <i class="fa fa-check text-secondary" aria-hidden="true"></i>
+                  {% endif %}
+                </p>
+              </div>
+              <div class="contentafterlink">
+                <div class="no-overflow">
+                  <div class="no-overflow">
+                    <p>
+                      {{values.plan_description|raw }}
+                  </p>
+                  </div>
+                </div>
+              </div>
+              <!--  RESSOURCES -->
+              {% if get_matiere_docsvideo is defined %}
+                <ul style="list-style: none; " class="border-left-warning">
+                  <div class="mod-indent mod-indent-outer w-100"> <p > <h6> <strong style="color: #f98012;font-weight: 400;">  <i class="fa fa-archive" aria-hidden="true"> RESSOURCES</i></strong></h6></p> </div>
+
+                    {% for videodocs in get_matiere_docsvideo  %}
+                      {% if values.id_cours_plan == videodocs.courplan_id %}
+                        {{ include('Elearning/Prof/include/include_ressources.html') }}
+                      {% endif %}
+                    {% endfor %} 
+                </ul>
+              {% endif %}
+
+              
+            </div>
+          </div>
+          
+        </div>
+      </li>
+    </ul>
+    {% endif %}
+    {% endif %}
+  {% endfor %} 
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,54 @@
+[18-Jun-2020 09:33:59 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: NO) in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=ch...', 'root', '')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('chat_realtime', 'localhost', 'root', '', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23
+[18-Jun-2020 09:40:39 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'igtdrgyc_user_uges'@'localhost' to database 'db_uges_univ_realchat_admin' in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=db...', 'igtdrgyc_user_u...', 'Pswd@Uges2020')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('db_uges_univ_re...', 'localhost', 'igtdrgyc_user_u...', 'Pswd@Uges2020', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23
+[18-Jun-2020 09:40:55 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'igtdrgyc_user_uges'@'localhost' to database 'db_uges_univ_realchat_admin' in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=db...', 'igtdrgyc_user_u...', 'Pswd@Uges2020')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('db_uges_univ_re...', 'localhost', 'igtdrgyc_user_u...', 'Pswd@Uges2020', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23
+[18-Jun-2020 09:40:56 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'igtdrgyc_user_uges'@'localhost' to database 'db_uges_univ_realchat_admin' in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=db...', 'igtdrgyc_user_u...', 'Pswd@Uges2020')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('db_uges_univ_re...', 'localhost', 'igtdrgyc_user_u...', 'Pswd@Uges2020', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23
+[18-Jun-2020 09:42:29 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'igtdrgyc_user_uges'@'localhost' to database 'db_uges_univ_realchat_admin' in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=db...', 'igtdrgyc_user_u...', 'Pswd@Uges2020')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('db_uges_univ_re...', 'localhost', 'igtdrgyc_user_u...', 'Pswd@Uges2020', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23
+[18-Jun-2020 09:42:33 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'igtdrgyc_user_uges'@'localhost' to database 'db_uges_univ_realchat_admin' in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=db...', 'igtdrgyc_user_u...', 'Pswd@Uges2020')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('db_uges_univ_re...', 'localhost', 'igtdrgyc_user_u...', 'Pswd@Uges2020', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23
+[18-Jun-2020 09:43:04 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'igtdrgyc_user_uges'@'localhost' to database 'db_uges_univ_realchat_admin' in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=db...', 'igtdrgyc_user_u...', 'Pswd@Uges2020')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('db_uges_univ_re...', 'localhost', 'igtdrgyc_user_u...', 'Pswd@Uges2020', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23
+[18-Jun-2020 09:43:08 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'igtdrgyc_user_uges'@'localhost' to database 'db_uges_univ_realchat_admin' in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=db...', 'igtdrgyc_user_u...', 'Pswd@Uges2020')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('db_uges_univ_re...', 'localhost', 'igtdrgyc_user_u...', 'Pswd@Uges2020', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23
+[18-Jun-2020 09:43:25 Africa/Abidjan] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'igtdrgyc_user_uges'@'localhost' to database 'db_uges_univ_realchat_admin' in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php:23
+Stack trace:
+#0 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php(23): PDO->__construct('mysql:dbname=db...', 'igtdrgyc_user_u...', 'Pswd@Uges2020')
+#1 /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/api.php(7): Chat_realtime->__construct('db_uges_univ_re...', 'localhost', 'igtdrgyc_user_u...', 'Pswd@Uges2020', 'image')
+#2 {main}
+  thrown in /home/igtdrgyc/uges.x-pertizgroup.com/public/chat/php/chat_realtime.php on line 23

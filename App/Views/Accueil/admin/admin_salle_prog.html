@@ -1,0 +1,166 @@
+{% extends "main.html" %} 
+{% block title %}Administration - Etat des salles{% endblock %} 
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="container-fluid"   style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; min-height: 1024px;">
+
+
+    <form method="POST">
+
+      <!-- eTAPE -->
+      <div class="col-xl-12 col-md-12 mb-12">
+        <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Filtres</div> <br>
+                <div class="row no-gutters align-items-center">
+                  <div class="col-12" >
+
+                    <div class="form-row" >
+                      <form method="POST">
+                        <div class="col">
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <button type="button" class="btn btn-primary">Date</button>
+                            </div>
+                            <!-- /btn-group -->
+                            <input type="date" name="salle_date" id="salle_date" class="form-control" required>
+        
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="input-group mb-3">
+                              <button type="submit" name="btn_salle_affiche" class="btn btn-primary">Afficher</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                  </div>       
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <div class="card-header p-2">
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a class="nav-link active" href="#prog_emploi" data-toggle="tab">Liste</a></li>
+        </ul>
+      </div>
+
+      <!-- Notifications -->
+      <div class="card-body">
+        <div class="tab-content">
+
+          <div class="tab-pane active" id="prog_emploi">
+            <!-- DataTales Programme exemple -->
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                  
+                  <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover table-condensed" id="dataTable_salle_etat" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Code</th>
+                          <th>Libelle</th>
+                          <th>Etat</th>
+                          <th>Occupant</th>
+                          <th>Debut</th>
+                          <th>Fin</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>Date</th>
+                          <th>Code</th>
+                          <th>Libelle</th>
+                          <th>Etat</th>
+                          <th>Occupant</th>
+                          <th>Debut</th>
+                          <th>Fin</th>
+                        </tr>
+                      </tfoot>
+                      <tbody >
+                        {% if get_salle_emplTpsBy is defined %}
+
+                          {% for keys, values in allsalle  %}
+
+                            {% set statutvrf = 0 %}
+
+                            {% for key, value in get_salle_emplTpsBy  %}
+
+                              {% if values.libelle == value.salle_libelle %}
+
+                                {% set statutvrf = 1 %}
+                                <tr>
+                                  <td>{{value.emploitps_date}}</td>
+                                  <td>{{values.Code_salle}}</td>
+                                  <td>{{values.libelle}}</td>
+                                  <td class="danger text-danger">Occuper</td>
+                                  <td>{{value.groupe_libelle}}</td>
+                                  <td>{{value.emploitps_h_debut}}</td>
+                                  <td>{{value.emploitps_h_fin}}</td>
+                                </tr>
+
+                              {% endif %}
+                            
+                            {% endfor %} 
+
+                            {% if statutvrf == 0 %}
+                              <tr>
+                                <td>{{dateProg}}</td>
+                                <td>{{values.Code_salle}}</td>
+                                <td>{{values.libelle}}</td>
+                                <td class="success text-success">Disponible</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                              </tr>
+                            {% endif %}
+
+
+                        
+                          {% endfor %} 
+                        {% endif %}
+
+                      </tbody>
+                    </table>
+                  </div>
+
+                  
+                </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </form>
+
+
+
+</div>
+
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+{% endblock %} 

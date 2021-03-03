@@ -1,0 +1,13 @@
+<script>
+    $(document).ready(function(){
+      //alert('ok');
+
+      $('.toast').toast({delay: 2000});
+      //show hide
+      {% if toast_notif is defined %}
+          $('.toast').toast('show');
+      {% else %}
+          $('.toast').toast('hide');
+      {% endif %}
+    });
+  </script>

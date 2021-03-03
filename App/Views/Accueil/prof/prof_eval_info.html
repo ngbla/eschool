@@ -1,0 +1,486 @@
+{% extends "main_prof.html" %}
+
+{% block title %}Evaluation{% endblock %}
+
+{% block content %}
+<!-- {% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} -->
+<div class="row container-fluid" style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; ">
+
+
+
+    {% if id_pers_personne is defined %}
+    <input type="hidden" name="id_personne" value="{% if id_pers_personne is defined %}{{id_pers_personne}}{% endif %}" id="id_personne">
+    <input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+    <input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> {% endif %}
+
+
+    <input class="form-control" name="file" type="hidden" id="eval_id" value="{{prof_eval_date.0.prof_eval_id}}" />
+
+
+    <!-- Style content N°1-->
+    <section class="content container row col-12" style="padding: 0px !important;">
+        <div class="container  row col-12">
+
+            <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                <li class="nav-item"><!-- Onglet - Attribut matiere -->
+                    <a class="nav-link active" id="custom-content-domaine-tab" data-toggle="pill" href="#custom-content-domaine" role="tab" aria-controls="custom-content-domaine" aria-selected="false">Saisir les notes</a>
+                </li><!-- Onglet - Attribut groupe -->
+                <li class="nav-item"><!-- Onglet - Infos -->
+                    <a class="nav-link " id="custom-content-couverture-tab" data-toggle="pill" href="#custom-content-couverture" role="tab" aria-controls="custom-content-couverture" aria-selected="true">Evaluation</a>
+                </li>
+            </ul>
+
+            <div class="tab-content container row col-12" id="custom-content-above-tabContent" style="padding: 0px !important;">
+
+                <!-- Contenu - Eleve -->
+                <div class="tab-pane fade show  container row col-12" id="custom-content-couverture" role="tabpanel" aria-labelledby="custom-content-couverture-tab" style="margin-top: 20px !important;padding: 0px !important;"  >
+                    
+                    <div class="container row col-12" style="padding: 0px !important;">
+
+                        <!-- Infos exam -->
+                        <div class="col-2">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800"><a href="#">General&nbsp;Info</a></div><br/>
+                                        <div class="h5 mb-0 ">
+                                        
+                                            <dl class="dl-horizontal" style="font-size: small;">
+                                                <dt> <strong>Session</strong> </dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].Libelle_session}}{% endif %}</dd>
+                                                <br>
+                                                <dt> <strong>Classe</strong> </dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].groupe_libelle}}{% endif %}</dd>
+                                                <br>
+                                                <dt><strong>Libelle de l'évaluation</strong></dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].eval_libelle}}{% endif %}</dd>
+                                                <br>
+                                                
+                                                <br>
+                                                <dt><strong>Matiere</strong></dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].code}} - {{prof_eval_date[0].matierelib}}{% endif %}</dd>
+                                                <br>
+                                            </dl>
+                                            <dl class="dl-horizontal" style="font-size: small;">
+                                                <dt> <strong>Créer le </strong> </dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].date_creation_eval}}{% endif %}</dd>
+                                                <br>
+                                                <dt> <strong>Date</strong> </dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].eval_date}}{% endif %}</dd>
+                                                <br>
+                                                <dt> <strong>Début </strong> </dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].eval_hDebut}}{% endif %}</dd>
+                                                <br>
+                                                <dt> <strong>Fin</strong> </dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].eval_hFin}}{% endif %}</dd>
+                                                <br>
+                                                <dt> <strong>Salle</strong> </dt>
+                                                <dd>{% if prof_eval_salle[0].libelle is defined %} {{prof_eval_salle[0].libelle}}{% endif %}</dd>
+                                                <br>
+                                                <dt> <strong>Statut</strong> </dt>
+                                                <dd>{% if prof_eval_date is defined %} {{prof_eval_date[0].etat_evalTps}}{% endif %}</dd>
+                                                <br>
+                                            </dl>
+            
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-6">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-12 mr-2">
+                                        <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800"><a href="#">Description de l'évaluation</a></div><br/>
+                                        <div class="h5 mb-0 " style="font-size: small;">
+
+                                            <textarea name="prof_eval_desc" id="prof_eval_desc" cols="40" rows="50">
+                                                {% if prof_eval_date is defined %} {{prof_eval_date[0].eval_desc}}{% endif %}
+                                            </textarea>
+
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800">
+                                            <a href="#">Fichiers</a>
+                                        </div><br/>
+                                        <div class="h5 mb-0 " style="font-size: small;">
+
+                                            <div class="card-header p-2">
+
+                                                <ul class="nav nav-pills">
+
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" href="#docs" data-toggle="tab">Documents</a>
+                                                    </li>
+
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#file_upload" data-toggle="tab">Upload</a>
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+
+                                            <!-- Notifications -->
+
+
+                                            <div class="card-body">
+
+                                                <div class="tab-content">
+
+                                                    <div class=" active tab-pane docs_video_div" id="docs">
+                                                        <caption>
+                                                            <b> <dt> Mes Documents </dt> </b>
+                                                        </caption>
+                                                        <hr>
+                                                        <table class="table table-striped dataTable" id="dataTable_list_evalnonprog" width="100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Format</th>
+                                                                    <th>Titre</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="pb-filemng-template-body"></tbody>
+                                                        </table>
+                                                    </div>
+
+
+                                                    <div class="tab-pane" id="file_upload">
+
+                                                        <div class="form-group">
+
+                                                            <span class="text-warning">* Import de Documents (.pdf, .xls, .xlsx, .doc, .docx, .ppt,  .pptx )</span>
+                                                            <br>
+                                                            <div class="progress progress-sm mb-2">
+                                                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                            <form class="needs-validation" novalidate>
+                                                                <input class="form-control" name="file" type="file" id="file_input" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/pdf, .xlsx, .docx, .pptx" />
+                                                                <br>
+
+                                                                <br>
+                                                                <input class="form-control" name="file" type="hidden" id="eval_id" value="{{prof_eval_date.0.prof_eval_id}}" />
+
+                                                                <a href="#" id="upload-button_eval" class="btn btn-primary btn-icon-split">
+
+                                                                    <span class="icon text-white-50">
+                                                                            <i class="fas fa-arrow-up"></i>
+                                                                        </span>
+                                                                    <span class="text">Import de Documents</span>
+                                                                </a>
+                                                            </form>
+                                                            <hr>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+
+                <!-- Contenu - Prof {% if prof_menu_attrib is defined %}  active  {% endif %}-->
+                <div class="tab-pane fade show  active container row col-12" id="custom-content-domaine" role="tabpanel" aria-labelledby="custom-content-domaine-tab" style="margin-top: 50px !important;">
+                    
+
+                    <!-- Area Chart -->
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Liste des notes des élèves</h6>
+                        </div>
+                        <!-- Card Body -->    <!-- DataTales Example -->
+                        <div class="card-body">
+            
+                            <div class="table-responsive">
+                                <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="dataTable_list_annee" width="100%" cellspacing="0" style="font-size: small; caption-side: top;"  table>
+
+                                    <caption>
+                                    <table>
+                                        <tr>
+                                            <td>Classe : {% if prof_eval_date is defined %} {{prof_eval_date[0].groupe_libelle}}{% endif %}</td>
+                                            <td>Matiere :{% if prof_eval_date is defined %} {{prof_eval_date[0].code}} - {{prof_eval_date[0].matierelib}}{% endif %}</td>
+                                            <td>Evaluation : {% if prof_eval_date is defined %} {{prof_eval_date[0].eval_libelle}}{% endif %}</td>
+                                            <td>Semestre : et Session : {% if prof_eval_date is defined %} {{prof_eval_date[0].Libelle_session}}{% endif %}</td>
+                                        </tr>
+                                    </table>  
+                                    </caption>
+                                    <thead class="bg-gradient-info text-white text-center">
+                                        <tr>
+                                            <!-- <th >Photo</th>-->
+                                            <th >Matricule</th>
+                                            <th >Nom et Prénom</th>
+                                            <th >Sexe</th>
+                                            <th>Note</th> 
+                                            {% if (prof_eval_date.0.eval_type  ==  'online_UPLOAD') or (prof_eval_date.0.eval_type  ==  'online_QCM') %}  
+                                                <th>Voir les Fichiers</th>  
+                                            {% endif %}
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <!-- <th >Photo</th>-->
+                                            <th >Matricule</th>
+                                            <th >Nom et Prénom</th>
+                                            <th >Sexe</th>
+                                            <th>Note</th>
+                                            {% if (prof_eval_date.0.eval_type  ==  'online_UPLOAD') or (prof_eval_date.0.eval_type  ==  'online_QCM') %}  
+                                                <th>Voir les Fichiers</th>  
+                                            {% endif %}
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    
+                                    {% if prof_eval_grpEleve is defined %}
+                                        {% for key, value in prof_eval_grpEleve  %}
+                                        <tr>
+                                            <!-- <td> 
+                                                <img id="user_tof_mini" class="img-profile img-thumbnail" src="/files/{{value[0].id_pers_personne}}/tiny{{value[0].id_pers_personne}}.jpg" alt="photo etudiant">
+                                                <br>  Tel : {{ value[0].contact }}
+
+                                            </td>-->
+                                            <td>{{ value[0].matricule }}</td>
+                                            
+                                            <td>
+                                                {{ value[0].nom_prenom }} 
+                                            </td>
+                                            <td class="text-center">{{ value[0].sexe }}</td>
+                                            <td class="text-right">
+                                                <span>{{ value[0].note }}</span>
+                                                {% if value[0].etat_note == 0 %}
+                                                <input type="number" step="any" value="{{ value[0].note }}" class="input_note_eleve form-control" id="{{ value[0].id_type}}_{{value[0].id_evaluation}}"> 
+                                                {% endif %}
+                                                
+
+                                            </td>
+                                            {% if (prof_eval_date.0.eval_type  ==  'online_UPLOAD')  %}  
+                                                <td>
+                                                    <a target="_blank" type="button" href="index.php?p=prof_eval_eleveupload&eval={{prof_eval_date.0.prof_eval_id}}&id_eleve={{value[0].id_eleve_eleve}}" class="btn btn-info float-right">Voir</a>
+                                                </td>  
+                                            {% endif %}
+                                                                                    
+                                            {% if (prof_eval_date.0.eval_type  ==  'online_QCM') %}  
+                                                <td>
+                                                    <a target="_blank" type="button" href="index.php?r=prof_eval_enligne&eval={{prof_eval_date.0.prof_eval_id}}&id_eleve={{value[0].id_eleve_eleve}}" class="btn btn-info float-right">Voir la copie</a>
+                                                </td>  
+                                            {% endif %} 
+
+
+                                        </tr>
+                                        {% endfor %} 
+                                    {% endif %}
+                
+                                    </tbody>
+                                </table>
+                            </div>
+                        
+                        </div>
+                    </div>
+        
+
+
+                </div>
+
+
+
+            </div>
+        
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+</div>
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_prof.js"></script>
+<script type="text/javascript" src="assets/js/mescript_eleve_eval.js"></script>
+
+<script>
+    $(function() {
+
+        var dataSrc = [
+            {% if get_matEnseigners is defined %} {% for key, value in get_matEnseigners %}
+                {
+                "text": "{{ value.code }}-{{ value.libele }}",
+                "iconCls": "fa fa-book",
+                "matiereid": "{{ value.id_matiere_matiere }}"
+                },
+            {% endfor %} {% endif %}
+        ];
+
+        $(".pb-filemng-template-body").html('');
+
+        var folderData = [
+
+            {% if files_get is defined %}{% for key, value in files_get %}
+                {% if (value.1 == 'docx')  or(value.1 == 'doc') %}
+                    {% set extentionss = 'docx' %}
+                {% elseif(value.1 == 'xls') or (value.1 == 'xlx') or(value.1 == 'xlsx') %}
+                {% set extentionss = 'xlx' %}
+                {%  else %}
+                    {% set extentionss = 'pdf' %}
+                {% endif %} {
+                    "icon": "<img style=\"width:20px;\" class=\"img-responsive\" src=\"assets/img/{{extentionss}}.png\">",
+                    "liens": "{{ value.0 }}",
+                    "text": "{{ key }}"
+                },
+            {% endfor %} {% endif %}
+
+        ];
+        for (var key in folderData) {
+            $(".pb-filemng-template-body").append('<tr><td style="width: 10%;">' + folderData[key].icon + ' </td><td><a href="' + folderData[key].liens + '"  download="' + folderData[key].text + '"><i class="fa fa-download" aria-hidden="true"></i></a> &nbsp; ' + folderData[key].text + '</td></tr>');
+        }
+
+        for (var key in dataSrc) { 
+            $("#treeview_test").append('<li><form action="" method="POST"><a href="index.php?p=elearning_prof&id_prof=' + {{ id_pers_personne }} + '&action=getcoursdocs&id_matiere=' + dataSrc[key].matiereid + '&matiere_select=' + dataSrc[key].text + '" name="id_personne" title="Modifier" type="submit" value="mat_id" class=""><i class="fa fa-folder" aria-hidden="true"></i>' + dataSrc[key].text + '	</a></form></li>');
+        }
+
+
+
+        
+        $('#prof_eval_desc').on('keyup', function(event) {
+
+            
+            titre = "//evenement Change sur: #prof_eval_desc";
+            info = "  // Valeur=id --> " + event.target.id;
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=MAJ_eval_Infos&cond=prof_eval_idµ' + $('#eval_id').val() + '&infos=eval_descµ' + $('#' + event.target.id).val()+ '&table=prof_eval';
+            idelemt = '#' + event.target.id;
+            root_AjaxMethod(url_info, values_info, ajax_MAJ_eval_Infos, idelemt);
+
+
+        });
+
+        function ajax_MAJ_eval_Infos(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                if (jsondata == 1) {
+                    classtype = "alert-success";
+                } else {
+                    classtype = "alert-danger";
+                }
+                infos_stat = "MISE A JOUR";
+                root_fct_showinfos_toast(infos_stat, classtype);
+            }
+
+        }
+
+        // Setup - add a text input to each footer cell
+        $('#dataTable_list_annee tfoot th').each(function() {
+            var title = $(this).text();
+            $(this).html('<input type="text" placeholder=" ' + title + '" />');
+        });
+        var dataTable_list_annee = $('#dataTable_list_annee').DataTable({
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            },
+            autoWidth: false,
+            dom: 'Blfrtip',
+            order: [[ 1, "asc" ]],
+            scrollCollapse: true,
+            paging: false,
+            bAutoWidth : false,
+            autoWidth: false,
+            columnDefs: [
+                { width: '20%', targets: 0 }
+            ],
+            fixedColumns: false,
+
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF',
+                    title : 'Notes'
+                }
+
+            ]
+        });
+        
+
+
+
+
+
+    });
+</script>
+
+
+{% endblock %} 
+
+
+
+
+
+
+

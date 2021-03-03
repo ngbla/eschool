@@ -1,0 +1,216 @@
+{% extends "main_prof.html" %} {% block title %}Suivi étudiants {% endblock %} {% block content %}
+
+<div class="row" style="
+    background-image: url('/public/assets/img/background/back_img5.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;padding-top: 20px; ">
+
+    <div class="card shadow mb-4 col-12 row">
+
+        <div class="card-header py-3 col-12">
+            <h6 class="m-0 font-weight-bold text-primary"> Liste des élèves/Etudiants de : {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}</h6>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body col-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm table-striped" id="db_list_absence" style="font-size: small;">
+                    <thead class="bg-gradient-info text-white text-center">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Matricule</th>
+                            <th>Nom/Prénom</th>
+                            <th>Date et lieu de Naiss.</th>
+                            <th>Sexe</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Matricule</th>
+                            <th>Nom/Prénom</th>
+                            <th>Date et lieu de Naiss.</th>
+                            <th>Sexe</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                        {% if getAll_elvDSgrp is defined %} {% for eleve in getAll_elvDSgrp %}
+                        <tr>
+                            <td>
+                                <img id="user_tof_mini" class="img-profile img-thumbnail" src="/files/{{ eleve.id_pers_personne}}/tiny{{ eleve.id_pers_personne}}.jpg" alt="photo eleve">
+                            </td>
+                            <td>{{ eleve.matricule }}</td>
+                            <td>{{ eleve.nom_prenom }}</td>
+                            <td>{{ eleve.date_naiss }} à {{ eleve.lieu_naiss }} <br> {{ eleve.contact}}</td>
+                            <td>{{ eleve.sexe }}</td>
+                            <td class="fieldtype_action field-152-td nowrap">
+                                <div class="row col-12">
+                                    <div class="col-6">
+                                        <button title="Absences" type="submit" name="btn_abs_eleve" class="btn_abs_eleve btn btn-info" data-toggle="modal" data-target="#modal_absence" id="abs_infos_{{ eleve.id_eleve_eleve }}" value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}">
+
+                                <i class="fas fa-clock" id="i_abs_infos_{{ eleve.id_eleve_eleve }}" value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}"></i>
+                                </button>
+                                    </div>
+                                    <form method="post" class="col-6">
+
+                                        <button title="Infos" type="submit" name="btn_info_eleve" class="btn_abs_eleve btn btn-warning" id="elev_infos_{{ eleve.id_eleve_eleve }}" value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}">
+
+                              <i class="fas fa-eye" id="i_elev_infos_{{ eleve.id_eleve_eleve }}" value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}"></i>
+                              </button>
+                                    </form>
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        {% endfor %} {% endif %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="modal_absence" tabindex="-1" role="dialog" aria-labelledby="modal_absenceLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_absenceLabel">Nom Prenom</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="container bg-light">
+                        <div class="col-md-12 text-center text-primary">
+                            SAISIE D'ABSENCE ELEVE/ETUDIANT
+                        </div>
+                    </div>
+                    <br>
+
+                    <form method="POST">
+
+                        <input type="hidden" name="ideleve_absence" id="ideleve_absence" class="form-control">
+                        <input type="hidden" name="suivi_classe" id="suivi_classe" class="form-control">
+                        <input type="hidden" name="suivi_mat" id="suivi_mat" class="form-control">
+                        <input type="hidden" name="btn_afficheMoy" id="btn_afficheMoy" class="form-control">
+
+
+                        <div class="form-row text-center">
+                            <div class="form-group col-12">
+                                 <label for="date_absence">Emploi du Temps :  </label><br><br>
+                                <select class="form-control" name="emploitps"  required style="width: 100%;">
+                                <option value="" disabled selected>Choisissez une Date|Debut-Fin|Matière|Période</option>
+                                    {% for mat in getEmploiTpsBy %}
+                                    <option value="{{mat.emploitps_id}}">
+                                        {{mat.emploitps_date}} || {{mat.emploitps_h_debut}}-{{mat.emploitps_h_fin}} ||  {{mat.mat_libelle}} || {{mat.libele_partie}} || {{mat.nom_prenom}} 
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label for="motif_absence">Motif :</label> <br>
+                                <textarea class="form-control" id="motif_absence" name="motif_absence"></textarea>
+                            </div>
+                            <div class="form-group col">
+                                <br><br>
+                                <div class="form-check">
+                                    <label class="form-check-label text-success">
+                                    <input value="1" type="radio" class="form-check-input" name="optradio" required>Justifier
+                                    </label>
+                                </div>
+                                <br>
+                                <div class="form-check">
+                                    <label class="form-check-label text-danger">
+                                    <input value="0" type="radio" class="form-check-input" name="optradio" required>Non Justifier
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="container bg-light">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-outline-primary">Envoyer</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr><br>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_prof.js"></script>
+<script>
+    // Setup - add a text input to each footer cell
+    $('#db_list_absence tfoot th').each(function() {
+        var title = $(this).text();
+        $(this).html('<input type="text" placeholder=" ' + title + '" />');
+    });
+
+    var db_list_absence = $('#db_list_absence').DataTable({
+        initComplete: function() {
+            // Apply the search
+            this.api().columns().every(function() {
+                var that = this;
+
+                $('input', this.footer()).on('keyup change clear', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        },
+        dom: 'Blfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                titleAttr: 'Copy'
+            }, {
+                extend: 'excelHtml5',
+                text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                titleAttr: 'Excel'
+            }, {
+                extend: 'csvHtml5',
+                text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                titleAttr: 'CSV'
+            }, {
+                extend: 'pdfHtml5',
+                text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                titleAttr: 'PDF'
+            }
+
+        ]
+    });
+</script>
+{% endblock %}

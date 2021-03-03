@@ -1,0 +1,186 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} {% block title %}Mes Cours{% endblock %} {% block content %}
+
+
+<!--CREATION USER CHAT AUTO-->
+<script>
+    /**
+     * utilitaire de cryptage
+     */
+    {% if groupeid_eleve is defined %}
+
+    let cipher = salt => {
+            let textToChars = text => text.split('').map(c => c.charCodeAt(0))
+            let byteHex = n => ("0" + Number(n).toString(16)).substr(-2)
+            let applySaltToChar = code => textToChars(salt).reduce((a, b) => a ^ b, code)
+
+            return text => text.split('')
+                .map(textToChars)
+                .map(applySaltToChar)
+                .map(byteHex)
+                .join('')
+        }
+        // To create a cipher
+    let myCipher = cipher('uges@x-pertiz@2020');
+    //Then cipher any text:
+    uges_username_coder = myCipher("({{eleve_idpers}})-{{eleve_nom}}");
+    //uges_avatar_coder = myCipher("{{lien_photo}}");
+    uges_avatar_coder = myCipher("{{liens}}{{id_pers_personne}}/{{id_pers_personne}}.jpg");
+    mode_connect_coder = myCipher("uges_offline");
+    //matierprof_coder= myCipher("{{matiere_select}} | Enseignant : ({{nom_prenom}})") ;
+    matierprof_coder = myCipher("{{matiere_select}}");
+    forumid_coder = myCipher("{{profpers_select}}-{{mat_select}}-{{groupeid_eleve}}");
+
+    if (typeof(localStorage.getItem("uges_username")) != undefined) {
+        localStorage.removeItem("uges_username");
+    }
+    localStorage.setItem("uges_username", uges_username_coder);
+
+    if (typeof(localStorage.getItem("uges_avatar")) != undefined) {
+        localStorage.removeItem("uges_avatar");
+    }
+    localStorage.setItem("uges_avatar", uges_avatar_coder);
+
+    if (typeof(localStorage.getItem("uges_mode_connect")) != undefined) {
+        localStorage.removeItem("uges_mode_connect");
+    }
+    localStorage.setItem("uges_mode_connect", mode_connect_coder);
+
+
+    if (typeof(localStorage.getItem("uges_matiere")) != undefined) {
+        localStorage.removeItem("uges_matiere");
+    }
+    localStorage.setItem("uges_matiere", matierprof_coder);
+
+    if (typeof(localStorage.getItem("uges_forumid")) != undefined) {
+        localStorage.removeItem("uges_forumid");
+    }
+    localStorage.setItem("uges_forumid", forumid_coder);
+
+    {% endif %}
+</script>
+
+
+<input type="hidden" name="id_matiere" value="{% if mat_select is defined %}{{mat_select}}{% endif %}" id="id_matiere">
+
+<input type="hidden" name="id_personne" value="{% if profpers_select is defined %}{{profpers_select}}{% endif %}" id="id_personne">
+
+
+
+
+<div class="card card-body container-fluid" style="
+        background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;padding-top: 20px; 
+        padding-left: 0px;
+        padding-right: 0px;">
+
+
+
+
+    <div class="container-fluid" style="min-height: 1000px; padding-left: 0px; padding-right: 0px;">
+
+        <!--DEBUT-->
+        <div class="col-12 row container-fluid" style="    padding-left: 1rem; padding-right: 0rem;">
+
+            <section class="col-12 card">
+
+                <div class="card-body">
+                    <div class=" ">
+                        <h3 class=" "> {% if groupelibelle is defined %} {{ groupelibelle }} {% endif %}</h3>
+                        <!--SECTION TCHAT FORUM WITH GROUPuges_username_coder,uges_avatar_coder,mode_connect_coder,matierprof_coder,forumid_coder-->
+                        {% if etat_online is defined %}
+                        <a href="/public/classe_chat/index.html" target="_blank" class="btn btn-sm btn-info  btn-icon-split text-right float-right">
+                            <span class="icon text-white-50">
+                                   <i class="fas fa-comments"></i>
+                                 </span>
+                            <span class="text"> Forum </span>
+                        </a>
+                        {% endif %} {% if etat_online is defined %}
+                        <!-- a href="/public/ZOOM/" style="color: #fff;background-color: #9382c0; border-color: #9382c0;" target="_blank" class="btn btn-sm btn-icon-split text-right float-right">
+                            <span class="icon text-white-50">
+                                   <i class="fas fa-comments"></i>
+                                 </span>
+                            <span class="text"> Cours en Ligne </span>
+                        </a -->
+                        <form action="" method="post" target="_blank">
+                            <button  value="jitsi" name="visio_conf_jitsi" style="color: #fff;background-color: #9382c0; border-color: #9382c0;" target="_blank" class="btn btn-sm btn-icon-split text-right float-right">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-comments"></i>
+                                    </span>
+                                <span class="text">  Visio-Conférence </span>
+                            </button>
+                        </form>
+                        {% endif %}
+                        <h3>
+                        {% if matiere_select is defined %} {{ matiere_select }} {% endif %}
+
+                        </h3>
+                        <h6 class="text-muted muted d-flex mb-1 flex-wrap">Professeur : {% if profpers_name is defined %} {{ profpers_name }} {% endif %} ( {% if profpers_tel is defined %} {{ profpers_tel }} {% endif %} )</h6>
+
+
+                        <hr>
+                        <!--SECTION-->
+                        {% if get_cour_section is defined %} {{ include('Elearning/Eleve/include/include_section.html') }} {% endif %}
+                    </div>
+                </div>
+
+
+            </section>
+
+
+
+        </div>
+        <!--DEBUT -->
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work 
+<script type="text/javascript" src="assets/js/shieldui-all.min.js"></script>
+-->
+
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+
+
+
+<script type="text/javascript" src="assets/js/upload_files.js"></script>
+
+
+<script>
+    $(function() {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        ClassicEditor
+            .create(document.querySelector('#editor1'))
+            .then(function(editor) {
+                // The editor instance
+            })
+            .catch(function(error) {
+                console.error(error)
+            })
+
+        // bootstrap WYSIHTML5 - text editor
+
+        $('.textarea').wysihtml5({
+            toolbar: {
+                fa: true
+            }
+        })
+    })
+</script>
+
+
+
+{% endblock %}

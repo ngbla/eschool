@@ -1,0 +1,339 @@
+ 
+<div class="row">
+    <div class="col-12"> <br></div>
+
+    <div style="width: 10%; text-align: left;">
+        <br>
+        <img class="img-responsive" style="width: 90%;" src="/public/assets/img/univ/{{univInfos.0.initiale_univ}}/modele_b1.jpg"  >
+    </div>
+
+    <div style="width: 70%; text-align: left;">
+        <p>MINISTÈRE DE L'ÉDUCATION NATIONALE DE L'ENSEIGNEMENT TECHNIQUE<br>ET DE LA FORMATION PROFESSIONNELLE</p>
+        <h2><strong>COLLÈGE HENRI POINCARÉ</strong></h2>
+        <br>
+        Adresse: <strong>28 BP 1087 ABJ 28</strong> <br> Telephone : <strong>22-41-67-94</strong>
+        <br>
+        Code: <strong>875054</strong><br>Statut:<strong>Privé</strong>
+    </div>
+
+
+    <div style="width: 20%; text-align: left;">
+
+        <p class="text-center">RÉPUBLIQUE DE COTE D'IVOIRE</p>
+        <p class="text-center">
+             <img class="img-responsive"  src="/public/assets/img/univ/{{univInfos.0.initiale_univ}}/emblemeci.jpg"  >
+        </p>
+
+    </div>
+
+</div>
+
+<div class="row"></div>
+
+<div class="row" style="line-height: 0.5em;">
+    <div class="col-12 text-center" style="line-height: 0.5em;">
+         <h1><b>BULLETIN DE NOTES</b></h1> 
+    </div>
+    <div class="col-4" style="line-height: 0.5em;">
+         <h4><b>{% if tb_annee_partie is defined %}{{tb_annee_partie.0.libele_partie|upper}}{% else %}1er Semestre (Test) {% endif %}</b></h4> 
+    </div>    
+    <div class="col-1" style="line-height: 0.5em;">
+    </div>
+    <div class="col-3 text-center" style="text-align: left;" style="line-height: 0.5em;">
+
+    </div>
+    <div class="col-1" style="line-height: 0.5em;">
+    </div>
+    <div class="col-3 text-center" style="line-height: 0.5em;"> 
+        <h6>Année Scolaire: <b>{% if annee_lib is defined %} {{annee_lib.0}} {% else %}2018-2019 (Test) {% endif %}</b></h6> 
+    </div>
+    <div class="col-12 text-center" style="line-height: 0.5em;"><hr style="border :2px solid black"></div>   
+</div>
+
+
+<div class="row" style="font-size: small;">
+
+    <div class="col-10 row">
+
+        <div class="col-12">
+              <h5><strong>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.nom_prenom|upper}} {% else %}NOM PRENOM (Test) {% endif %} </strong></h5>  
+        </div>
+
+        <div class="col-5" style="line-height: 1.3em;"> 
+             
+              Matricule: <strong> {% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.matricule}} {% else %}11524518Q (Test) {% endif %} </strong>
+            <br>Classe: <strong>{% if get_grpeWithBultinInfos_By is defined %} {{get_grpeWithBultinInfos_By.groupe_libelle}} {% else %}1ère G2 (Test) {% endif %} </strong>
+            <br>Effectif: <strong>{{db_moy_part_annee.effectif_grp}} </strong>  
+           
+        </div>
+
+        <div class="col-4" style="line-height: 1.3em;text-align: left;">
+              Sexe:<strong>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.sexe}} {% else %}1ère G2 (Test) {% endif %} </strong>
+            <br> Né(e)le : <strong>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.date_naiss}} {% else %}08/01/1998 (Test) {% endif %} </strong>
+            <br> Lieu de Naissance: <strong>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.lieu_naiss|upper}} {% else %}COCODY (Test) {% endif %} </strong>
+            <br>Nationalité:<strong>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.nationnalite|upper}} {% else %}IVOIRIENNE (Test) {% endif %}  </strong>  
+        </div>
+
+        <div class="col-3" style="line-height: 1.3em;">
+             Redoublant: <strong>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.statut_redoublant|upper}} {% else %}OUI (Test) {% endif %} </strong>
+            <br>Boursier: <strong>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.satut_brourse|upper}} {% else %}NON (Test) {% endif %} </strong>
+            <br>Affecté: <strong>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.statut_affecter|upper}} {% else %}AFF (Test) {% endif %} </strong>  
+        </div>
+
+    </div>
+    <div class="col-2">
+        {% if (get_etudiPers_Infos_By is defined) and (get_etudiPers_Infos_By.photo_exit=='oui') %}
+        <img src="/files/{{get_etudiPers_Infos_By.id_pers_personne}}/{{get_etudiPers_Infos_By.id_pers_personne}}.jpg " height="90px" class="img-responsive">
+        {% else %}
+         
+        {% endif %}
+    </div>
+
+    <hr>
+    <div class="col-12 container row"><br></div>
+    
+                  
+
+
+    <div class="col-12 container row">
+        <table class="table table-condensed table-bordered table-sm col-12" style="color: black;font-size: small;border:1px solid black !important;">
+            <thead style="font-size: xx-small;">
+                <tr style="background-color: grey" class="table_print_tr">
+                    <th colspan="8">   DISCIPLINE   </th>
+                    <th class="text-right">   Moy./20   </th>
+                    <th class="text-right">   Coef.   </th>
+                    <th colspan="2" class="text-right" >   Moy.Coef   </th>
+                    <th class="text-right">   Rang   </th>
+                    <th colspan="8">   Nom du Professeur   </th>
+                    <th colspan="3">   Appr. </th>
+                    <th colspan="2">   Signature Prof.  </th>
+                </tr>    
+            </thead>
+            <tbody style="font-size:1.1em;border:1px solid black !important;">
+
+                {% if get_grp_MatRepartie_WithMP_By is defined %}
+                    <!--INITIALISATION-->
+                    {% set mat_coef = 0 %} 
+                    {% set mat_Tcoef = 0 %} 
+                    {% set mat_Mp_test = 0 %} 
+                    {% set last_key = 0 %} 
+                    {% set mat_mp_last = get_grp_MatRepartie_WithMP_By|length %} 
+                    <!--PARCOURS DU TABLEAU-->                    
+                    {% for infos in get_grp_MatRepartie_WithMP_By %}
+
+                        {% set last_key = last_key + 1 %} 
+                        <!--VERIFICATION SI MP AFFICHER SINON RECUP MP-->  
+                        {% if (mat_Mp_test==0)  %}
+                            {% set mat_parent_id = infos.matiere_parent_id_tmp %} 
+                            {% set mat_parent_lib = infos.MatP_lib %} 
+                            {% set mat_Mp_test = 1 %}
+                            {% set mat_coef = 0 %} 
+                            {% set mat_Tcoef = 0 %} 
+                        {% else %}
+                            <!--::FIN:: AFFICHAGE DE LA MP SI MP suivant différent -->
+                            {% if mat_parent_id !=infos.matiere_parent_id_tmp  %}
+                                <tr>
+                                    <td colspan="8"><strong>{{mat_parent_lib}}</strong></td>
+                                    <td class="text-right" ><strong>{% if mat_coef !=0 %} {% set mat_Mp_coef = mat_Tcoef/mat_coef %} {% endif %} {{mat_Mp_coef|number_format(2)}}   </strong></td>
+                                    <td class="text-right" ><strong>{{mat_coef|number_format(2)}}</strong></td>
+                                    <td colspan="2" class="text-right"><strong>{{mat_Tcoef|number_format(2)}}</strong></td>
+                                    <td class="text-right" ></td>
+                                    <td colspan="8"> </td>
+                                    <td colspan="3"></td>
+                                    <td colspan="2"></td>
+                                </tr>
+                                {% set mat_Mp_coef = 0 %} 
+                                {% set mat_Tcoef = 0 %} 
+                                {% set mat_coef = 0 %} 
+                                {% set mat_Mp_test = 1 %} 
+
+                                {% set mat_parent_id = infos.matiere_parent_id_tmp %} 
+                                {% set mat_parent_lib = infos.MatP_lib %} 
+                               
+                            {% endif %}
+                            <!--::FIN:: -->
+                        {% endif %}
+                        <!--Recuperation du coeficient de la matiere et total coeficient-->  
+                        {% if infos.coeficient_tmp != 0 %}  
+                            {% set mat_coef = mat_coef +  infos.coeficient_tmp %} 
+                            {% set mat_Tcoef = mat_Tcoef + infos.coeficient_tmp * infos.moyenne %}                             
+                        {% else %}  
+                            {% set mat_coef = mat_coef +  infos.credit_tmp %}  
+                            {% set mat_Tcoef = mat_Tcoef + infos.credit_tmp * infos.moyenne %}                             
+                        {% endif %}
+                        <!--::DEBUT:: AFFICHAGE DE LA MATIERE--> 
+                        <tr>
+                            <td colspan="8">{{infos.libele}} </td>
+                            <td class="text-right">{{infos.moyenne|number_format(2)}}</td>
+                            <td class="text-right">
+                                {% if infos.coeficient_tmp != 0 %} {{infos.coeficient_tmp|number_format(2)}}
+                                {% else %} {{infos.credit_tmp|number_format(2)}}  {% endif %}
+                            </td>
+                            <td colspan="2" class="text-right">
+                                {% if infos.coeficient_tmp != 0 %} {% set moy_coef = infos.coeficient_tmp * infos.moyenne %} 
+                                {% else %}  {% set moy_coef = infos.credit_tmp * infos.moyenne %}  {% endif %}
+                                {{moy_coef|number_format(2)}}
+                            </td>
+                            <td class="text-right">
+                                {% for moy_rang in tble_moy_rang %}
+                                {% if moy_rang.fk_id_mat == infos.matiere_id_tmp %} 
+                                    {{moy_rang.rang_mat}} 
+                                {% endif %}   
+                                {% endfor %}                              
+                            </td>
+                            <td colspan="8">
+                                {% if infos.prof_name !=0 %} 
+                                    {% if (infos.prof_name).sexe =='M' %} 
+                                        M. {{(infos.prof_name).prof_nom}} 
+                                    {% else %}
+                                        Mme {{(infos.prof_name).prof_nom}} 
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td colspan="3"> {{infos.Appreciation}}</td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <!--::FIN:: AFFICHAGE DE LA MATIERE-->
+
+                        <!--::DEBUT::FIN DU TABLEAU ET AFFICHAGE DERNIER MP--> 
+                        {% if last_key == mat_mp_last  %}
+
+                            {% set mat_parent_id = infos.matiere_parent_id_tmp %} 
+                            {% set mat_parent_lib = infos.MatP_lib %} 
+
+                            <tr>
+                                <td colspan="8"><strong>{{mat_parent_lib}}</strong></td>
+                                <td class="text-right">
+                                    <strong> {% if mat_coef !=0 %} {% set mat_Mp_coef = mat_Tcoef/mat_coef %} {% endif %}  {{mat_Mp_coef|number_format(2)}}   </strong>
+                                </td>
+                                <td class="text-right"><strong>{{mat_coef|number_format(2)}}</strong></td>
+                                <td colspan="2" class="text-right"><strong>{{mat_Tcoef|number_format(2)}}</strong></td>
+                                <td class="text-right"></td>
+                                <td colspan="8"></td>
+                                <td colspan="3"></td>
+                                <td colspan="2"></td>
+                            </tr>
+
+                        {% endif %}
+
+                    {% endfor %}
+                    <!--FIN PARCOURS DU TABLEAU-->   
+
+                {% endif %}
+
+
+
+
+                <!-- MATIERE SANS MATIERE PARENT-->
+                {% if get_grp_MatRepartie_By is defined %}
+                {% for infos in get_grp_MatRepartie_By %}
+                    <tr >
+                        <td colspan="8">{{infos.libele}}</td>
+                        <td class="text-right">{{infos.moyenne|number_format(2)}}</td>
+                        <td class="text-right">
+                            {% if infos.coeficient_tmp != 0 %} {{infos.coeficient_tmp}}
+                            {% else %} {{infos.credit_tmp|number_format(2)}}  {% endif %}
+                        </td>
+                        <td colspan="2" class="text-right">
+                            {% if infos.coeficient_tmp != 0 %} {% set moy_coef = infos.coeficient_tmp * infos.moyenne %} 
+                            {% else %}  {% set moy_coef = infos.credit_tmp * infos.moyenne %}  {% endif %}
+                            {{moy_coef|number_format(2)}}
+                        </td>
+                        <td class="text-right">
+                            {% for moy_rang in tble_moy_rang %}
+                            {% if moy_rang.fk_id_mat == infos.matiere_id_tmp %} 
+                                {{moy_rang.rang_mat}} 
+                            {% endif %}   
+                            {% endfor %}   
+                        </td>
+                        <td colspan="8">
+                            {% if infos.prof_name !=0 %} 
+                                {% if (infos.prof_name).sexe =='M' %} 
+                                    M. {{(infos.prof_name).prof_nom}} 
+                                {% else %}
+                                    Mme {{(infos.prof_name).prof_nom}} 
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td colspan="3">{{infos.Appreciation}}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                {% endfor %}
+                {% endif %}
+                <!-- FIN MATIERE SANS MATIERE PARENT-->
+                <tr style="background-color: grey;" class="table_print_tr">
+                    <td colspan="8"><strong>TOTAUX</strong></td>
+                    <td class="text-right"><strong></strong></td>
+                    <td class="text-right"><strong>{{var_coef|number_format(2)}}</strong></td>
+                    <td colspan="2" class="text-right"><strong>{{var_moyen_coef|number_format(2)}}</strong></td>
+                    <td class="text-right"></td>
+                    <td colspan="8"></td>
+                    <td colspan="3"></td>
+                    <td colspan="2"></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-12 row container" style="width: 70%;">
+        <div class="col-4" style="border: 2px solid black; padding-top: 10px;padding-bottom: 10px;">
+            <strong>     Assiduité   </strong>
+            <br><br>    Heures d'absences justifiées : {{absence_eleve_justif}}  
+            <br><br>    Heures d'absences Non Justifiées : {{absence_eleve_nonjustif}}  
+        </div>
+        <div class="col-4" style="border: 2px solid black; padding-top: 10px;padding-bottom: 10px;">
+          
+            
+            {% if var_coef !=0 %} {% set moy_periode = var_moyen_coef/var_coef %} {% endif %}
+                Moyenne : <strong> {{db_moy_part_annee.moy_period}} / 20</strong>   
+            <br><br>    Rang : <strong> {{db_moy_part_annee.rang}} / {{db_moy_part_annee.effectif_grp}}</strong>  
+        </div>
+        <div class="col-4" style="border: 2px solid black; padding-top: 10px;padding-bottom: 10px;">
+            <strong>   Résultat de la Classe  </strong>
+            <br><br>    Plus forte moyenne : <b>{{max_moy|number_format(2)}} / 20</b>   
+            <br><br>    Plus faible moyenne : <b>{{min_moy|number_format(2)}} / 20</b>   
+            <br><br>    Moyenne de la Classe : <b>{{fc_moy|number_format(2)}} / 20</b>   
+        </div>
+    </div>
+    <div class="col-12 row container" style="width: 70%">
+        <div class="col-4" style="border: 2px solid black; padding-top: 10px;padding-bottom: 10px;">
+            <strong><u> DISTINCTIONS  </u> </strong>
+            <br><br>
+            <span style="border : 2px solid black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  Tableau d'honneur  
+            <span style="border : 2px solid black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  Refusé  
+            <br><br>
+            <span style="border : 2px solid black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  Tableau d'honneur + Encouragement  
+            <br><br>
+            <span style="border : 2px solid black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  Tableau d'honneur + Félicitations  
+            <br><br> <strong><u> SANCTIONS  </u></strong>
+            <br><br>
+            <span style="border : 2px solid black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  Avertissement pour travail insuffisant  
+            <br><br>
+            <span style="border : 2px solid black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  Blâme pour travail insuffisant  
+            <br><br>
+            <span style="border : 2px solid black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  Avertissement pour mauvaise conduite  
+            <br><br>
+            <span style="border : 2px solid black ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  Blâme pour mauvaise Conduite  
+        </div>
+        <div class="col-4" style="border: 2px solid black; padding-top: 10px;padding-bottom: 10px;" style="text-align: center;">
+            <p class="text-center"><strong><u>  Appréciations du Conseil de Classe  </u></strong></p>
+            <br><br>      <br><br><br>
+            
+            <br><br><strong>
+                   </strong>
+        </div>
+        <div class="col-4" style="border: 2px solid black; padding-top: 10px;padding-bottom: 10px;">
+           <p class="text-center"> <strong><u> VISA DU CHEF DE L'ETABLISSEMENT  </u></strong></p>
+            <!-- Abidjan le {{ "now"|date("d/m/Y") }}   -->           
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <p class="text-center"> <u> Le Directeur des Enseignements  </u> <br><br> <b>DIALLO Abdramane</b></p>
+        </div>
+    </div>
+    
+    <div class="col-12"></div>
+    <div class="col-12 row container" style="width: 70%; border: 2px solid black; padding-top: 10px;color: black;font-size: small;">
+        <div class="col-12"><em><h4> Nota Bene: Aucun duplicata ne sera délivré en cas de perte.</h4></em></div>
+            
+    </div>
+</div>

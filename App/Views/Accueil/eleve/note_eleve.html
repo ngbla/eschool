@@ -1,0 +1,92 @@
+{% extends "main_eleve.html" %} 
+
+{% block title %}Eleve - Note{% endblock %} 
+
+{% block content %}
+
+<div class="row" style="
+    background-image: url('/public/assets/img/background/back_img5.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;padding-top: 20px; ">
+    <section class="content row col-12">
+        <div class="card col-12">
+          <div class="card-header p-2">
+
+            <ul class="nav nav-pills">
+
+              <li class="nav-item"><a class="nav-link active" href="#activity_prof" data-toggle="tab">Mes Notes</a></li>
+
+            </ul>
+
+          </div><!-- Notifications -->
+
+          <div class="card-body">
+
+            <div class="tab-content">
+
+              <!-- /.card-header -->
+
+              <div class="active tab-pane" id="activity_prof">
+                  <!-- Card Header - Dropdown -->
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                      <h6 class="m-0 font-weight-bold text-primary">Mon Carnet de note</h6>
+                  </div>
+                  <!-- Card Body -->    <!-- DataTales Example -->
+                  <div class="table-responsive">
+                      <table class="table table-striped" id="dataTable_list_notesElev" width="100%" cellspacing="0" table>
+                          <thead class="bg-gradient-info text-white text-center">
+                              <tr>
+                                <th >Date</th>
+                                <th >Période</th>
+                                <th >Session</th>
+                                <th >Libelle de l'evaluation</th>
+                                <th >Matière</th>
+                                <th >Coef.</th>
+                                <th >Note</th>
+                                <th >Notation</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {% if getAllEleveNoteBy is defined %}
+                                  {% for key, value in getAllEleveNoteBy  %}
+                                  <tr> 
+                                    <td> {{value.eval_date}} </td>
+                                    <td> {{value.libele_partie}} </td>
+                                    <td> {{value.Libelle_session}} </td>
+                                    <td> {{value.eval_libelle}} </td>
+                                    <td> {{value.lib_mat}} </td>
+                                    <td> {{value.coef}} </td> 
+                                    <td> {{value.note}} </td> 
+                                    <td>/ {{value.notation}} </td> 
+                                  </tr>
+                                  {% endfor %} 
+                              {% endif %}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+
+              <!-- /.tab-pane -->
+
+            </div>
+
+            <!-- /.tab-content -->
+
+          </div><!-- /.card-body -->
+        </div>
+    </section>
+</div>
+  <!-- /.content -->
+
+
+{% endblock %}
+
+
+
+{% block javascript_footer_add %}
+
+<script src="assets/js/mescript_eleve.js"></script>
+
+{% endblock %} 
+

@@ -1,0 +1,243 @@
+<div class="container-fluid" style="font-size: xx-small;">
+
+    <div class="row">
+
+        <div class="col-4 text-center">
+            </br>
+            </br>
+            <strong>MINISTERE DE L'ENSEIGNEMENT SUPERIEUR                                              
+            <br>ET DE LA RECHERCHE SCIENTIFIQUE</strong>
+            <br>
+            <img src="/public/assets/images/bulletin/modele_b1_logo.jpg" width="100" height="100">
+
+        </div>
+
+        <div class="col-4 text-center">
+            </br>
+            </br>
+            </br>
+            </br>
+            <strong>{% if get_grpeWithBultinInfos_By is defined %} {{get_grpeWithBultinInfos_By.groupe_libelle}} {% else %}LICENCE 3 Informatique, Option Génie Logiciel (Test) {% endif %} </strong>
+            </br>
+            {% if tb_annee_partie is defined %}{{tb_annee_partie.0.libele_partie|upper}}{% else %}1er Semestre (Test) {% endif %}
+            </br>
+        </div>
+
+        <div class="col-4 text-center">
+            </br>
+            </br>
+            <strong>RÉPUBLIQUE DE COTE D'IVOIRE</strong></br>
+            <hr width="100" align="center" color="black">
+            <strong>Union - Discipline - Travail</strong></br>
+            <hr width="100" align="center" color="black">
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-8" text-align="justify">
+            <br>
+            <h6><strong>Institut Universitaire d'Abidjan</strong></h6>
+            <table>
+                <tr>
+                    <td>Matricule </td>
+                    <td>: <b>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.matricule}} {% else %}17MI08793 (Test) {% endif %} </b></td>
+                </tr>
+
+                <tr>
+                    <td>Nom et Prénoms </td>
+                    <td>: <b>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.nom_prenom|upper}} {% else %}NOM PRENOM (Test) {% endif %}</b>   </b></td>
+                </tr>
+
+                <tr>
+                    <td>Né(e) le </td>
+                    <td>: <b>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.date_naiss}} {% else %}08/01/1998 (Test) {% endif %}  à {% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.lieu_naiss|upper}} {% else %}COCODY (Test) {% endif %} </b> &nbsp; &nbsp; &nbsp;  Sexe:<b>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.sexe}} {% else %}M (Test) {% endif %}</td>
+                </tr>
+
+                <tr>
+                    <td>Nationalité </td>
+                    <td>: <b>{% if get_etudiPers_Infos_By is defined %} {{get_etudiPers_Infos_By.nationnalite|upper}} {% else %}IVOIRIENNE (Test) {% endif %} </b></td>
+                </tr>
+
+                <tr>
+                    <td>Effectif </td>
+                    <td>: <b>{{db_moy_part_annee.effectif_grp}} </b></td>
+                </tr>
+            </table>
+
+            <br>
+            <center><strong>RELEVE DE NOTES</strong></center>
+        </div>
+
+        <div class="col-4 text-center">
+            <br><strong>Année Académique : </strong>{% if annee_lib is defined %} {{annee_lib.0}} {% else %}2018-2019 (Test) {% endif %}</br>
+            </br>
+
+            {% if get_etudiPers_Infos_By is defined %}
+            <img src="/files/{{get_etudiPers_Infos_By.id_pers_personne}}/{{get_etudiPers_Infos_By.id_pers_personne}}.jpg " height="90px" class="img-responsive"> {% else %}
+            <img src="/public/assets/images/bulletin/m.png" height="90px" class="img-responsive"> {% endif %}
+
+            </br> <br><strong>ECTS</strong></br>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="row" style="font-size: xx-small;">
+        <br>
+        <div class="col-12 container row" style="font-size: xx-small;">
+            <table class="table table-condensed table-bordered table-sm col-12" style="color: black;font-size: xx-small;">
+
+                <tbody style="font-size: xx-small;">
+
+                    {% if get_grp_MatRepartie_WithMP_By is defined %} {% set mat_coef = 0 %} {% set mat_Tcoef = 0 %} {% set mat_Mp_test = 0 %} {% set last_key = 0 %} {% set mat_mp_last = get_grp_MatRepartie_WithMP_By|length %} {% set matarray_last_cle = get_grp_MatRepartie_WithMP_By|length
+                    %} {% set MP_array = [] %}
+
+                    <!-- NOUVEAU -->
+                    {% for infosMP in get_grp_MatRepartie_WithMP_By %} {% if infosMP.matiere_parent_id_tmp in MP_array %} {% else %} {% set testcle = 0 %} {% set mat_parent_id = infosMP.matiere_parent_id_tmp %} {% set mat_parent_lib = infosMP.MatP_lib %} {% set mat_parent_code
+                    = infosMP.MatP_code %} {% set mat_coef = 0 %} {% set mat_Tcoef = 0 %} {% set MP_array = MP_array|merge([infosMP.matiere_parent_id_tmp]) %} {% for infosEN in get_grp_MatRepartie_WithMP_By %}
+                    <!-- FIN AFFICHAGE DES MATIERES PARENTS -->
+                    {% if testcle == 0 %}
+                    <tr class="table-active">
+                        <td><strong>{{mat_parent_code}} : &nbsp;&nbsp;&nbsp;&nbsp; {{mat_parent_lib}}</strong></td>
+                        <td> <strong></strong></td>
+                        <td><strong></strong></td>
+                        <td><strong></strong></td>
+                        <td></td>
+                        <td> </td>
+                        <td></td>
+                    </tr>
+                    {% endif %}
+                    <!-- FIN AFFICHAGE DES MATIERES PARENTS -->
+                    {% set testcle = testcle + 1 %} {% if infosMP.matiere_parent_id_tmp == infosEN.matiere_parent_id_tmp %} {% if infosEN.coeficient_tmp != 0 %} {% set mat_coef = mat_coef + infosEN.coeficient_tmp %} {% else %} {% set mat_coef = mat_coef + infosEN.credit_tmp
+                    %} {% endif %} {% if infosEN.coeficient_tmp != 0 %} {% set mat_Tcoef = mat_Tcoef + infosEN.coeficient_tmp * infosEN.moyenne %} {% else %} {% set mat_Tcoef = mat_Tcoef + infosEN.credit_tmp * infosEN.moyenne %} {% endif %}
+
+                    <!-- AFFICHAGE DES MATIERES ENFANTS -->
+                    <tr>
+                        <td> &nbsp;&nbsp;&nbsp; {{infosEN.libele}}</td>
+                        <td>{{ (infosEN.moyenne)|number_format(2, '.', ',') }} </td>
+                        <td>
+                            {% if infosEN.coeficient_tmp != 0 %} {{infosEN.coeficient_tmp}} {% else %} {{infosEN.credit_tmp}} {% endif %}
+                        </td>
+                        <td>
+                            {% if infosEN.coeficient_tmp != 0 %} {% set moy_coef = infosEN.coeficient_tmp * infosEN.moyenne %} {% else %} {% set moy_coef = infosEN.credit_tmp * infosEN.moyenne %} {% endif %} {{moy_coef}}
+                        </td>
+                        <td>
+                            {% for moy_rang in tble_moy_rang %} {% if moy_rang.fk_id_mat == infosEN.matiere_id_tmp %} {{moy_rang.rang_mat}} {% endif %} {% endfor %}
+                        </td>
+                        <td>
+                            {% if infosEN.prof_name !=0 %} {% if (infosEN.prof_name).sexe =='M' %} M. {{(infosEN.prof_name).prof_nom}} {% else %} Mme {{(infosEN.prof_name).prof_nom}} {% endif %} {% endif %}
+                        </td>
+                        <td> </td>
+                    </tr>
+                    <!-- FIN AFFICHAGE DES MATIERES ENFANTS -->
+                    {% endif %}
+                    <!-- FIN AFFICHAGE DES MATIERES PARENTS -->
+                    {% if testcle == matarray_last_cle %}
+                    <tr class="table-active">
+                        <td> &nbsp;&nbsp;&nbsp; <strong>Moyenne de l'UE</strong></td>
+                        <td> <strong>
+                                                    {% if mat_coef !=0 %} {% set mat_Mp_coef = mat_Tcoef/mat_coef %} {% endif %} 
+                                                    {{ (mat_Mp_coef)|number_format(2, '.', ',') }} 
+                                            </strong></td>
+                        <td><strong>{{mat_coef}}</strong></td>
+                        <td><strong>{{mat_Tcoef}}</strong></td>
+                        <td>
+                            {% if mat_Mp_coef
+                            < 10 %}<strong>Refusé(e)</strong>{% else %}<strong>Validé(e)</strong>{% endif %}
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            {% if mat_Mp_coef<6 %} Mention Médiocre 
+                            {% elseif (mat_Mp_coef < 8 ) and ( 6 <= mat_Mp_coef) %} Mention Faible 
+                            {% elseif (mat_Mp_coef < 10 ) and ( 8 <= mat_Mp_coef) %} Mention Insuffisant 
+                            {% elseif (mat_Mp_coef < 12 ) and ( 10 <= mat_Mp_coef) %} Mention Passable 
+                            {% elseif (mat_Mp_coef < 14 ) and ( 12 <= mat_Mp_coef) %} Mention Assez Bien 
+                            {% elseif (mat_Mp_coef < 16 ) and ( 14 <= mat_Mp_coef) %} Mention Bien 
+                            {% elseif (mat_Mp_coef < 17 ) and ( 16 <= mat_Mp_coef) %} Mention Très Bien 
+                            {% elseif (mat_Mp_coef < 18 ) and ( 18 <= mat_Mp_coef) %} Mention Très Excellent 
+                            {% else %} {% endif %} 
+                        </td>
+                    </tr>
+                    {% set mat_Mp_coef = 0 %} {% set mat_Tcoef = 0 %} {% set mat_coef = 0 %} {% set mat_Mp_test = 0 %} {% endif %}
+                    <!-- FIN AFFICHAGE DES MATIERES PARENTS -->
+                    {% endfor %} {% endif %} {% endfor %} {% endif %} {% if get_grp_MatRepartie_By is defined %} {% for infos in get_grp_MatRepartie_By %}
+                    <tr>
+                        <td>{{infos.libele}}</td>
+                        <td>{{infos.moyenne}}</td>
+                        <td>
+                            {% if infos.coeficient_tmp != 0 %} {{infos.coeficient_tmp}} {% else %} {{infos.credit_tmp}} {% endif %}
+                        </td>
+                        <td>
+                            {% if infos.coeficient_tmp != 0 %} {% set moy_coef = infos.coeficient_tmp * infos.moyenne %} {% else %} {% set moy_coef = infos.credit_tmp * infos.moyenne %} {% endif %} {{moy_coef}}
+                        </td>
+                        <td>
+                            {% for moy_rang in tble_moy_rang %} {% if moy_rang.fk_id_mat == infos.matiere_id_tmp %} {{moy_rang.rang_mat}} {% endif %} {% endfor %}
+                        </td>
+                        <td>
+                            {% if infos.prof_name !=0 %} {% if (infos.prof_name).sexe =='M' %} M. {{(infos.prof_name).prof_nom}} {% else %} Mme {{(infos.prof_name).prof_nom}} {% endif %} {% endif %}
+                        </td>
+                        <td>{{infos.Appreciation}}</td>
+                    </tr>
+                    {% endfor %} {% endif %}
+
+
+                    <tr class="table-info">
+                        <td><strong>Moyenne générale (/20)</strong></td>
+                        <td><strong> {{db_moy_part_annee.moy_period}} / 20</strong></td>
+                        <td><strong>{{var_coef}}</strong></td>
+                        <td><strong>{{var_moyen_coef}}</strong></td>
+                        <td> {% if db_moy_part_annee.moy_period < 10 %}<strong>REFUSE(E)</strong>{% else %}<strong>ADMIS(E)</strong>{% endif %}</td>
+                        <td> Rang : <strong> {{db_moy_part_annee.rang}} / {{db_moy_part_annee.effectif_grp}}</strong></td>
+                        <td>
+                            {% if db_moy_part_annee.moy_period  <6 %} Mention Médiocre 
+                            {% elseif (db_moy_part_annee.moy_period < 8 ) and ( 6 <= db_moy_part_annee.moy_period) %} Mention Faible 
+                            {% elseif (db_moy_part_annee.moy_period < 10 ) and ( 8 <= db_moy_part_annee.moy_period) %} Mention Insuffisant 
+                            {% elseif (db_moy_part_annee.moy_period < 12 ) and ( 10 <= db_moy_part_annee.moy_period) %} Mention Passable 
+                            {% elseif (db_moy_part_annee.moy_period < 14 ) and ( 12 <= db_moy_part_annee.moy_period) %} Mention
+                                Assez Bien 
+                            {% elseif (db_moy_part_annee.moy_period < 16 ) and ( 14 <= db_moy_part_annee.moy_period) %} Mention Bien 
+                            {% elseif (db_moy_part_annee.moy_period < 17 ) and ( 16 <= db_moy_part_annee.moy_period) %} Mention Très Bien 
+                            {% elseif (db_moy_part_annee.moy_period < 18 ) and ( 18 <= db_moy_part_annee.moy_period) %} Mention Très Excellent 
+                            {% else %} {% endif %} </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row" style="font-size: small;">
+
+        <div class="col-12" style="font-size: xx-small;">
+            <p>
+                <strong>Fait à Abidjan, le {{ "now"|date("d/m/Y") }}</strong>
+                <br><strong>Directeur Général, P.I</strong></br>
+                <br></br>
+                <br><strong>Prof. ANOH Kouassi Paul</strong>
+                <br><br><br>
+            </p>
+        </div>
+
+        <br>
+        <div class="col-12" style="border: 2px solid #e3e6f0; padding-top: 10px;color: black;font-size: xx-small;">
+            <center>
+                <em>Nota Bene: Il ne sera pas délivré de duplicata de ce relevé.</em>
+            </center>
+            <center>
+                <p>II plateaux, rue L40, Carrefour Cascades - 01 BP 12159 Abidjan 01<br/> Tél: (225) 22 42 22 65/07 23 18 62 - Fax : (225) 22 42 27 24<br/> Site Web: wwww.iua-ci.org E-mail: iua@iua-ci.org </p>
+            </center>
+
+        </div>
+
+        <br>
+
+    </div>
+</div>

@@ -1,0 +1,853 @@
+{% extends "main_prof.html" %} {% block title %}Admin - Délibération{% endblock %} {% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> {% endif %}
+
+
+<div class="card-body" style="
+    background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;padding-top: 20px; 
+    padding-left: 0px;
+    padding-right: 0px;">
+
+        {% if moy_annee_filtre is defined %}
+        <input type="hidden" name="moy_annee_filtre" value="{{moy_annee_filtre}}">
+        <input type="hidden" name="moy_annee_lib" value="{{moy_annee_lib}}">
+        {% endif %}
+
+        <div class="row col-12">
+            <hr style="border: 2px solid #f8f9fc;width: 100%;">
+            <br>
+            Filtres :
+            <br>
+
+            <form method="post" class="row col">
+                <div class="input-group mb-3 col">                    
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Année scolaire</button>
+                        </div>
+                        <select class="form-control" id="moy_annee_filtre" name="moy_annee_filtre" required>
+
+                            <option value="0">Choisissez l'année</option>
+                            {% if allannee is defined %}                 
+                                {% for key, value in allannee  %}
+                                <option value="{{value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                {% endfor %} 
+                            {% endif %}
+                        </select>
+    
+                        <div class="col">
+                            <button type="submit" class="btn btn-outline-info">Choisir</button>
+                        </div>
+                </div>                    
+            </form>                  
+
+
+            <div class="input-group mb-3 col">
+                <h6> <b>ANNÉE SCOLAIRE</b>  : {{moy_annee_lib}} </h6>
+            </div>
+        </div>
+        <br>
+
+        <!-- Nav pills -->
+        <ul class="nav nav-pills nav-tabs" role="tablist">
+ 
+            <li class="nav-item">
+                <a class="nav-link {% if (panel is defined) and (panel == 1) %}active{% else %}{% endif %}" data-toggle="pill" href="#eval_menu1">Conditions</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if (panel is defined) and (panel == 2) %}active{% endif %}" data-toggle="pill" href="#eval_home">Critères</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if (panel is defined) and (panel == 3) %}active{% endif %}" data-toggle="pill" href="#bilan_note">Stats</a>
+            </li>
+
+        </ul>
+
+        <!-- Content Row -->
+        <div class="tab-content row col-12">
+
+            <div id="eval_menu1" class="row col-12 container tab-pane {% if (panel is defined) and (panel == 1) %}active{% else %}{% endif %}">
+
+                
+                <div class="row col-12"><br><br></div>
+                
+                <div class="card card-body row col-12">
+
+                    <div class="row col-6">
+                        <form class="row col"  method="post">                        
+                            <div class="input-group mb-3 col">
+                                <div class="input-group-prepend ">
+                                    <button type="button" class="btn btn-primary">Classe</button>
+                                </div>
+
+                                    <input type="hidden" name="moy_annee_filtre" value="{{moy_annee_filtre}}">
+                                    <select class="form-control" id="moy_classe" name="moy_classe" required>
+                                        <option value="" selected disabled>Choisissez une classe</option>
+                                        {% if (getClassesBy is defined)  %}  
+                                        {% for key, value in getClassesBy  %}
+                                            <option value="{{value.groupe_id}}">{{ value.groupe_libelle }}</option>
+                                        {% endfor %}                
+                                        {% endif %}
+                                </select>
+
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-outline-info">Choisir</button>
+                            </div>
+                        </form>                        
+                    </div>
+                
+
+                    <div class="col-12 table-responsive">
+                        <form action="" method="post">
+                            <input type="hidden" name="moy_annee_filtre" value="{{moy_annee_filtre}}">
+                            <input type="hidden" name="moy_classe" value="{{moy_classe}}">
+                            
+                            <table class="table table-striped table-bordered table-hover table-sm" id="dtb_list_elevmoy" width="100%" cellspacing="0" style="width: 100%;font-size: smaller;">
+                                <caption>Année Académique {{moy_annee_lib}} |  Classe : {{infos_groupe.0.groupe_libelle}}  </caption>
+                                <thead class="bg-gradient-info text-white text-center">
+                                    <tr>
+                                        <th colspan="2" >Année Académique {{moy_annee_lib}} |  Classe : {{infos_groupe.0.groupe_libelle}}</th>
+                                        {% if get_anneScol_Partie_By is defined %}
+                                        {% for info in get_anneScol_Partie_By %}
+                                            <th> </th>
+                                            <th></th>
+                                        {% endfor %}
+                                        {% endif %}
+                                        <th>
+                                            {% if getbd_fin_anneescol.0.nom_prenom is defined %}
+                                            <span class="badge badge-success">  
+                                                <i class="fa fa-check"></i> 
+                                                Année terminer par : {{getbd_fin_anneescol.0.nom_prenom}}
+                                            </span>
+                                            {% elseif getAllElevByGrp is defined %}
+                                            <button type="submit" class="btn btn-outline-danger  form-control">Valider</button></th>
+                                            {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2">Matricule</th>
+                                        <th rowspan="2">Nom</th>
+                                        {% if get_anneScol_Partie_By is defined %}
+                                        {% for info in get_anneScol_Partie_By %}
+                                            <th colspan="2">{{info.libele_partie}} </th>
+                                        {% endfor %}
+                                        {% endif %}
+                                        <th rowspan="2">
+                                            Résultat <br>
+                                            {% if getbd_fin_anneescol.0.nom_prenom is defined %}
+                                            {% else %}
+                                            <select class="form-control" id="next_annee" name="next_annee" required>
+                                                <option value="0">Année suivante</option>
+                                                {% if allannee is defined %}                 
+                                                    {% for key, value in allannee  %}
+                                                    <option value="{{value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                                    {% endfor %} 
+                                                {% endif %}
+                                            </select>
+                                            {% endif %}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        
+                                        {% if get_anneScol_Partie_By is defined %}
+                                        {% for info in get_anneScol_Partie_By %}
+                                            <th>Crédit </th>
+                                            <th>Moyenne</th>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </tr>
+
+                                </thead>
+                    
+                                <tbody>
+                                    {% if getAllElevByGrp is defined %}
+                                        {% for elev in getAllElevByGrp %}
+                                            {% set tmoy=0 %}
+                                            {% set tcredit=0 %}
+                                            {% set var_test_auto=1 %}
+                                            {% set var_test_admin=1 %}
+                                            {% set tperdiod=0 %}
+                                            <tr>
+                                                <td>{{elev.matricule}}</td>
+                                                <td>{{elev.nom_prenom}}</td>
+
+                                                {% if (grpe_critere is defined) and (grpe_critere != 0) %}
+                                                    {%  set resultfinal = 1 %}
+                                                {% endif %}
+
+                                                {% if get_anneScol_Partie_By is defined %}
+                                                {% for info in get_anneScol_Partie_By %}
+                                                    <!-- Initialisation du test -->
+                                                   
+                                                    <!-- TEST CREDIT -->
+                                                    <td class="text-right">
+
+                                                        {% set idpart = info.id_annee_partie %}
+                                                        {{ ((elev.infos)[idpart]).tmp_credit}}
+                                                        {% set tcredit= tcredit + ((elev.infos)[idpart]).tmp_credit %}
+
+                                                        {% if (grpe_critere is defined) and (grpe_critere != 0) and (grpe_critere.0.periode_credit == "periodique") and (grpe_critere.0.credit_admin_min != 0 ) and (grpe_critere.0.credit_admin_min > ((elev.infos)[idpart]).tmp_credit ) %}
+                                                            {%  set var_test_admin = 0 * var_test_admin %}
+                                                        {% endif %}
+
+                                                        {% if (grpe_critere is defined) and (grpe_critere != 0) and (grpe_critere.0.periode_credit == "periodique") and (grpe_critere.0.credit_auto_min != 0 ) and (grpe_critere.0.credit_auto_min > ((elev.infos)[idpart]).tmp_credit ) %}
+                                                            {%  set var_test_auto = 0 * var_test_auto %}
+                                                        {% endif %}
+
+                                                    </td>
+                                                    <!-- TEST MOYENNE -->
+                                                    <td class="text-right">
+                                                        {% for moy in elev.moyenne %}
+                                                        {% if moy.fk_id_periode ==info.id_annee_partie %}
+                                                            {{moy.moy_period}}
+                                                            {% set tmoy= tmoy + moy.moy_period %}
+
+                                                            {% if (grpe_critere is defined) and (grpe_critere != 0) and (grpe_critere.0.periode_moy == "periodique") and (moy.moy_period != 0) and (moy.moy_period < 10) %}
+                                                                {%  set var_test_admin = 0 * var_test_admin %}
+                                                                {%  set var_test_auto = 0 * var_test_auto %}
+                                                            {% endif %}
+                                                            
+
+                                                        {% endif %}
+                                                        {% endfor %}
+
+                                                    </td>
+                                                {% endfor %}
+                                                {% endif %}
+                                                
+                                                <td>{% if tperdiod != 0 %}
+                                                    Moyenne :{{tmoy/tperdiod}}
+                                                    {%  set r_final = tmoy/tperdiod %}
+                                                    {% endif %}
+                                                    <br>
+                                                    Crédit :{{tcredit}}
+
+                                                    {% if getbd_fin_anneescol.0.nom_prenom is defined %}
+                                                    {% else %}
+
+                                                    {% if (grpe_critere is defined) and (grpe_critere != 0) and (grpe_critere.0.periode_moy == "annuelle") and (tperdiod != 0) and (r_final < 10) %}
+                                                        {%  set var_test_admin = 0 * var_test_admin %}
+                                                        {%  set var_test_auto = 0 * var_test_auto %}
+                                                    {% endif %}
+
+                                                    {% if (grpe_critere is defined) and (grpe_critere != 0) and (grpe_critere.0.periode_credit == "annuelle") and  (grpe_critere.0.credit_admin_min != 0 ) and (grpe_critere.0.credit_admin_min > tcredit) %}
+                                                        {%  set var_test_admin = 0 * var_test_admin %}
+                                                    {% endif %}
+
+                                                    {% if (grpe_critere is defined) and (grpe_critere != 0) and (grpe_critere.0.periode_credit == "annuelle") and  (grpe_critere.0.credit_auto_min != 0 ) and (grpe_critere.0.credit_auto_min > tcredit) %}
+                                                        {%  set var_test_auto = 0 * var_test_auto %}
+                                                    {% endif %}
+                                                    
+                                                    <br><br>
+                                                    <div class="input-group mb-3 col">                    
+                                                        <select class="form-control" name="bilan_result[]" required>
+                                                            {% if  (var_test_admin == 1) or (var_test_auto == 1)  %}
+                                                                {% if  var_test_admin == 1 %}
+                                                                    <option value="{{elev.id_eleve_eleve}}/_/Admis"  selected>Admis(e) </option>
+                                                                {% else %}
+                                                                    <option value="{{elev.id_eleve_eleve}}/_/Autoriser"  selected>Autoriser </option>
+                                                                {% endif %}
+                                                                <option value="" disabled >Résultat final</option>
+                                                            {% else %}
+                                                                <option value="" disabled selected>Résultat final </option>
+                                                            {% endif %}
+                                                            
+                                                            <option value="{{elev.id_eleve_eleve}}/_/Admis">Admis(e)</option>
+                                                            <option value="{{elev.id_eleve_eleve}}/_/Autoriser">Autoriser</option>
+                                                            <option value="{{elev.id_eleve_eleve}}/_/Redouble">Redouble</option>
+                                                        </select>
+                                                    </div>  
+                                                    {% endif %} 
+
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+
+                    <!-- /.post -->
+                </div>
+
+                
+            </div>
+
+            <div id="eval_home" class="row col-12 card card-body tab-pane {% if (panel is defined) and (panel == 2) %}active{% endif %}" style="font-size: xx-small;">
+
+                <div class="row col-12"> <br><br></div>
+                <form method="post" class=" row col-12 ">
+                    <input type="hidden" name="moy_annee_filtre" value="{{moy_annee_filtre}}">
+                    <div class="row col-6"> 
+                        <br>
+                        <legend style="font-size: larger;"><h6 class="text-warning">* Filtre</h6> </legend>
+                        <div class="input-group mb-3 col-12">                    
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Département</button>
+                            </div>
+                            <select class="form-control" name="critere_depart" required>
+                                <option  disabled selected>Choisissez un département</option>
+                                {% if get_all_departBy is defined %}                 
+                                    {% for key, value in get_all_departBy  %}
+                                    <option value="{{value.id_depat }}">{{ value.lib_depat }}</option>
+                                    {% endfor %} 
+                                {% endif %}
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="row col-3"> 
+                        <br>
+                        <legend style="font-size: larger;"><h6 class="text-warning">
+                            * Vérification des moyennes
+                        </h6> </legend>  
+        
+                        <div class="input-group mb-3 col-12">                    
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Période</button>
+                            </div>
+                            <select class="form-control"  name="critere_verif_periodemoyenne" required>
+                                <option value="aucune">Aucune</option>
+                                <option value="annuelle">Annuelle</option>
+                                <option value="periodique">Périodique</option>
+                            </select>
+                        </div>  
+                    </div> 
+                    <div class="row col-3"> 
+                        <br>
+                        <legend style="font-size: larger;"><h6 class="text-warning">
+                            *Vérification des crédits
+                        </h6> </legend>  
+        
+                        <div class="input-group mb-3 col-12">                    
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Période</button>
+                            </div>
+                            <select class="form-control"  name="critere_verif_periodecredit" required>
+                                <option value="aucune">Aucune</option>
+                                <option value="annuelle">Annuelle</option>
+                                <option value="periodique">Périodique</option>
+                            </select>
+                        </div>  
+                    </div>                                        
+                    <div class="row col-4"> 
+                        <br>
+                        <legend style="font-size: larger;"><h6 class="text-warning">
+                            * Critère d'admission</h6> </legend>    
+                        <div class="input-group mb-3 col-12">                    
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Crédit Minimum</button>
+                            </div>
+                            <input type="number" min="0" max="60"  name="critere_admis_min" class="form-control">
+                        </div>  
+                    </div>
+                    <div class="row col-4"> 
+                        <br>
+                        <legend style="font-size: larger;"><h6 class="text-warning">
+                            * Critère d'autorisation</h6> </legend>
+
+                        <div class="input-group mb-3 col-12">                    
+                            <div class="input-group-prepend ">
+                                <button type="button" class="btn btn-primary">Crédit Minimum</button>
+                            </div>
+                            <input type="number" min="0" max="260"  name="critere_auto_min"  class="form-control">
+                        </div> 
+                    </div>
+                    <div class="input-group mb-3 "> 
+                        <div class="input-group-prepend ">
+                            <input type="hidden" name="btn_critere_add" value="{{moy_annee_filtre}}">
+                            <button type="submit" class="btn btn-outline-primary" name="btn_add_cond" >Ajouter critère</button>
+                        </div>
+                    </div>  
+
+                    
+                </form>
+
+                <div class="row col-12 "> 
+
+                    <div class="table-responsive">
+                        <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="dataTable_list_creermatiere" width="100%" cellspacing="0" table>
+                            <thead class="bg-gradient-info text-white text-center">
+                                <tr>
+                                    <th>Département</th>
+                                    <th>Vérification Moyenne</th>
+                                    <th>Vérification Crédit</th>
+                                    <th>Crédit minimum d'admission</th>
+                                    <th>Crédit minimum d'autorisation</th>
+                                    <th></th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                {% if get_all_critereadmin is defined %} 
+                                {% for key, value in get_all_critereadmin %} 
+                                <tr>
+                                    <td>{{ value.lib_depat }}</td>
+                                    <td>{{ value.periode_moy }}</td>
+                                    <td>{{ value.periode_credit }}</td>
+                                    <td>{{ value.credit_admin_min }}</td>
+                                    <td>{{ value.credit_auto_min }}</td>
+                                    <td>
+   
+                                    </td>
+                                </tr>
+                                {% endfor %} {% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div id="bilan_note" class="row col-12 container-fluid tab-pane {% if (panel is defined) and (panel == 3) %}active{% endif %}">
+                <br>
+
+            </div>
+
+        </div>
+
+</div>
+
+
+{% endblock %} 
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+    $(document).ready(function() {
+
+        var dataTable_list_evalnonprog = $('#dataTable_list_evalnonprog').DataTable({
+            dom: 'Blfrtip',
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+            },
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    title: 'Evaluations',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+        var dataTable_bilanok = $('#dataTable_bilanok').DataTable({
+            dom: 'Blfrtip',
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+            },
+            "order": [[1, "asc"]],
+            "pageLength": 50,
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    title: 'Evaluations',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+        $('table tfoot th').each(function() {
+            var title = $(this).text();
+            $(this).html('<input style="width: 100%;" type="text" placeholder="Search ' + title + '" />');
+        });
+        // Setup - add a text input to each footer cell
+
+        $(document.body).on("change", "#moy_classe", function(e) {
+            //doStuff
+            //alert('change prof_eval_select_groupe');
+ 
+            var id_groupe = $('#moy_classe').val();
+            //alert(id_prof,id_groupe);
+
+            if (id_groupe == 0 || id_groupe == "") {} 
+            else {
+
+                url_info = liens + 'App/Models/Prof_AjaxOnline.php';
+                values_info = 'action=get_anneepartie_ByGrpe&id_groupe=' + id_groupe+'&global_admin='+$('#global_admin').val()+'&global_univ='+$('#global_univ').val();
+                idelemt = "#moy_classe";
+                root_AjaxMethod(url_info, values_info, fct_Getanneepart, idelemt);
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=getGrpeClassMatiere&groupeid=' + id_groupe+'&global_admin='+$('#global_admin').val()+'&global_univ='+$('#global_univ').val();
+                idelemt = "#moy_classe";
+                root_AjaxMethod(url_info, values_info, fct_GetClasseMat, idelemt);
+
+            }
+
+
+            function fct_Getanneepart(jsondata) {
+                $('#prof_eval_periode').html(' <option value=" " disabled selected hidden>Choisissez une Période</option>');
+                if (typeof(jsondata) != undefined && jsondata != "") {
+                    jsondata = JSON.parse(jsondata);
+                    for (var x in jsondata) {
+                        $('#prof_eval_periode').append(' <option value="' + jsondata[x].id_annee_partie + '">' + jsondata[x].libele_partie + '</option>');
+                    }
+                }
+
+            }
+
+            function fct_GetClasseMat(jsondata) {
+                $('#prof_eval_select_mat').html(' <option value=" " disabled selected hidden>Choisissez une Matière</option>');
+                if (typeof(jsondata) != undefined && jsondata != "") {
+                    jsondata = JSON.parse(jsondata);
+                    for (var x in jsondata.grpematiere) {
+                        $('#prof_eval_select_mat').append(' <option value="' + jsondata.grpematiere[x].id_matiere_matiere + '">' + jsondata.grpematiere[x].lib_mat + '</option>');
+                        
+                    }
+                }
+
+            }
+
+        });
+
+
+        $(document.body).on("change", "#prof_eval_hDebut", function(e) {
+            if (typeof($('#prof_eval_hDebut').val()) != undefined && typeof($('#prof_eval_hFin').val()) != undefined) {
+
+                if ($('#prof_eval_hDebut').val() != "" && $('#prof_eval_hFin').val() != "") {
+                    timedebut = $('#prof_eval_hDebut').val();
+                    timefin = $('#prof_eval_hFin').val();
+                    timeoperation(timedebut, timefin);
+
+                }
+
+            }
+        });
+        $(document.body).on("change", "#prof_eval_hFin", function(e) {
+
+            if (typeof($('#prof_eval_hDebut').val()) != undefined && typeof($('#prof_eval_hFin').val()) != undefined) {
+
+                if ($('#prof_eval_hDebut').val() != "" && $('#prof_eval_hFin').val() != "") {
+                    timedebut = $('#prof_eval_hDebut').val();
+                    timefin = $('#prof_eval_hFin').val();
+                    timeoperation(timedebut, timefin);
+
+                }
+
+            }
+
+
+        });
+
+        function dateDiff(date1, date2) {
+            var diff = {} // Initialisation du retour
+            var tmp = date2 - date1;
+
+            tmp = Math.floor(tmp / 1000); // Nombre de secondes entre les 2 dates
+            diff.sec = tmp % 60; // Extraction du nombre de secondes
+
+            tmp = Math.floor((tmp - diff.sec) / 60); // Nombre de minutes (partie entière)
+            diff.min = tmp % 60; // Extraction du nombre de minutes
+
+            tmp = Math.floor((tmp - diff.min) / 60); // Nombre d'heures (entières)
+            diff.hour = tmp % 24; // Extraction du nombre d'heures
+
+            tmp = Math.floor((tmp - diff.hour) / 24); // Nombre de jours restants
+            diff.day = tmp;
+
+            return diff;
+        }
+
+
+        function timeoperation(timedebut, timefin) {
+
+            timedebut_tab = timedebut.split(":");
+            timefin_tab = timefin.split(":");
+
+            //year, month, day, hour, minute
+            var ddebut = new Date(2020, 07, 15, timedebut_tab[0], timedebut_tab[1]);
+            var dfin = new Date(2020, 07, 15, timefin_tab[0], timefin_tab[1]);
+
+            titre = "evenement sur: #prof_eval_hDebut // #prof_eval_hFin";
+            info = "Heure debut = " + ddebut + " && Heure Fin = " + dfin;
+
+            diff = dateDiff(ddebut, dfin);
+
+            valueur = diff.hour + "H : " + diff.min + "Min";
+
+            consoleInfo(envi, titre, info, valueur);
+            $('#prof_eval_durée').val(valueur);
+
+        }
+
+        $(document.body).on("change", "#moy_annee_filtre", function(e) {
+
+            if (typeof($('#moy_annee_filtre').val()) != undefined && typeof($('#moy_annee_filtre').val()) != undefined) {
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=get_annee_eval&annee_id=' +$('#moy_annee_filtre').val() +'&global_admin='+$('#global_admin').val()+'&global_univ='+$('#global_univ').val();
+                idelemt = "#moy_annee_filtre";
+                root_AjaxMethod(url_info, values_info, fct_get_annee_eval, idelemt);
+            }
+
+
+        });
+        function fct_get_annee_eval(jsondata) {
+
+            jsondata = JSON.parse(jsondata);
+            
+            dataTable_list_evalnonprog.clear().draw();
+
+            titre = "//evenement Change sur: fct_get_annee_eval";
+            info = "  // jsondata --> ";
+            valueur =jsondata;
+            consoleInfo(envi, titre, info, valueur);
+            var btn_qcm='';
+            var btn_info='';
+
+
+
+
+            for (var x in jsondata.get_eval_adminevalBy) {
+
+                if (jsondata.get_eval_adminevalBy[x].eval_type =='online_QCM' ) {
+                    btn_qcm='<p class="col-12"><a title="QCM" href="quiz/add.php?eval='+jsondata.get_eval_adminevalBy[x].prof_eval_id+'" class="btn btn-primary " target="_blank"> <i class="fas fa-plus"></i> </a></p>';
+                }
+                else{btn_qcm='';}
+
+                btn_info='<div class="form-row text-center">'+btn_qcm+' <form class="col-12" method="POST"><button title="Modifier" name="btn_edit_eval" type="submit" value="'+jsondata.get_eval_adminevalBy[x].prof_eval_id+'" class="btn btn-info"><i class="fas fa-edit"></i></button></form>                        <div class="col-12">  -  </div>       <form class="col-12" method="POST"><button title="Supprimer" name="btn_del_eval" type="submit" value="'+jsondata.get_eval_adminevalBy[x].prof_eval_id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button></form>   </div> ';
+                    
+                var rowNode = dataTable_list_evalnonprog
+                    .row.add([jsondata.get_eval_adminevalBy[x].libele_partie,jsondata.get_eval_adminevalBy[x].eval_date,jsondata.get_eval_adminevalBy[x].eval_hDebut,jsondata.get_eval_adminevalBy[x].eval_hFin,jsondata.get_eval_adminevalBy[x].eval_session,jsondata.get_eval_adminevalBy[x].eval_libelle+'<form class="col-12" method="POST" target="_blank"><button title="Notes" name="btn_notes_eval" type="submit" value="'+jsondata.get_eval_adminevalBy[x].prof_eval_id+'" class="btn btn-success"><i class="fas fa-edit"></i></button></form>',jsondata.get_eval_adminevalBy[x].groupe_libelle,jsondata.get_eval_adminevalBy[x].libele ,jsondata.get_eval_adminevalBy[x].coef, jsondata.get_eval_adminevalBy[x].eval_desc,jsondata.get_eval_adminevalBy[x].nom_prenom,btn_info])
+                    .draw()
+                    .node();
+
+            }
+            
+            for (var x in jsondata.get_eval_profevalBy) {
+
+                if (jsondata.get_eval_profevalBy[x].eval_type =='online_QCM' ) {
+                    btn_qcm='<p class="col-12"><a title="QCM" href="quiz/add.php?eval='+jsondata.get_eval_profevalBy[x].prof_eval_id+'" class="btn btn-primary " target="_blank"> <i class="fas fa-plus"></i> </a></p>';
+                }
+                else{btn_qcm='';}
+
+                btn_info='<div class="form-row text-center"></div>'+btn_qcm+' <form class="col-12" method="POST">  <button title="Modifier" name="btn_edit_eval" type="submit" value="'+jsondata.get_eval_profevalBy[x].prof_eval_id+'" class="btn btn-info">  <i class="fas fa-edit"></i>  </button> </form>           <div class="col-12">  -  </div>    <form class="col-12" method="POST"><button title="Supprimer" name="btn_del_eval" type="submit" value="'+jsondata.get_eval_profevalBy[x].prof_eval_id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button></form> </div> ';
+
+                var rowNode = dataTable_list_evalnonprog
+                    .row.add([jsondata.get_eval_profevalBy[x].libele_partie, jsondata.get_eval_profevalBy[x].eval_date,jsondata.get_eval_profevalBy[x].eval_hDebut,jsondata.get_eval_profevalBy[x].eval_hFin,jsondata.get_eval_profevalBy[x].eval_session,jsondata.get_eval_profevalBy[x].eval_libelle+'<form class="col-12" method="POST" target="_blank"><button title="Notes" name="btn_notes_eval" type="submit" value="'+jsondata.get_eval_profevalBy[x].prof_eval_id+'" class="btn btn-success"><i class="fas fa-edit"></i></button></form>',jsondata.get_eval_profevalBy[x].groupe_libelle,jsondata.get_eval_profevalBy[x].libele,jsondata.get_eval_profevalBy[x].coef, jsondata.get_eval_profevalBy[x].eval_desc,jsondata.get_eval_profevalBy[x].nom_prenom, btn_info])
+                    .draw()
+                    .node();
+
+                /*$(rowNode)
+                    .css('color', '#858796')
+                    .animate({ color: '#858796' });*/
+            }
+            
+        }
+
+
+        $('#dataTable_list_annee .input_note_eleve').on('change', function(event) {
+
+            if (typeof(event.target.id) != undefined) {
+
+                titre = "::Admin EVENT:::  Change sur:(.input_note_eleve)";
+                info = "  //ID Valeur= " + event.target.id;
+                valueur = $('#dataTable_list_annee #' + event.target.id + '').val();
+                consoleInfo(envi, titre, info, valueur);
+
+                result_split = (event.target.id).split("_");
+                note = $('#dataTable_list_annee #' + event.target.id).val();
+                //id_eleve_eleve  & _ & eval_id
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=Set_eleve_eval_notes&id_eleve_eleve=' + result_split[0] + '&eval_id=' + result_split[1] + '&note_val=' + note+'&global_univ='+$('#global_univ').val()+'&global_admin='+$('#global_admin').val();
+ 
+                idelemt = '#dataTable_list_annee #' + event.target.id;
+                root_AjaxMethod(url_info, values_info, fct_Set_eleve_eval_notes_result, idelemt);
+
+            } 
+            else {
+                titre = "::Admin EVENT:::  Change sur:(.input_note_eleve)";
+                info = "  // Valeur  event.target.id undefined ";
+                valueur = event.target.id;
+                consoleInfo(envi, titre, info, valueur);
+                $('#'+event.target.id).css("border", "1px solid red");
+            }
+
+
+        });
+
+        
+        function fct_Set_eleve_eval_notes_result(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                jsondata_split = (jsondata).split("_");
+
+                switch (jsondata_split[0]) {
+                    case "majnote":
+                        if (jsondata_split[1] == 'ok') { $(idelemt).css("border", "1px solid green"); } else { $(idelemt).css("border", "1px solid red"); }
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+            else{$(idelemt).css("border", "1px solid red");}
+
+        }
+
+        $('#dataTable_list_annee .btn_mod_note').on('click', function(event) {
+
+             titre = "::Admin EVENT:::  Change sur:(.btn_mod_note)";
+                info = "  // Valeur  event.target.id undefined ";
+                valueur = event.target.id;
+                consoleInfo(envi, titre, info, valueur);
+
+            if (typeof(event.target.id) != undefined) {
+                
+                infos_elv = $('#dataTable_list_annee #' + event.target.id).val();
+                result_split = (infos_elv).split("_");
+                //id_eleve_eleve  & _ & eval_id
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=Set_activemod_eleve_notes&id_eleve_eleve=' + result_split[0] + '&eval_id=' + result_split[1] +'&global_univ='+$('#global_univ').val()+'&global_admin='+$('#global_admin').val();
+ 
+                idelemt = '#dataTable_list_annee #' + event.target.id;
+                root_AjaxMethod(url_info, values_info, fct_Set_activemod_eleve_notes_result, idelemt);
+            } 
+            else {
+                titre = "::Admin EVENT:::  Change sur:(.btn_mod_note)";
+                info = "  // Valeur  event.target.id undefined ";
+                valueur = event.target.id;
+                consoleInfo(envi, titre, info, valueur);
+            }
+
+
+        });
+
+        function fct_Set_activemod_eleve_notes_result(jsondata) {
+            if (typeof(jsondata) != undefined && jsondata != "") {
+                jsondata = JSON.parse(jsondata);
+                switch (jsondata) {
+                    case "1":
+                         $(idelemt).css("display", "hidden"); 
+                         $(idelemt).hide();
+                    break;
+                    case 1:
+                         $(idelemt).css("display", "hidden"); 
+                         $(idelemt).hide();
+                    break;
+                    default:
+                    break;
+                }
+            }
+        }
+
+        //AJAX RECUP INFOS AUTO
+        $('#notes_annee').on('change', function(event) {
+
+            if (typeof($('#notes_annee').val()) != undefined && $('#notes_annee').val() != 0 && typeof($('#global_admin').val()) != undefined && $('#global_admin').val() != "") {
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=attribution_emlploiTps_getPeriode&annee_id=' + $('#notes_annee').val() + '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+                idelemt = "#notes_annee";
+
+                root_AjaxMethod(url_info, values_info, fctajax_notes_classe, idelemt);
+
+            }
+
+        });
+
+        function fctajax_notes_classe(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+                $('#notes_classe').html('<option ></option><option value="" disabled selected>Choisissez la classe</option>');
+
+                $('#notes_période').html('<option ></option><option value="" disabled selected>Choisissez la période</option>');
+                
+                jsondata = JSON.parse(jsondata);
+
+                for (var x in jsondata.getAllGrpBy) {
+                    $('#notes_classe').append('<option value="' + jsondata.getAllGrpBy[x].groupe_id + '">' + jsondata.getAllGrpBy[x].groupe_libelle + '</option>');
+                }
+                for (var x in jsondata.getAllpartAnneeBy) {
+                    $('#notes_période').append('<option value="' + jsondata.getAllpartAnneeBy[x].id_annee_partie + '">' + jsondata.getAllpartAnneeBy[x].libele_partie + '</option>');
+                }
+            }
+
+        }
+
+        $('#notes_période').on('change', function(event) {
+
+            if (typeof($('#notes_classe').val()) != undefined && typeof($('#notes_période').val()) != undefined &&  typeof($('#global_admin').val()) != undefined && typeof($('#global_univ').val()) != undefined && $('#notes_classe').val() != 0) {
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=get_Matiere_by_gpePeriode&groupeid=' + $('#notes_classe').val() + '&periode=' + $('#notes_période').val() + '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+                idelemt = "#moy_mat";
+
+                root_AjaxMethod(url_info, values_info, fctajax_notes_mat, idelemt);
+
+            }
+
+        });
+
+        function fctajax_notes_mat(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+                $('#notes_mat').html('<option ></option><option value="" disabled selected>Choisissez la Matière</option>');
+                jsondata = JSON.parse(jsondata);
+                //Date	Groupe	matière	Professeur	Action
+                for (var x in jsondata.grpematiere) {
+                    $('#notes_mat').append('<option value="' + jsondata.grpematiere[x].id_matiere + '">' + jsondata.grpematiere[x].code_mat + '-' + jsondata.grpematiere[x].lib_mat + '</option>');
+                }
+
+            }
+
+        }
+        
+    });
+</script>
+{% endblock %} 

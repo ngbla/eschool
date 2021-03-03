@@ -1,0 +1,120 @@
+<div class="d-sm-flex align-items-center justify-content-between ">
+
+    <!-- le conteneur fenêtre Message défilant -->
+    <div class="marquee-rtl">
+        <!-- le contenu défilant -->
+        <div>
+            {% if user_allnotif_defil is defined %} {% for notif in user_allnotif_defil %}
+            <button type="button" class="btn btn-outline-warning"><i class="fa fa-info" >&nbsp;&nbsp;{{notif.nom_prenom}}</i></button> {{notif.notif_titre}} &nbsp;&nbsp; {% endfor %}{% endif %}
+        </div>
+    </div>
+
+
+    <h1 class="h3 mb-0 text-gray-800"> </h1>
+
+    {% if toast_notif is defined %}
+
+    <div class="toast " data-autohide="true">
+
+        <div id="toast_header" class="toast-header alert-{{toast_notif.etat}}">
+            <strong class="mr-auto text-primary">Information</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        </div>
+        <div id="toast_body" class="toast-body alert-{{toast_notif.etat}}">
+            {{toast_notif.infos}}
+        </div>
+
+    </div>
+
+    {% else %}
+    <div class="toast " data-autohide="true">
+
+        <div id="toast_header" class="toast-header">
+            <strong class="mr-auto text-primary">Information</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        </div>
+        <div id="toast_body" class="toast-body"></div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<style>
+    /* le block conteneur */
+    
+    .marquee-rtl {
+        max-width: 70%;
+        width: 60%;
+        border: 5px solid #F0F0FF;
+        overflow: hidden;
+        box-shadow: 0 0.25em 0.5em #CCC, 0 0 1em 0.25em #CCC;
+    }
+    /* le bloc défilant */
+    
+    .marquee-rtl> :first-child {
+        display: inline-block;
+        padding-right: 9em;
+        padding-left: 100%;
+        white-space: nowrap;
+        animation: defilement-rtl 30s infinite linear;
+        font-size: large;
+        color: #3a3b45;
+    }
+    
+    @keyframes defilement-rtl {
+        0% {
+            transform: translate3d(0, 0, 0);
+            /* position initiale à droite */
+        }
+        100% {
+            transform: translate3d(-100%, 0, 0);
+            /* position finale à gauche */
+        }
+    }
+</style>
+
+<!-- Liens Navigation -->
+
+<div class="card-header py-3">
+
+    <h6 class="m-0 font-weight-bold">
+
+        <form class="form-inline">
+
+            <div class="form-grou  text-primary">
+
+                {% if lib_user_annee is defined %} Année Scolaire : {{lib_user_annee}} || {% endif %}<i class="fa fa-home"></i> <a href="index.php?p=accueil">&nbsp; Accueil &nbsp;</a><i class="fa fa-angle-right"></i>
+
+            </div>
+
+
+
+            {% if menu is defined %}
+
+            <div class="form-group ">
+
+                &nbsp; {{ menu }} &nbsp;<i class="fa fa-angle-right"></i>
+
+            </div>
+
+            {% endif %} {% if sousmenu is defined %}
+
+            <div class="form-group text-gray-400">
+
+                &nbsp;{{ sousmenu }}
+
+            </div>
+
+            {% endif %}
+
+
+
+        </form>
+
+    </h6>
+
+</div>
+
+<!-- Liens Navigation -->

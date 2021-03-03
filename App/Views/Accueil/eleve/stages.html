@@ -1,0 +1,564 @@
+{% extends "main_eleve.html" %} {% block title %}E-SCHOOL - ETUDIANT - STAGE{% endblock %} {% block content %}
+<style>
+    .div-col {
+        border: 1px solid grey;
+    }
+</style>
+<div class="row card" style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; min-height: 1024px; ">
+
+    <div class="col-md-12 card-header p-2">
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                
+                <a class="nav-link {% if panel is defined %}{% if panel == 'home' %} active {% endif %}{% else %}active {% endif %}" data-toggle="tab" href="#mestages">Mes Stages</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if panel == 'fichestage' %} active {% endif %}" data-toggle="tab" href="#fichestage">Fiche de Stage</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if panel == 'rapportstage' %} active {% endif %}" data-toggle="tab" href="#rapportstage">Faire un rapport</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if panel == 'ajoutstage' %} active {% endif %}" data-toggle="tab" href="#ajoutstage">Ajout de Stage</a>
+            </li>
+        </ul>
+
+        <div class="tab-content card-body" style=" background-color: #fff;">
+
+            <div id="mestages" class="tab-pane fade {% if panel is defined %}{% if panel == 'home' %} active show{% endif %}{% else %}active {% endif %}">
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable_list_fillierenews" style="width:100%;font-size: 11px;" cellspacing="0">
+                        <thead>
+                            <tr class="info" style="text-align: center;">
+                                <th>Stagiaire</th>
+                                <th>Thème</th>
+                                <th>Directeur Ecole</th>
+                                <th>Maître de Stage</th>
+                                <th>Entreprise</th>
+                                <th>Durée</th>
+                                <th>Evaluation</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                            {% if get_stage_etudiant is defined %} {% for infos in get_stage_etudiant %}
+                            <tr>
+                                <td>
+                                    <div class="well well-sm">{{ infos.matricule }} </div>
+                                    <div class="well well-sm"> <strong>{{ infos.nom_prenom }}</strong> </div>
+                                    <br> {{ infos.lib_classe }}
+                                    <br> {{ infos.libelle_niveau }}
+                                    <br> {{ infos.groupe_libelle }}
+                                </td>
+                                <td>{{ infos.theme_stage}}</td>
+                                <td> <strong>{{ infos.prof_nomprenom}}</strong> <br>
+                                    <hr> {{ infos.prof_tel}} </td>
+                                <td> <strong>{{ infos.maitre_stage}}</strong> <br>
+                                    <hr> {{ infos.tel_maitre_stage}} <br> Poste: {{ infos.poste_maitre_stage}} </td>
+
+                                <td> <strong>{{ infos.nom_entreprise}}</strong><br>
+                                    <hr>{{ infos.tel_entreprise}} <br> {{ infos.email_entreprise}} <br>{{ infos.ville_entreprise}} <br>{{ infos.loca_entreprise}}
+                                </td>
+                                <td> Du : {{ infos.date_debut}} <br> Au :{{ infos.date_fin}}</td>
+                                <td> </td>
+                                <!--<td class="fieldtype_action field-152-td nowrap">
+        
+                                <form action="" method="POST">
+                                <button title="Voir" type="submit" name="btn_voir_eleve" class="btn btn-info">
+                                    <input type="hidden" name="id_eleve" value="{{ eleve.id_eleve_eleve }}">
+                                <i class="fas fa-info"></i>
+                                </button>
+                                </form> 
+                            </td>-->
+
+                            </tr>
+                            {% endfor %} {% endif %}
+
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <hr>
+            </div>
+
+            <div id="fichestage" class="tab-pane fade {% if panel == 'fichestage' %} active show{% endif %}">
+
+                <form method="POST">
+
+                    <div class="form-row">
+
+                        <div class="col-2">
+                            <label for="etudiant_stgeinfo">Stage :</label>
+                        </div>
+
+                        <div class="col-7">
+                            <select name="etudiant_stgeinfo" id="etudiant_stgeinfo" class="form-control" data-error="Etudiant non valide !" required style="width: 100%;" required>
+                          <option disabled selected> Choisissez le stage </option>
+                          {% if get_stage_etudiant is defined %}
+                          {% for key, value in get_stage_etudiant  %}
+                          <option value="{{value.id_stage_etudiant}}"> {{value.theme_stage}} Chez  {{value.nom_entreprise}}  </option>
+                          {% endfor %}
+                          {% endif %}
+      
+                        </select>
+                        </div>
+
+                        <div class="col-3">
+                            <button title="Rechercher" type="submit" name="btn_etud_listStage" class="btn btn-info">
+                          <i class="fas fa-info"></i> Rechercher
+                        </button>
+                        </div>
+
+                    </div>
+
+                </form>
+                <br>
+                <hr style="border:2px solid #fdece2;">
+                <br> {% if get_all_stgEtudiant.0 is defined %}
+
+                <div class="container row">
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-secondary text-white" style="font-size: small !important;">
+                                <h6 class="m-0 font-weight-bold " style="font-size: small !important;">Etudiant : {{get_all_stgEtudiant.0.matricule}}-{{get_all_stgEtudiant.0.nom_prenom}} / Groupe : {{get_all_stgEtudiant.0.groupe_libelle}} </h6>
+                                <br>
+                                <h2 class="m-0 font-weight-bold " style="font-size: small !important;"> Thème : <strong>{{get_all_stgEtudiant.0.theme_stage}}</strong></h2>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="container row" style="background-color: transparent;font-size: xx-small !important;">
+                    <div class="col-4">
+                        <div class="card shadow mb-4 bg-secondary text-white" style="  height: 200px; ">
+                            <div class="card-body">
+                                <fieldset>
+                                    <legend style="font-size: larger;">Stage effectué chez :</legend>
+                                    <table class="table table-sm table-responsive table-borderless text-white" style=" font-size: x-small; ">
+                                        <tbody ">
+                                    <tr>
+                                      <td>Entreprise :</td>
+                                      <td>{{get_all_stgEtudiant.0.nom_entreprise}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Contact : </td>
+                                      <td>{{get_all_stgEtudiant.0.tel_entreprise}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Email :</td>
+                                      <td>{{get_all_stgEtudiant.0.email_entreprise}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Situé à </td>
+                                      <td>{{get_all_stgEtudiant.0.ville_entreprise}} / {{get_all_stgEtudiant.0.loca_entreprise}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Email :</td>
+                                      <td>{{get_all_stgEtudiant.0.email_entreprise}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </fieldset>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-4 ">
+                          <div class="card shadow mb-4 bg-secondary text-white "  style=" height: 200px; ">
+                            <div class="card-body ">
+                              <fieldset>
+                                <legend style="font-size: larger; ">Maître de stage :</legend>
+                                <table class="table table-sm table-responsive table-borderless text-white " style=" font-size: x-small; ">
+                                  <tbody">
+                                            <tr>
+                                                <td>{{get_all_stgEtudiant.0.maitre_stage}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{get_all_stgEtudiant.0.poste_maitre_stage}}</td>
+                                                <td>{{get_all_stgEtudiant.0.tel_maitre_stage}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                                <fieldset>
+                                    <legend style="font-size: larger;">Directeur école :</legend>
+                                    <table class="table table-sm table-responsive table-borderless text-white" style=" font-size: x-small;  ">
+                                        <tbody ">
+                                    <tr>
+                                      <td>{{get_all_stgEtudiant.0.prof_nomprenom}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>{{get_all_stgEtudiant.0.prof_tel}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </fieldset>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-4 ">
+                          <div class="card shadow mb-4 bg-secondary text-white " style=" height: 200px; ">
+                            <div class="card-body ">
+                              <fieldset>
+                                <legend style="font-size: larger; ">Horaires :</legend> <br>
+                                Du <strong>{{get_all_stgEtudiant.0.date_debut}}</strong> Au <strong>{{get_all_stgEtudiant.0.date_fin}}</strong>
+                                <table class="table table-sm table-responsive table-borderless text-white " style=" font-size: x-small; ">
+                                  <tbody">
+                                            <tr>
+                                                <td>Lundi </td>
+                                                <td>7h-12h et 14h-17h </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mardi </td>
+                                                <td>7h-12h et 14h-17h </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mercredi </td>
+                                                <td>7h-12h et 14h-17h </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Jeudi </td>
+                                                <td>7h-12h et 14h-17h </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Vendredi </td>
+                                                <td>7h-12h et 14h-17h </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+
+                <div class="container row" id="stage_appreciation">
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-secondary text-white">
+                                <h6 class="m-0 font-weight-bold ">Appréciations </h6>
+                            </div>
+                            <div class="card-body row">
+                                <fieldset class="col-3">
+                                    <legend style="font-size: larger;">Directeur école :</legend>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Note : </li>
+                                        <li class="list-group-item">Appréciations :
+                                            <p></p>
+                                        </li>
+                                    </ul>
+
+                                </fieldset>
+                                <div class="col-1"></div>
+                                <fieldset class="col-3">
+                                    <legend style="font-size: larger;">Maître de stage :</legend>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Note : </li>
+                                        <li class="list-group-item">Appréciations :
+                                            <p></p>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                                <div class="col-1"></div>
+                                <fieldset class="col-3">
+                                    <legend style="font-size: larger;">Note soutenance :</legend>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Note : </li>
+                                        <li class="list-group-item">Appréciations :
+                                            <p></p>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="container row">
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-secondary text-white">
+                                <h6 class="m-0 font-weight-bold ">Rapport étudiant </h6>
+                            </div>
+                            <div class="card-body row">
+
+                                <div class="col-12">
+                                    <legend style="font-size: larger;">Notifications :</legend>
+                                    <table class="table table-sm" style="font-size: small !important;">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Source</th>
+                                                <th>Informations</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: small !important;">
+                                            {% if get_stagerapport is defined %}
+                                            {% for rapport in get_stagerapport %}
+                                            <tr>
+                                                <td>{{rapport.date_rapport}}</td>
+                                                <td>  {% if rapport.fk_type == 1 %} Etudiant : {% endif %}
+                                                    {% if rapport.fk_type == 2 %} Professeur : {% endif %}
+                                                    {{rapport.nom_prenom}}
+                                                </td>
+                                                <td>{{rapport.rapport}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                    <hr style="border:2px solid #fdece2;">
+                                </div>
+
+                                <div class="col-12">
+                                    <legend style="font-size: larger;">Noter l'entreprise : /10 </legend>
+                                    <table class="table table-sm table-responsive">
+                                        <tbody style="font-size: small !important;">
+                                            <tr>
+                                                <td>L'accueil à l'arrivée</td>
+                                                <td>
+                                                    <input type="number" name="" id="">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Les informations fournies en début du stage, y compris les consignes de sécurité (présentation de l'entreprise, de l'équipe, visite de l'entreprise...)</td>
+                                                <td> <input type="number" name="" id=""> </td>
+                                            </tr>
+                                            <tr>
+                                                <td>La disponibilité et l'écoute du tuteur</td>
+                                                <td><input type="number" name="" id=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td>L'accompagnement du tuteur (exemples : les conseils apportés, la clarté des consignes...)</td>
+                                                <td><input type="number" name="" id=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td>L'intégration dans l'équipe en tant que stagiaire</td>
+                                                <td><input type="number" name="" id=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td>L'espace de travail lié aux activités quotidiennes</td>
+                                                <td><input type="number" name="" id=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Les contacts avec les autres salariés</td>
+                                                <td><input type="number" name="" id=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Les relations avec les supérieurs hiérarchiques</td>
+                                                <td><input type="number" name="" id=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td>L'ambiance générale de travail</td>
+                                                <td><input type="number" name="" id=""></td>
+                                            </tr>
+
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% endif %}
+
+            </div>
+
+
+            <div id="rapportstage" class="tab-pane fade {% if panel == 'rapportstage' %} active show{% endif %}">
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="col-4">
+                            <label for="etudiant_stgeinfo">Stage :</label>
+                        </div>
+                        <div class="col-8">
+                            <select name="etudiant_stgeinfo" id="etudiant_stgeinfo" class="form-control" data-error="Etudiant non valide !" required style="width: 100%;">
+                                <option disabled selected> Choisissez le stage </option>
+                                {% if get_stage_etudiant is defined %}
+                                {% for key, value in get_stage_etudiant  %}
+                                 <option value="{{value.id_stage_etudiant}}"> {{value.theme_stage}} Chez  {{value.nom_entreprise}}  </option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                        <!--<div class="col-3">
+                            <button title="Rechercher" type="submit" name="btn_etud_listStage" class="btn btn-info">
+                                    <i class="fas fa-info"></i> Rechercher
+                            </button>
+                        </div>-->
+                    </div><br/>
+                    <div class="form-row">
+                        <div class="col-4">
+                            <label for="etudiant_stgeinfo">Date :</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" name="date_rapport" data-error="Date non valide !" style="width: 100%;" required="" type="date" />
+                        </div>
+                    </div><br/>
+                    <div class="form-row">
+                        <div class="col-4">
+                            <label for="etudiant_stgeinfo">Rapport :</label>
+                        </div>
+                        <div class="col-8">
+                            <textarea data-error="Rapport non valide !" name="rapport" style="width: 100%;" required="" type="date" class="form-control" rows="5">
+
+                            </textarea>
+                        </div>
+                    </div><br/>
+                    <div class="col-3">
+                        <button title="AJOUTER UN RAPPORT" type="submit" name="btn_etud_rapportStage" class="btn btn-info">
+                                <i class="fas fa-info"></i> AJOUTER UN RAPPORT
+                            </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="ajoutstage" class="tab-pane fade {% if panel == 'ajoutstage' %} active show{% endif %}">
+
+                <span class="text-danger">* A remplir dans le cas ou vous (étudiant) trouvez vous même votre stage </span>
+                <br>
+                <form action="" class="was-validated" method="POST">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="anneeScolaire">Thème Stage :</label>
+                            <input type="text" name="theme_stage" class="form-control" placeholder="THEME" data-error="Thème non valide " required>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="anneeScolaire">Année Scolaire :</label>
+                            <select name="anneeScolaire" id="anneeScolaire" class="form-control" data-error="Année Solaire non valide !" required style="width: 100%;" required>
+                            <option disabled selected> Choisissez l'année Scolaire </option>
+                            {% if getAnneeScolaire is defined %}
+                            {% for key, value in getAnneeScolaire  %}
+                            <option value="{{value.id_anscol_annee_scolaire}}"> {{value.annee_libelle}} </option>
+                            {% endfor %}
+                            {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="classe">Classe :</label>
+                            <select name="classe" id="classe" class="form-control" data-error="Classe non valide !" required style="width: 100%;" required>
+                                <option disabled selected> Choisissez l'année Scolaire </option>
+                                {% if get_eleves_allGrpe is defined %}
+                                {% for key, value in get_eleves_allGrpe  %}
+                                <option value="{{value.groupe_id}}"> {{value.groupe_libelle}} </option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="entreprise">Nom Entreprise:</label>
+                            <input type="text" name="entreprise" class="form-control" placeholder="Entreprise" data-error="Nom Entreprise non valide " required>
+                        </div>
+
+                        <div class="col-4">
+                            <label for="tel_entreprise">Contacts :</label>
+                            <input type="text" name="tel_entreprise" class="form-control" placeholder="05040607 / 08070904" data-error="Contacts non valide " required>
+                        </div>
+
+                        <div class="col-4">
+                            <label for="tel_entreprise">Email :</label>
+                            <input type="email" name="mail_entreprise" class="form-control" placeholder="entreprise@mail.com" data-error="Email non valide ">
+                        </div>
+
+                    </div>
+                    <br>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="loca_entreprise">Ville :</label>
+                            <input type="text" name="ville_entreprise" class="form-control" placeholder="Abidjan" data-error="ville non valide " required>
+                        </div>
+                        <div class="col-6">
+                            <label for="tel_entreprise">Localisation :</label>
+                            <input type="text" name="loca_entreprise" class="form-control" placeholder="Rue 12 Abidjan Treichville" data-error="Localisation non valide " required>
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="direct_ecole">Directeur Ecole :</label>
+                            <select name="direct_ecole" class="form-control" data-error="Année Solaire non valide !" required style="width: 100%;">
+                            <option disabled selected> Choisissez le Professeur </option>
+        
+                            {% if getAllProf is defined %}
+                            {% for key, value in getAllProf  %}
+                            <option value="{{value.id_prof_prof}}"> {{value.nom_prenom}} - {{value.contact}} </option>
+                            {% endfor %}
+                            {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="maitre_stage">Maître de Stage :</label>
+                            <input type="text" name="maitre_stage" class="form-control" placeholder="Nom du Maître de Stage" data-error="Localisation non valide " required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="tel_direct_ecole">Poste du Maître de stage:</label>
+                            <input type="text" name="job_maitre_stage" class="form-control" placeholder="Informaticien" data-error="Nom Entreprise non valide ">
+                        </div>
+                        <div class="col-6">
+                            <label for="tel_maitre_stage">Contact Maître de Stage :</label>
+                            <input type="text" name="tel_maitre_stage" class="form-control" placeholder="04070808/05040608" data-error="Localisation non valide " required>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="date_debut">Date de Début du Stage :</label>
+                            <input type="date" name="date_debut" class="form-control" placeholder="Rue 12 Abidjan Treichville" data-error="Localisation non valide " required>
+                        </div>
+                        <div class="col-6">
+                            <label for="date_fin">Date de Fin du Stage :</label>
+                            <input type="date" name="date_fin" class="form-control" placeholder="Rue 12 Abidjan Treichville" data-error="Localisation non valide " required>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-info float-right">Créer</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+</div>
+
+{% endblock %} {% block javascript_footer_add %}
+
+<script src="assets/js/mescript_eleve.js"></script>
+
+{% endblock %}

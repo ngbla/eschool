@@ -1,0 +1,210 @@
+{% extends "main_eleve.html" %} 
+{% block title %}Home{% endblock %} 
+{% block content %}
+<!--{% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+
+   Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          {{ include('include/nav_eleve.html') }}
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#info_eleve" data-toggle="tab">Mes informations</a></li>
+                <li class="nav-item"><a class="nav-link" href="#info_parent" data-toggle="tab">Info Parents</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact_sup" data-toggle="tab">Contact suplementaire</a></li>
+              </ul>
+            </div><!-- Notifications -->
+            <div class="card-body">
+              <div class="tab-content">
+                <!-- /.card-header -->
+                <div class="active tab-pane" id="info_eleve">
+                  <form action="" method="post" enctype="multipart/form-data">
+                    <div class="form-row">
+                      <div class="col">
+                        <label for="nom_prenom">Nom</label>
+                        <input
+                          required=""
+                          type="text"
+                          name="nom_prenom"
+                          class="form-control form-control-user"
+                          id="exampleInputEmail"
+                          placeholder="{% if nom_prenom is defined %}{{ nom_prenom  }}{% endif %}   "
+                        />
+                      </div>
+                      <div class="col">
+                        <label for="tel">Contacts</label>
+                        <input
+                          required=""
+                          type="tel"
+                          name="tel"
+                          class="form-control form-control-user"
+                          id="telexplid"
+                          placeholder=" {% if contact is defined %}{{ contact  }}{% endif %}"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col">
+                        <label for="date_naiss">Née le </label>
+                        <input
+                          required=""
+                          type="date"
+                          name="date_naiss"
+                          class="form-control form-control-user"
+                          id="date_naiss"
+                          placeholder="{% if date_naiss is defined %}{{ date_naiss  }}{% endif %}   "
+                        />
+                      </div>
+                      <div class="col">
+                        <label for="lieu_naiss">Née à </label>
+                        <input
+                          required=""
+                          type="text"
+                          name="lieu_naiss"
+                          class="form-control form-control-user"
+                          id="lieu_naiss"
+                          placeholder=" {% if lieu_naiss is defined %}{{ lieu_naiss  }}{% endif %}"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col">
+                        <label for="lieu_resisdence">Lieu de résidence</label>
+                        <input
+                          required=""
+                          type="text"
+                          name="lieu_resisdence"
+                          class="form-control form-control-user"
+                          id="lieu_resisdence"
+                          placeholder="{% if lieu_resisdence is defined %}{{ lieu_resisdence  }}{% endif %}   "
+                        />
+                      </div>
+                      <div class="col">
+                        <label for="photo">Photo </label>
+                        <input
+                          required=""
+                          type="file"
+                          name="photo"
+                          class="form-control form-control-user"
+                          id="photo"
+                          placeholder=" {% if photo is defined %}{{ photo  }}{% endif %}"
+                        />
+                      </div>
+                    </div><br/><hr/>
+                    <button class="btn btn-info" type="submit" name="BtnUpdateInfoEleve">METTRE A JOUR</button>
+                    <button class="btn btn-danger" type="reset">EFFACER</button>
+                  </form>
+                </div>
+                <div class="tab-pane" id="info_parent">
+                  <form action="" method="post" enctype="multipart/form-data">
+                    <h3 class="alert alert-primary">INFO MERE</h3>
+                    <div class="form-row">
+                      <div class="col">
+                        <label for="nom_prenom_mere">Nom & Prénom </label>
+                        <input
+                          disabled=""
+                          required=""
+                          type="text"
+                          name="nom_prenom_mere"
+                          class="form-control form-control-user"
+                          id="nom_prenom_mere"
+                          placeholder="{% if nom_prenom_mere is defined %}{{ nom_prenom_mere  }}{% endif %}   "
+                        />
+                      </div>
+                      <div class="col">
+                        <label for="contact_mere">Contact </label>
+                        <input
+                          disabled=""
+                          required=""
+                          type="text"
+                          name="contact_mere"
+                          class="form-control form-control-user"
+                          id="exampleInputEmail"
+                          placeholder="{% if contact_mere is defined %}{{ contact_mere  }}{% endif %}   "
+                        />
+                      </div>
+                    </div><br/><br/>
+                    <h3 class="alert alert-success">INFO PERE</h3>
+                    <div class="form-row">
+                      <div class="col">
+                        <label for="nom_prenom_pere">Nom & Prénom </label>
+                        <input
+                          disabled=""
+                          required=""
+                          type="text"
+                          name="nom_prenom_pere"
+                          class="form-control form-control-user"
+                          id="nom_prenom_pere"
+                          placeholder="{% if nom_prenom_pere is defined %}{{ nom_prenom_pere  }}{% endif %}   "
+                        />
+                      </div>
+                      <div class="col">
+                        <label for="contact_pere">Contact </label>
+                        <input
+                          disabled=""
+                          required=""
+                          type="text"
+                          name="contact_pere"
+                          class="form-control form-control-user"
+                          id="contact_pere"
+                          placeholder="{% if contact_pere is defined %}{{ contact_pere  }}{% endif %}   "
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="tab-pane" id="contact_sup">
+                    <div class="form-row">
+                      <div class="col">
+                        <label for="nom_prenom_pere">Nom & Prénom </label>
+                        <input
+                          disabled=""
+                          required=""
+                          type="text"
+                          name="nom_prenom_pere"
+                          class="form-control form-control-user"
+                          id="nom_prenom_pere"
+                          placeholder="{% if nom_prenom_pere is defined %}{{ nom_prenom_pere  }}{% endif %}   "
+                        />
+                      </div>
+                      <div class="col">
+                        <label for="contact_pere">Contact </label>
+                        <input
+                          disabled=""
+                          required=""
+                          type="text"
+                          name="contact_pere"
+                          class="form-control form-control-user"
+                          id="contact_pere"
+                          placeholder="{% if contact_pere is defined %}{{ contact_pere  }}{% endif %}   "
+                        />
+                      </div>
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+              </div>
+              <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+
+
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_eleve.js"></script>
+{% endblock %} 

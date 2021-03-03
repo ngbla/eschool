@@ -1,0 +1,54 @@
+  <!--SECTION-->
+  <ul  style="list-style: none;padding: 0px;">
+
+  {% for key, value in get_cour_section  %}
+      {% if value.vue_groupe ==1 %}
+          <li id="section_{{value.id_cours_plan}}"  class="section main clearfix" role="region" aria-label="Welcome">
+            <h3 class="sectionname">
+              <span><a href="#"><i class="fa fa-bookmark"></i> &nbsp; {{value.plan_titre|title}} </a></span>
+              <p style="text-align: right;"> 
+                {% if value.etat_progression ==1 %}
+                  <i class="fa fa-check text-success" aria-hidden="true"></i>
+                {% else %}
+                <i class="fa fa-check text-secondary" aria-hidden="true"></i>
+                {% endif %}
+              </p>
+
+            </h3>
+            <div class="content">
+              <div class="summary">
+                <div class="no-overflow">
+                  <p> {{ value.plan_description|raw }} </p>
+                </div>
+              </div>
+              <br>
+                <!--  RESSOURCES -->
+                {% if get_matiere_docsvideo is defined %}
+                  <ul style="list-style: none;" class="border-left-warning">
+                    <div class="mod-indent mod-indent-outer w-100"> <p > <h6> <strong style="color: #f98012;font-weight: 400;">  <i class="fa fa-archive" aria-hidden="true"> RESSOURCES</i></strong></h6></p> </div>
+
+                      {% for videodocs in get_matiere_docsvideo  %}
+                        {% if value.id_cours_plan == videodocs.courplan_id %}
+                          {{ include('Elearning/Prof/include/include_ressources.html') }}
+                        {% endif %}
+                      {% endfor %} 
+                  </ul>
+                {% endif %}
+
+              <!--  PARTIE -->
+              {% if get_cour_partie is defined %}
+                {{ include('Elearning/Eleve/include/include_partie.html') }}
+              {% endif %}
+            </div>
+          </li>
+          <hr>
+    {% endif %}
+  {% endfor %} 
+ </ul>
+
+
+
+
+
+
+

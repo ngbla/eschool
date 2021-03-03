@@ -1,0 +1,234 @@
+{% extends "main.html" %} {% block title %}Administration - Arrimage de Classe à une conférence{% endblock %} {% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="container-fluid" style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; min-height: 1024px;">
+
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-linkactive" href="#add_mat" data-toggle="tab">Arrimer des classes à une conférence</a></li>
+    </ul>
+    <hr>
+    <!-- Notifications -->
+
+    <div class="tab-content">
+        <div class=" tab-pane active" id="add_mat">
+            <form method="POST">
+                <div class="row">
+                    <!-- LISTE CLASSE MATIERE -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Classes Arrimer</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body" style="padding: 1rem 0.30rem;">
+
+                                <div class="d-flex justify-content-between bg-warning mb-1">
+                                    <div class="p-1 ">
+                                        Conférences : <strong> 
+                                            <span id="span_niveau">
+                                                {% if grpe_id_infos.0 is defined %} 
+                                                    {{grpe_id_infos.0.groupe_libelle}}
+                                                {% else %}
+                                                ....
+                                                {% endif %}
+
+                                            
+                                            </span></strong> .
+                                    </div>
+
+                                    <div class="p-1 ">
+
+                                        <button type="submit" name="modif_classe_btn" id="modif_classe_btn" class="btn btn-info btn-icon-split ">
+                                            <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                            </span>
+                                            <span class="text">Modifier</span>
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive" style="font-size: 0.7em;">
+                                    <table class=" table table-bordered table-hover table-sm table-striped" id="liste_classe_arrimer" style="width:100%" cellspacing="0" style="font-size: small;">
+                                        
+                                        <thead class="bg-gradient-info text-white text-center">
+                                            <tr>
+                                                <th>Classes</th>
+                                                <th>Action</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Classes</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody id="liste_classe_arrimer_body">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- lISTE MATIERE A AJOUTER -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Panier de Classes</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+
+                                <div class="table-responsive" style="font-size: 0.7em;">
+                                    <table class="table table-bordered table-hover table-sm table-striped " id="listeall_classe" style="width:100%" cellspacing="0" style="font-size: small;">
+                                        <thead class="bg-gradient-info text-white text-center">
+                                            <tr>
+                                                <th>Classes</th>
+                                                <th>Action</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Classes</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            {% if liste_all_gpe is defined %} {% for key, value in liste_all_gpe %}
+                                            <tr>
+                                                <td>{{ value.groupe_libelle }}</td>
+
+                                                <td class="fieldtype_action field-152-td nowrap">
+                                                    <a title="Arrimer la classse" class="btn-default btn-xs purple " href="#">
+                                                        <i class="fa fa-plus arimer_btn" id="{{ value.groupe_id }}" value="{{ value.groupe_id}}/_/{{value.groupe_libelle}}" option="arimer_btn" style="font-size: x-large;"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                            {% endfor %} {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        // DataTable
+        var listeall_classe = $('#listeall_classe').DataTable({
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            },
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+        var liste_classe_arrimer = $('#liste_classe_arrimer').DataTable({
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            },
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+        
+    });
+</script>
+{% endblock %}

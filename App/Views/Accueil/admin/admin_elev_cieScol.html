@@ -1,0 +1,343 @@
+{% extends "main_prof.html" %} {% block title %}Suivi étudiants {% endblock %} {% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row" style="
+    background-image: url('/public/assets/img/background/back_img5.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;padding-top: 20px; ">
+
+    <div class="content card-body">
+
+        <fieldset>
+            <div class="row">
+                <div class="col-12">
+                    <!-- Custom Tabs -->
+                    <form method="POST">
+
+                        <div class="form-row">
+
+                            <div class="col-6">
+                                <div class="input-group mb-3 ">
+                                    <div class="input-group-prepend ">
+                                        <button type="button" class="btn btn-primary">Année scolaire</button>
+                                    </div>
+                                    <select class="form-control" id="moy_annee" name="moy_annee" required>
+                                        {% if (moy_annee_lib is defined) and (moy_annee is defined) %}                 
+                                            <option value="{{moy_annee}}">{{ moy_annee_lib }}</option>
+                                        {% endif %}
+                                        <option value="0">Choisissez l'année</option>
+                                        {% if allannee is defined %}                 
+                                            {% for key, value in allannee  %}
+                                            <option value="{{value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                            {% endfor %} 
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="input-group mb-3 ">
+                                    <div class="input-group-prepend ">
+                                        <button type="button" class="btn btn-primary">Classe</button>
+                                    </div>
+                                    <select class="form-control" id="moy_classe" name="moy_classe" required>
+                                              {% if (moy_classe is defined) and (moy_classe_lib is defined) %}                 
+                                                <option value="{{moy_classe}}">{{ moy_classe_lib }}</option>
+                                            {% endif %}
+                                            <option value="0">Choisissez la classe</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button style="margin: auto;" type="submit" name="btn_afficheMoy" class="btn btn-primary btn-icon-split">
+                                    <span class="icon text-white-50">
+                                      <i class="fas fa-info-circle"></i>
+                                    </span>
+                                    <span class="text">Afficher</span>
+                            </button>
+
+                            <br>
+                        </div>
+
+                    </form>
+                    <!-- ./card -->
+                </div>
+                <!-- /.col -->
+            </div>
+        </fieldset>
+
+    </div>
+
+    <div class="content card col-12 row">
+
+        <div class="card-header py-3 col-12">
+            <h6 class="m-0 font-weight-bold text-primary"> Liste des Élèves/Étudiants de : {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}</h6>  
+            <p class="m-0 font-weight-bold text-primary text-right"> Effectif = {{effectif_classe}}</p>
+        </div>
+         {% if info_groupe.0 is defined %}
+        <div class="card-header py-3 col-12 row">
+            <form method="post" class="col" target="_blank">
+                <input type="hidden" name="id_classe" value="{{info_groupe.0.groupe_id}}">
+                <input type="hidden" name="effectif_classe" value="{{effectif_classe}}">
+                <button type="submit" class="btn btn-outline-info" name="btn_fich_presence" value="{{info_groupe.0.groupe_id}}">Fiche de Présence</button>
+            </form>
+            <form method="post" class="col" target="_blank">
+                <input type="hidden" name="id_classe" value="{{info_groupe.0.groupe_id}}">
+                <input type="hidden" name="effectif_classe" value="{{effectif_classe}}">
+                <button type="submit" class="btn btn-outline-info" name="btn_fich_note" value="{{info_groupe.0.groupe_id}}">Fiche de notes</button>
+            </form>
+            <form method="post" class="col" target="_blank">
+                <input type="hidden" name="id_classe" value="{{info_groupe.0.groupe_id}}">
+                <input type="hidden" name="effectif_classe" value="{{effectif_classe}}">
+                <button type="submit" class="btn btn-outline-info" name="btn_fich_classe" value="{{info_groupe.0.groupe_id}}">Liste de classe</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Card Body -->
+        <div class="card-body col-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm table-striped" id="db_list_absence" style="font-size: small;"  cellspacing="0" table>
+                    <thead class="bg-gradient-info text-white text-center">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Matricule</th>
+                            <th>Nom/Prénom</th>
+                            <th>Date et lieu de Naiss.</th>
+                            <th>Sexe</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Matricule</th>
+                            <th>Nom/Prénom</th>
+                            <th>Date et lieu de Naiss.</th>
+                            <th>Sexe</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                        {% if getAll_elvDSgrp is defined %} {% for eleve in getAll_elvDSgrp %}
+                        <tr>
+                            <td>
+                                <img id="user_tof_mini" class="img-profile img-thumbnail" src="/files/{{ eleve.id_pers_personne}}/tiny{{ eleve.id_pers_personne}}.jpg" alt="photo eleve">
+                            </td>
+                            <td>{{ eleve.matricule }}</td>
+                            <td>{{ eleve.nom_prenom }}</td>
+                            <td>{{ eleve.date_naiss|format_date(locale='fr') }} à {{ eleve.lieu_naiss }}<br> <br> Tel :{{ eleve.contact}}</td>
+                            <td>{{ eleve.sexe }}</td>
+                            <td class="fieldtype_action field-152-td nowrap">
+                                <div class="row">
+                                    <!--BTN ABSENCES -->
+                                    <div class="col">
+                                        <button title="Absences" type="submit" name="btn_abs_eleve" class="btn_abs_eleve btn btn-warning" data-toggle="modal" data-target="#modal_absence" id="abs_infos_{{ eleve.id_eleve_eleve }}" value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}">
+                                            <i class="btn_abs_eleve fas fa-clock" id="i_abs_infos_{{ eleve.id_eleve_eleve }}" value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}"></i>
+                                        </button>                                    
+                                    </div>
+                                    <!--BTN LISTES ABSENCES -->
+                                    <div class="col">
+                                            <button title="Voir" type="submit" name="btn_abs_eleve" class="abs_view_infos btn btn-info" data-toggle="modal" data-target="#modal_view_absence" id="abs_view_infos_{{ eleve.id_eleve_eleve }}" value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}">
+                                                <i class="fas fa-eye" id="i_abs_view_infos_{{ eleve.id_eleve_eleve }}" value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}"></i>
+                                            </button>
+                                    </div>
+                                    <!--BTN LISTES CERTIFICATS -->
+                                    <div class="col">
+                                        <form action="" method="post" target="_blank">
+                                            <input type="hidden" name="id_classe" value="{{info_groupe.0.groupe_id}}">
+                                            <input type="hidden" name="effectif_classe" value="{{effectif_classe}}">
+                                            <button title="Attestation" type="submit" name="btn_certif_eleve" class="certif_view_infos btn btn-primary"  value="{{ eleve.id_eleve_eleve }}_{{ eleve.matricule }}_{{ eleve.nom_prenom }}_0_{{ suivi_classe }}">
+                                                <i class="fas fa-eye" ></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <!--BTN LISTES DE PRESENCE 
+                                    <div class="col">
+                                            <a title="Presences" type="button" name="btn_listpresec_eleve" class="btn btn-info" href="#" target="_blank">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                    </div>-->
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        {% endfor %} {% endif %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Logout Modal Create Absence-->
+    <div class="modal fade" id="modal_absence" tabindex="-1" role="dialog" aria-labelledby="modal_absenceLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+
+            <div class="modal-content">
+ 
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_absenceLabel">Nom Prenom</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="container bg-light">
+                        <div class="col-md-12 text-center text-primary">
+                            SAISIE D'ABSENCE ELEVE/ETUDIANT
+                        </div>
+                    </div>
+                    <br>
+
+                    <form method="POST">
+
+                        <input type="hidden" name="ideleve_absence" id="ideleve_absence" class="form-control">
+                        <input type="hidden" name="suivi_classe" id="suivi_classe" class="form-control">
+                        <input type="hidden" name="suivi_mat" id="suivi_mat" class="form-control">
+                        <input type="hidden" name="btn_afficheMoy" id="btn_afficheMoy" class="form-control">
+                        <input type="hidden" name="moy_annee"  class="form-control" value="{{moy_annee}}">
+                        <input type="hidden" name="moy_classe"  class="form-control" value="{{moy_classe}}">
+
+
+                        <div class="form-row text-center">
+                            <div class="form-group col-12">
+                                 <label for="date_absence">Emploi du Temps :  </label><br><br>
+                                <select class="form-control" name="emploitps"  required style="width: 100%;">
+                                <option value="" disabled selected>Choisissez une Date|Debut-Fin|Matière|Période</option>
+                                    {% for mat in getEmploiTpsBy %}
+                                    <option value="{{mat.emploitps_id}}">
+                                        {{mat.emploitps_date}} || {{mat.emploitps_h_debut}}-{{mat.emploitps_h_fin}} ||  {{mat.mat_libelle}} || {{mat.libele_partie}} || {{mat.nom_prenom}} 
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label for="motif_absence">Motif :</label> <br>
+                                <textarea class="form-control" id="motif_absence" name="motif_absence"></textarea>
+                            </div>
+                            <div class="form-group col">
+                                <br><br>
+                                <div class="form-check">
+                                    <label class="form-check-label text-success">
+                                    <input value="1" type="radio" class="form-check-input" name="optradio" required>Justifier
+                                    </label>
+                                </div>
+                                <br>
+                                <div class="form-check">
+                                    <label class="form-check-label text-danger">
+                                    <input value="0" type="radio" class="form-check-input" name="optradio" required>Non Justifier
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="container bg-light">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-outline-primary">Envoyer</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr><br>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Logout Modal View Absence-->
+    <div class="modal fade" id="modal_view_absence" tabindex="-1" role="dialog" aria-labelledby="modal_view_absenceLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="view_modal_absenceLabel">Nom Prenom</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                        <input type="hidden" name="ideleve_absence" id="view_ideleve_absence" class="form-control">
+                        <input type="hidden" name="moy_classe" id="view_suivi_classe" class="form-control" value="{{moy_classe}}">
+
+                    <div class="container bg-light">
+                        <div class="col-md-12 text-center text-primary">
+                            Tableau des Absences
+                        </div>
+                        <div class="col-12 text-center text-primary">
+                            <div class="container table-responsive">
+                                <table class="table table-bordered table-hover table-sm table-striped display compact" id="eleve_absence_tbe" style="font-size: small;width:100%" cellspacing="0"  table>
+                                    <thead class="bg-gradient-info text-white text-center">
+                                        <tr>
+                                            <th>Période</th>
+                                            <th>Date et Heure</th>
+                                            <th>Matière</th>
+                                            <th>Prof.</th>
+                                            <th>Motifs.</th>
+                                            <th>Absence</th>
+                                            <th>Action</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tfoot >
+                                        <tr>
+                                            <th>Période</th>
+                                            <th>Date et Heure</th>
+                                            <th>Matière</th>
+                                            <th>Prof.</th>
+                                            <th>Motifs.</th>
+                                            <th>Absence</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="elv_all_absc"></tbody>
+                                </table>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" id="modal_abs_del_ferm">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %} {% block javascript_footer_add %}
+    <script src="assets/js/mescript_admin.js"></script>
+    <script>
+      $(document).ready(function() {
+
+       
+                                      
+        $('#modal_abs_del_ferm').on('click', function(event) {
+            window.location.reload();
+        }); 
+
+
+      });
+    </script>
+{% endblock %}

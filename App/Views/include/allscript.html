@@ -1,0 +1,104 @@
+<!-- Bootstrap core JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="assets/js/sb-admin-2.min.js"></script>
+<!-- Page level plugins -->
+<script src="assets/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="assets/vendor/chart.js/chart-area-demo.js"></script>
+<script src="assets/vendor/chart.js/chart-pie-demo.js"></script>
+
+<!-- Page level plugins -->
+<script src="assets/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="assets/vendor/datatables/dataTables.buttons.min.js"></script>
+<script src="assets/vendor/datatables/jszip.min.js"></script>
+<script src="assets/vendor/datatables/pdfmake.min.js"></script>
+<script src="assets/vendor/datatables/vfs_fonts.js"></script>
+<script src="assets/vendor/datatables/buttons.html5.min.js"></script>
+
+<!-- Page level plugins 
+ <script src="assets/vendor/fullcalendar/fullcalendar.min.js"></script>-->
+
+<script src="assets/js/select2.min.js"></script>
+<script src="assets/js/demo/datatables-demo.js"></script>
+
+<!-- Bootstrap WYSIHTML5 -->
+<script src="assets/js/main.js"></script>
+
+<script type="text/javascript" src="assets/vendor/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="assets/vendor/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+
+
+
+<!-- EMPECHE LES COPIES
+ <script>
+    $(document).bind('cut copy paste', function(e) {
+          e.preventDefault();
+    });
+    $(document).on("contextmenu", function(e) {
+      return false;
+    });
+    function disable() {
+      document.onkeydown = function(e) {
+        return false;
+      }
+      disable()
+      document.onkeydown = function(e) {
+        if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) { 
+              alert('Action interdite !');
+        }
+        return false 
+      };
+    }
+ </script> 
+-->
+<script src="assets/js/intlTel/intlTelInput-jquery.min.js"></script>
+<script type="application/javascript">
+    $(document).ready(function() {
+        $(".phone").intlTelInput({
+            // whether or not to allow the dropdown
+            allowDropdown: true,
+            // if there is just a dial code in the input: remove it on blur, and re-add it on focus
+            autoHideDialCode: true,
+            // add a placeholder in the input with an example number for the selected country
+            autoPlaceholder: "polite",
+            // modify the auto placeholder
+            customPlaceholder: null,
+            // append menu to specified element
+            dropdownContainer: null,
+            // don't display these countries
+            excludeCountries: [],
+            // format the input value during initialisation and on setNumber
+            formatOnDisplay: true,
+            // geoIp lookup function
+            geoIpLookup: null,
+            // inject a hidden input with this name, and on submit, populate it with the result of getNumber
+            hiddenInput: "",
+            // initial country
+            initialCountry: "ci",
+            // localized country names e.g. { 'de': 'Deutschland' }
+            localizedCountries: null,
+            // don't insert international dial codes
+            nationalMode: false,
+            // display only these countries
+            onlyCountries: [],
+            // number type to use for placeholders
+            placeholderNumberType: "MOBILE",
+            // the countries at the top of the list. defaults to united states and united kingdom
+            //preferredCountries: ["us", "gb"],
+            // display the country dial code next to the selected flag so it's not part of the typed number
+            separateDialCode: false,
+            utilsScript: "assets/js/intlTel/utils.js",
+        });
+    });
+</script>
+
+<!-- USER INFORMATION -->

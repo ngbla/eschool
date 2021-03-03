@@ -1,0 +1,497 @@
+{% extends "main.html" %}
+
+{% block title %}Administrateur -  Procès verbaux / Bulletin{% endblock %}
+
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class=" container-fluid"   style="
+background-image: url('/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px;min-height: 1024px; ">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item" ><a class="nav-link {% if panel == 1 %} active {% endif %}" data-toggle="tab" href="#home">Générer les Procès verbaux</a></li>
+        <li class="nav-item" ><a class="nav-link {% if panel == 2 %} active {% endif %}" data-toggle="tab" href="#menu1">Générer les Bulletins</a></li>
+        <!--<li class="nav-item" ><a class="nav-link {% if panel == 3 %} active {% endif %}" data-toggle="tab" href="#menu2">Ajout Bilan matières</a></li>-->
+        <!-- <li class="nav-item" ><a class="nav-link {% if panel == 4 %} active {% endif %}" data-toggle="tab" href="#menu3">Menu 3</a></li>-->
+    </ul>
+
+    
+    
+    <div class="tab-content">
+
+        <div id="home"  class="tab-pane {% if panel == 1 %} active {% endif %}  row">
+            
+            <div class="col-12"><br><br><br></div>
+            <div class="col-12 row">
+                <form method="POST" class="form-row col-12 row"> 
+
+                 
+                    <div class="input-group  col-4">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Année</button>
+                        </div>
+             
+                        <select class="form-control" name="id_annee" id="anneeScol">
+
+                          {% if id_annee is defined %}
+                          <option selected value="{{univ_id}}_{{id_annee}}_{{annee}}">{{annee}}</option>
+                          <option value="" disabled  hidden>Choisissez un Groupe</option>
+                          {% else %}
+                          <option value="" disabled selected hidden>Choisissez une Année</option>
+                          {% endif %}
+
+                          
+                          {% if getAnneeScolaire is defined %}
+                            {% for key, value in getAnneeScolaire  %}
+                            <option value="{{univ_id}}_{{value.id_anscol_annee_scolaire}}_{{value.annee_libelle}}">{{value.annee_libelle}}</option>
+                            {% endfor %} 
+                          {% endif %}
+                        </select>
+                    </div>
+                    <!--
+                      <div class="input-group  col-3">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Filière</button>
+                        </div>
+                        <select class="form-control" name="id_classe">
+                            <option value="" disabled selected hidden>Choisissez une Filière</option>
+                            {% if getClassesBy is defined %}
+                            {% for key, value in getClassesBy  %}
+                            <option value="{{value.id_classe_classe}}_{{value.libelle}}">{{value.libelle}}</option>
+                            {% endfor %} 
+                            {% endif %}
+                        </select>
+                      </div>
+                      <div class="input-group  col-2">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Niveau</button>
+                        </div>
+                        <select class="form-control" name="id_nivo">
+                            <option value="" disabled selected hidden>Choisissez un niveau</option>
+                            {% if getNiveau is defined %}
+                            {% for key, value in getNiveau  %}
+                            <option value="{{value.id_niveau}}_{{value.libelle_niveau}}">{{value.libelle_niveau}}</option>
+                            {% endfor %} 
+                            {% endif %}
+                        </select>
+                      </div>
+                    --> 
+                    <div class="input-group  col-5">
+                      <div class="input-group-prepend ">
+                          <button type="button" class="btn btn-primary">Groupe</button>
+                      </div>
+                      <select class="form-control" name="id_groupe" id="groupe_id">
+                        
+                          {% if groupe is defined %}
+                          <option value="{{id_groupe}}_{{groupe}}" selected>{{groupe}}</option>
+                          <option value="" disabled  hidden>Choisissez un Groupe</option>
+                          {% else %}
+                          <option value="" disabled selected hidden>Choisissez un Groupe</option>
+                          {% endif %}
+                          
+                      </select>
+                    </div>
+  
+                    <div class="col-1">
+                        <button type="submit"  class="btn btn-info btn-icon-split" name="btn_pv">
+                            <span class="icon text-white-50">
+                            <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="text">PV</span>
+                        </button>
+                    </div>
+
+                    <div class="col-2">
+                      <button type="submit" class="btn btn-warning btn-icon-split" name="btn_relever">
+                          <span class="icon text-white-50">
+                          <i class="fas fa-arrow-right"></i>
+                          </span>
+                          <span class="text">Bulletins</span>
+                      </button>
+                  </div>
+
+
+                </form>
+            </div>
+            <div class="col-12"><br><br><br></div>
+
+
+        </div>
+        <div id="menu1" class="tab-pane {% if panel == 2 %} active {% endif %} row">
+
+            <div class="col-12"><br></div>
+            <div class="col-12">
+              <div class="card shadow mb-4">
+
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary"> Liste des élèves du groupe : {% if groupe is defined %}{{groupe}}{% endif %}</h6>
+                </div>
+                
+                  <!-- Card Body -->
+                  <div class="card-body" style="padding: 1rem 0.30rem;">
+
+                      <div class="table-responsive" >
+                        <table class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" id="dataTable_attrib_listeElev_class" style="width:100%" cellspacing="0" >
+                          <thead class="bg-gradient-info text-white text-center">
+                            <tr>
+                              <th>Photo</th>
+                              <th>Matricule</th>
+                              <th>Nom/Prénom</th>
+                              <th>Date et lieu de Naiss.</th>
+                              <th>Sexe</th>
+                              <th>Contact</th>
+                              <th>Action</th>
+                            </tr>
+                  
+                          </thead>
+                          <tfoot>
+                            <tr>
+                              <th>Photo</th>
+                              <th>Matricule</th>
+                              <th>Nom/Prénom</th>
+                              <th>Date et lieu de Naiss.</th>
+                              <th>Sexe</th>
+                              <th>Contact</th>
+                              <th>Action</th>
+                            </tr>
+                          </tfoot>
+                          <tbody>
+              
+              
+                            {% if get_gpreEtudiantsBy is defined %}
+              
+                            {% for eleve in get_gpreEtudiantsBy %}
+                              <tr>  
+                                <td>
+                                  <img id="user_tof" class="rounded img-thumbnail mx-auto d-block img-fluid" src="/files/{{ eleve.id_pers_personne }}/tiny{{ eleve.id_pers_personne }}.jpg" alt="Image Etudiant" style="max-height: 300px;">
+                                  </td>
+                                <td>{{ eleve.matricule }}</td>
+                                <td>{{ eleve.nom_prenom }}</td>
+                                <td>{{ eleve.date_naiss }} à {{ eleve.lieu_naiss }}</td>
+                                <td>{{ eleve.sexe }}</td>
+                                <td>{{ eleve.contact}}</td>
+                                <td class="fieldtype_action field-152-td nowrap">
+                                  
+                                      <a title="Générer le Bulletin" href="index.php?p=admin_vue_bulletin&action=9ce5bbd2560d90e4238fb3afe1f30a28cb9ac938&infos={{ eleve.fk_iduniv }}_{{ eleve.elv_ds_grpe_groupe }}_{{ eleve.elv_ds_grpe_idelev }}" target="_blank" name="btn_voir_eleve" class="btn btn-warning">
+                                        <input type="hidden" name="id_eleve" target="_blank"  value="{{ eleve.id_eleve_eleve }}">
+                                      <i class="fas fa-info"></i> Générer
+                                      </a>
+                                </td>
+              
+                              </tr>
+                            {% endfor %}
+              
+                            {% endif %}
+                  
+                          </tbody>
+                        </table>
+                      </div>
+
+                  </div>
+            
+            </div>
+            </div>
+ 
+        </div>
+
+
+
+
+        <div id="menu2" class="tab-pane {% if panel == 3 %} active {% endif %} ">
+            <div class="col-12"><br><br><br></div>
+            <div class="col-12 row">
+                <form method="POST" class="form-row col-12 row"> 
+                    <div class="input-group col-3">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Niveau</button>
+                        </div>
+                        <select class="form-control" name="id_niveau">
+                            <option value="" disabled selected hidden>Choisissez un Niveau</option>
+                            {% if getNiveau is defined %}
+                            {% for key, value in getNiveau  %}
+                            <option value="{{value.id_niveau}}|_|{{value.libelle_niveau}}">{{value.libelle_niveau}}</option>
+                            {% endfor %} 
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="input-group  col-4">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Filière</button>
+                        </div>
+                        <select class="form-control" name="id_filiere">
+                            <option value="" disabled selected hidden>Choisissez une Filière</option>
+                            {% if getClassesBy is defined %}
+                            {% for key, value in getClassesBy  %}
+                            <option value="{{value.id_classe_classe}}|_|{{value.libelle}}">{{value.libelle}}</option>
+                            {% endfor %} 
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="input-group  col-3">
+                        <div class="input-group-prepend ">
+                            <button type="button" class="btn btn-primary">Bilan</button>
+                        </div>
+                        <select class="form-control" name="id_bilan">
+                            <option value="" disabled selected hidden>Choisissez un Bilan</option>
+                            {% if getBilanBy is defined %}
+                            {% for key, value in getBilanBy  %}
+                            <option value="{{value.id_bilan}}|_|{{value.libelle_bilan}}">{{value.libelle_bilan}}</option>
+                            {% endfor %} 
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-info btn-icon-split" name="btn_add_bilan">
+                            <span class="icon text-white-50">
+                            <i class="fas fa-info"></i>
+                            </span>
+                            <span class="text">Ajouter</span>
+                        </button>
+                    </div>
+
+                    <div class="col-12"><br><br><br></div>
+                    <div class="col-12 card">
+                        <div class="card-body row">
+
+                            <div class="d-flex justify-content-between bg-warning mb-1 col-12">
+                                <div class="p-1 "> 
+                                  Niveau : <strong> <span id="span_niveau"> {% if niveau is defined %} {{niveau}} {% else %}....  {% endif %}</span></strong> .
+                                </div>
+                                <div class="p-1 "> 
+                               Filière :  <strong> <span id="span_filiere"> {% if filiere is defined %} {{filiere}} {% else %}....  {% endif %}</span></strong>.
+                                </div>
+            
+                                <div class="p-1 "> 
+                                    Bilan :  <strong> <span id="span_filiere">{% if bilan is defined %} {{bilan}} {% else %}....  {% endif %}</span></strong>.
+                                </div>
+                              </div>
+
+                            <div class="col-6">
+                                <table class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th>Matières</th>
+                                        <th>Supprimer</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        {% if get_B_li_bilanNivFil_By is defined %}
+                                        {% for key, value in get_B_li_bilanNivFil_By  %}
+                                        <tr>
+                                            <td>({{value.code_mat}})-{{value.lib_mat}}</td>
+                                            <td>
+                                                  <button  type="button" class="btn btn-icon-split btn-outline-danger ">
+                                                    <span class="icon text-white-50 ">
+                                                        <i class="fas fa-minus btn_supMat_bilan" id="{{value.fk_iduniv}}_{{value.fk_bul_bilan}}_{{value.fk_niveau}}_{{value.fk_filiere}}_{{value.fk_matiere}}"></i>
+                                                      </span>
+                                                  </button>
+                                            </td>
+                                        </tr>
+                                
+                                        {% endfor %} 
+                                        {% endif %}
+                        
+                                
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Matières</th>
+                                            <th>Ajouter</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        {% if get_mat_nivoFilBy is defined %}
+                                        {% for key, value in get_mat_nivoFilBy  %}
+                                        <tr>
+                                            <td>({{value.code_mat}})-{{value.lib_mat}}</td>
+                                            <td>
+                                                <button  type="button" class="btn btn-icon-split btn-outline-success ">
+                                                    
+                                                  <span class="icon text-white-50" >
+                                                      <i class="fas fa-plus btn_addMat_bilan" id="{{value.id_niveau}}_{{value.id_classe}}_{{value.id_matiere}}_{{id_bilan}}_{{id_univ}}" name="{{value.id_niveau}}_{{value.id_classe}}_{{value.id_matiere}}_{{id_bilan}}_{{id_univ}}"></i>
+                                                    </span>
+                                                </button>
+                                          </td>
+                                        </tr>
+                                
+                                        {% endfor %} 
+                                        {% endif %}
+                        
+                                
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+
+        </div>
+        <div id="menu3" class="tab-pane {% if panel == 4 %} active {% endif %} ">
+            <h3>Menu 3</h3>
+            <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
+{% block javascript_footer_add %}
+
+<script src='assets/vendor/html2pdf/html2pdf.bundle.min.js'></script>
+<script>
+    function generatePDF() {
+      // Choose the element that our invoice is rendered in.
+      const element = document.getElementById("relever");
+      // Choose the element and save the PDF for our user.
+      html2pdf()
+        .from(element)
+        .save();
+    }
+
+    $(document).ready(function(){
+        liens =  Appconfigs.liens_serv  ;   
+
+        //alert(window.location.hostname);
+        //alert(liens);
+
+
+        $('#anneeScol').on('change', function(event) {
+          //alert('change');
+          //event.preventDefault();
+
+          titre="//admin_eval_pv.html :: click evenement Change sur: #anneeScol";
+          info="  // Valeur=id --> "+event.target.id;
+          valueur= $('#anneeScol').val(); 
+
+          consoleInfo(envi, titre, info, valueur);
+          url_info = liens+'App/Models/info.model.php';
+          values_info = 'action=get_univALLgrpeBy&infos_iduniv_id_annee='+valueur;
+          idelemt = '#anneeScol';
+          root_AjaxMethod(url_info, values_info, ajax_retour_getgroupe,idelemt);
+        });
+
+        function ajax_retour_getgroupe(jsondata) {
+
+          titre="//ajax_retour_getgroupe :: click evenement Change sur: #anneeScol";
+          info="  // Get Ajax valeur --> ";
+
+
+          if (typeof(jsondata) !=undefined && jsondata != "") {
+
+              jsondata = JSON.parse(jsondata);
+              valueur= jsondata;
+              consoleInfo(envi, titre, info, valueur);
+
+              if (jsondata != 0) {
+
+                $('#groupe_id').html('<option value="" disabled selected hidden>Choisissez un Groupe</option>');
+
+                for (var x in jsondata) {
+
+                  info="  // **************************//--> ID= "+jsondata[x].groupe_id;
+                  valueur= jsondata[x].groupe_libelle;
+                  consoleInfo(envi, titre, info, valueur);
+
+                  
+                  $('#groupe_id').append('<option value="'+jsondata[x].groupe_id+'_'+jsondata[x].groupe_libelle+'">'+jsondata[x].groupe_libelle+'</option>');
+                    
+
+                }
+ 
+                classtype = "alert-success";
+                infos_stat = "Ajout éffectuer";
+              }
+              else{
+                  classtype = 0;
+                  infos_stat = "Ajout erreur";
+              }
+
+              root_fct_showinfos_toast(infos_stat,classtype);
+          }
+          
+        }
+
+        // Setup 1 - add a text input to each footer cell
+        $('#dataTable_attrib_listeElev_class tfoot th').each(function() {
+            var title = $(this).text();
+            $(this).html('<input type="text" placeholder=" ' + title + '" />');
+        });
+
+        // DataTable
+        var dataTable_attrib_listeElev_class = $('#dataTable_attrib_listeElev_class').DataTable({
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            },
+            dom: 'Blfrtip',
+             "order": [[ 2, "asc" ]],
+             "pageLength": 150,
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+     
+
+
+    });
+</script>
+
+{% endblock %} 
+
+
+
+
+
+
+
+
+
+
+
+
+

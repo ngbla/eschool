@@ -1,0 +1,390 @@
+{{ include('Inscription/include/entete.html') }}
+<div class="row" style="margin-top: 30px;">
+
+    <div class="col-1"> </div>
+
+    <div class="col-10">
+        <div class="row col-12">
+
+            <div class="col-12 row">
+                <div id="ImprimerFicheInscrit">
+                    <div class="row">
+                        <div class="col-lg-12 row">
+                            <div class="col-4 text-center"></div>
+                            <div class="col-8 text-right">
+                                <a href="#" class="btn btn-theme d-print-none" onClick="window.print()"> <button class="btn btn-warning"><i class="fa fa-print"></i></button> IMPRIMER VOTRE FICHE D'INSCRIPTION
+                                </a><br/>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <h4 class="h4-print text-center border border-dark"><b> FICHE D'INSCRIPTION </b> </h4>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <table>
+                                <tr>
+                                    <td width="3%"> </td>
+                                    <td valign="top">
+                                        <table>
+                                            <tr>
+                                                <td><br><br></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>MATRICULE ETUDIANT</b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : <strong>{% if infos_elev.matricule is defined %} {{infos_elev.matricule}} {% endif%}</strong> </h5>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>NOM PRENOM</b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : <strong>{% if infos_elev.nom_prenom is defined %} {{infos_elev.nom_prenom}} {% endif%}</strong> </h5>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>INSCRIT LE </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if eleve_lastInscript.date_inscription is defined %} {{ eleve_lastInscript.date_inscription|format_datetime(locale='fr') }} {% endif%}</h5>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td valign="top" class="text-center" width="10%">
+                                        <table>
+                                            <tr>
+                                                <td valign="">
+                                                    <img src="/files/{{infos_elev.id_pers_personne}}/{{infos_elev.id_pers_personne}}.jpg" style="max-width: 110px; max-height: 110px; min-width: 110px; min-height: 110px;">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <br/>
+                                                    <h5> <strong>{% if anneescolaire is defined %} {{anneescolaire}} {% endif%}</strong> </h5>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="2%"> </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <table>
+                                <tr>
+                                    <td width="3%"> </td>
+                                    <td valign="top">
+                                        <table>
+                                            <tr>
+                                                <td colspan="4" class="h5-print">
+                                                    <div class="h5-print" style="border-bottom:2px solid gray;background-color:gray;width:100%"></div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>FILIERE</b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.parcours is defined %} {{infos_elev.parcours}} {% endif%} </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>NIVEAU</b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.niveauetude is defined %} {{infos_elev.niveauetude}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>PROFESSION </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.profilcandidat is defined %} {{infos_elev.profilcandidat}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> DATE / LIEU DE NAISSANCE </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.date_naiss is defined %} {{ infos_elev.date_naiss|format_datetime(locale='fr') }} {% endif%} à {% if infos_elev.lieu_naiss is defined %} {{infos_elev.lieu_naiss}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>SEXE</b> / <b>CIVILITE</b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.sexe is defined %} {{infos_elev.sexe}} {% endif%} </h5>
+                                                </td>
+
+                                                <td>
+                                                    <h5 class="h5-print"> <b>NATIONALITE</b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.nationnalite is defined %} {{infos_elev.nationnalite}} {% endif%}</h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>CONTACT</b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.contact is defined %} {{infos_elev.contact}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b>ADRESSE MAIL</b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.email is defined %} {{infos_elev.email}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> COMMUNE </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.commune is defined %} {{infos_elev.commune}} {% endif%} </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> QUARTIER DE RESIDENCE </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.quartie is defined %} {{infos_elev.quartie}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="4" class="h5-print">
+                                                    <div class="h5-print" style="border-bottom:2px solid gray;background-color:gray;width:100%"></div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> NOM DU PERE  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.nom_pere is defined %} {{infos_elev.nom_pere}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> PROFESSION DU PERE  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.profession_pere is defined %} {{infos_elev.profession_pere}} {% endif%} </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> CONTACT DU PERE </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.tel_pere is defined %} {{infos_elev.tel_pere}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> NOM DE LA MERE  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.nom_mere is defined %} {{infos_elev.nom_mere}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> PROFESSION DE LA MERE  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.profession_mere is defined %} {{infos_elev.profession_mere}} {% endif%} </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> CONTACT DE LA MERE </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.tel_mere is defined %} {{infos_elev.tel_mere}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+
+
+                                            <tr>
+                                                <td colspan="4" class="h5-print">
+                                                    <div class="h5-print" style="border-bottom:2px solid gray;background-color:gray;width:100%"></div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> NOM DU PAYEUR LEGAL  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.nom_payeur is defined %} {{infos_elev.nom_payeur}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> EMAIL DU PAYEUR LEGAL  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.email_payeur is defined %} {{infos_elev.email_payeur}} {% endif%} </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> CONTACT DU PAYEUR LEGAL </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.tel_payeur is defined %} {{infos_elev.tel_payeur}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="4" class="h5-print">
+                                                    <div class="h5-print" style="border-bottom:2px solid gray;background-color:gray;width:100%"></div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> REDOUBLANT  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.statut_redoublant is defined %} {{infos_elev.statut_redoublant}} {% endif%} </h5>
+                                                </td>
+
+                                                <td>
+                                                    <h5 class="h5-print"> <b> REGIME ETUDIANT  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.statut_affecter is defined %} {{infos_elev.statut_affecter}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> N° MENET  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.num_menet is defined %} {{infos_elev.num_menet}} {% endif%} </h5>
+                                                </td>
+
+                                                <td>
+                                                    <h5 class="h5-print"> <b> N° MESRS </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.num_mesrs_menet is defined %} {{infos_elev.num_mesrs_menet}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> TYPE DE COURS </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> :
+
+                                                        <div class="form-check-inline">
+                                                            <label class="form-check-label">
+                                                            <input type="checkbox" class="form-check-input" value="">JOUR
+                                                        </label>
+                                                        </div>
+                                                        <div class="form-check-inline">
+                                                            <label class="form-check-label">
+                                                            <input type="checkbox" class="form-check-input" value="">SOIR
+                                                        </label>
+                                                        </div>
+
+                                                    </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="4" class="h5-print">
+                                                    <div class="h5-print" style="border-bottom:2px solid gray;background-color:gray;width:100%"></div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> NOM DU CORRESPONDANT  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.nomurget is defined %} {{infos_elev.nomurget}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> EMAIL DU CORRESPONDANT  </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.emailurget is defined %} {{infos_elev.emailurget}} {% endif%} </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> <b> CONTACT DU CORRESPONDANT </b> </h5>
+                                                </td>
+                                                <td>
+                                                    <h5 class="h5-print"> : {% if infos_elev.telurget is defined %} {{infos_elev.telurget}} {% endif%} </h5>
+                                                </td>
+                                            </tr>
+
+
+
+
+                                        </table>
+                                    </td>
+
+                                    <td width="2%"> </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <hr color="grey" />
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class=" col-12 row">
+                    <div class="col-7">
+                        <form action="" method="POST">
+                            <button class="d-print-none btn btn-primary " type="submit">PAYER A LA CAISSE</button>
+                        </form>
+                    </div>
+                    {% if infos_elev.id_eleve_eleve is defined %}
+                    <!-- <form action="" method="POST" class="col-5">
+                            <input type="hidden" name="nom_eleve" value="{{infos_elev.nom_prenom}}">
+                            <input type="hidden" name="email_eleve" value="{{infos_elev.email}}">
+                            <input type="hidden" name="datenaiss_eleve" value="{{infos_elev.date_naiss}}">
+                            <input type="hidden" name="lieunaiss_eleve" value="{{infos_elev.lieu_naiss}}">
+                            <button class="d-print-none btn btn-success " type="submit" name="paiement_scolarite" value="{{infos_elev.id_eleve_eleve}}">PAYER EN LIGNE</button>
+                        </form>-->
+                    {% endif%}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-1"> </div>
+
+</div>
+<br/><br/>

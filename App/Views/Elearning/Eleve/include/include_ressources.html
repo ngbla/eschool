@@ -1,0 +1,75 @@
+{% if videodocs.type == 'd' %}
+
+  <li class="resources_docs "  id="docs_{{videodocs.id_docsvideocour}}">
+    <div>
+      <div class="mod-indent-outer w-100">
+        <div>
+          <div class="activityinstance">
+            <a class="aalink" target="_blank" href="{{liens_profmat_docs}}{{videodocs.lien_docsvideo}}">
+
+              {% set exttabe = videodocs.lien_docsvideo|split('.') %}
+              {% if (exttabe|last == 'docx') or (exttabe|last == 'doc') %}
+                {% set extentionss = 'docx' %}
+              {% elseif (exttabe|last == 'xls') or (exttabe|last == 'xlx')  %}
+                {% set extentionss = 'xlx' %}
+              {% else %}
+                {% set extentionss = 'pdf' %}
+              {% endif %}
+
+              <img src="assets/img/{{extentionss}}.png" class="iconlarge activityicon img-responsive" alt="" role="presentation" aria-hidden="true" style="width:20px;" class="" >
+
+
+              <span class="instancename">{{videodocs.video_libelle}}</span>
+            </a> 
+          </div>
+          <div class="contentafterlink">
+            <div class="no-overflow">
+              <div class="no-overflow">
+                <p><i>Mise en ligne le {{videodocs.date_video}}</i></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+
+{% endif %}
+{% if videodocs.type == 'v'  %}
+  <li class="resources_videos " id="video_{{videodocs.id_docsvideocour}}">
+    <div class="card shadow mb-4">
+
+      <a href="#collapse_{{videodocs.id_docsvideocour}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse{{video.id_videocour}}">
+        <i class="fa fa-play-circle" style="color:#4e73df; font-size:1.3em" aria-hidden="true"> 
+          {{videodocs.video_libelle}}
+        </i> 
+      </a>
+
+      <div class="collapse" id="collapse_{{videodocs.id_docsvideocour}}">
+
+        <div class="card-body">
+
+          <div class="embed-responsive embed-responsive-4by3">
+
+            <iframe frameborder="0" class="embed-responsive-item" src="{{videodocs.lien_docsvideo}}" controls autoplay="false"></iframe>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </li>
+{% endif %}
+
+  
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,322 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} 
+
+{% block title %}Acceuil{% endblock %} 
+
+{% block content %}
+
+<!--{% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+
+
+
+   Main content -->
+
+
+
+    <div class="card">
+
+      <div class="card-body">
+
+        <div class="container">
+
+          <div class="container pb-filemng-template">
+              <div class="row">
+                  <div class="col-12">
+          
+                  <div class="panel panel-default">
+                          <div class="panel-body pb-filemng-panel-body">
+                              <div class="row">
+                                  <div class="col-0 pb-filemng-template-treeview" style="font-size: 2em;">
+                                      <div class="" id="treeview-toggle">
+                                          <div id="treeview">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-12 card">
+                                    <div class="card-header p-2">
+                                      <ul class="nav nav-pills">
+                                        <li class="nav-item"><a class="nav-link active" href="#evaluation" data-toggle="tab">Documents</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#videos" data-toggle="tab">Vidéos</a></li>
+                                      </ul>
+                                    </div>
+                                    <!-- Notifications -->
+                                    <div class="card-body">
+                                      <div class="tab-content">
+                                        <div class=" pb-filemng-template-body active tab-pane row" id="evaluation">
+                                            <div class="wrapper">
+                                              <div id="primary" class="content-area">
+                                                <div id="content" class="site-content" role="main">
+                                                  <div class="entry-content questionnaire">
+                                                      <h5>
+                                                        <b><i class="fa fa-tags"></i> :</b> Comptabilité Génerale | 
+                                                        <b><i class="fa fa-tags"></i> :</b> Tavaux Pratique
+                                                        | <b><i class="fa fa-user"></i> :</b> Prof. Konan<br/><br/>
+                                                        <b><i class="fa fa-calendar"></i> :</b> 25-10-2020 De 10h30 A 10h45
+                                                      </h5>
+                                                      <div class="block block_100 questionnaire">
+                                                        <form method="post" action="" class="firstform">
+                                                          <div class="block block_100 qcm  question_0 active "> 
+                                                            <p class="time"></p>
+                                                            <span style="position: absolute; right: 10px; top: 10px;">1/10</span>
+                                                            <h4>
+                                                              Question n° 1 : A l&rsquo;aide de quelle règle est il possible d&rsquo;imposer une mise en page aux impression d&rsquo;écran.
+                                                            </h4>
+                                                            <label for="reponse_0_2">
+                                                              <input id="reponse_0_2" type="radio" name="question[0]" value="@media : page">
+                                                              <p>@media : page</p>
+                                                            </label>
+                                                            <label for="reponse_0_4">
+                                                              <input id="reponse_0_4" type="radio" name="question[0]" value="@media : print">
+                                                              <p>@media : print</p>
+                                                            </label>
+                                                            <label for="reponse_0_3">
+                                                              <input id="reponse_0_3" type="radio" name="question[0]" value="media : print">
+                                                              <p>media : print</p>
+                                                            </label>
+                                                            <label for="reponse_0_1">
+                                                              <input id="reponse_0_1" type="radio" name="question[0]" value="Ce n&rsquo;est pas possible">
+                                                              <p>Ce n&rsquo;est pas possible</p>
+                                                            </label>
+                                                            <input type="hidden" name="questions[0]" value="A l&rsquo;aide de quelle règle est il possible d&rsquo;imposer une mise en page aux impression d&rsquo;écran.">
+                                                            <input type="hidden" name="reponse[0]" value="@media : print">
+                                                            <p class="suivante" style="display:none">question suivante</p>
+                                                            <p class="qcm_retour" style="display:none">question précédente</p>
+                                                            <div class="clear"></div><br/>
+                                                          </div>
+                                                          <div class="clear"></div>
+                                                          <div class="block block_100 qcm  question_1 ">
+                                                            <p class="time"></p>
+                                                            <span style="position: absolute; right: 10px; top: 10px;">2/10</span>
+                                                            <h4>Question n° 2 : Quelle sont les 2 valeurs possibles pour la règle orientation ?</h4>
+                                                            <label for="reponse_1_3">
+                                                              <input id="reponse_1_3" type="radio" name="question[1]" value="top et bottom">
+                                                              <p>top et bottom</p>
+                                                            </label>
+                                                            <label for="reponse_1_1">
+                                                              <input id="reponse_1_1" type="radio" name="question[1]" value="left et right">
+                                                              <p>left et right</p>
+                                                            </label>
+                                                            <label for="reponse_1_4">
+                                                              <input id="reponse_1_4" type="radio" name="question[1]" value="portrait et landscape">
+                                                              <p>portrait et landscape</p>
+                                                            </label>
+                                                            <label for="reponse_1_2">
+                                                              <input id="reponse_1_2" type="radio" name="question[1]" value="absolute et relative">
+                                                              <p>absolute et relative</p>
+                                                            </label>
+                                                            <input type="hidden" name="questions[1]" value="Quelle sont les 2 valeurs possibles pour la règle orientation ?">
+                                                            <input type="hidden" name="reponse[1]" value="portrait et landscape">
+                                                            <p class="suivante" style="display:none">question suivante</p>
+                                                            <p class="qcm_retour" style="display:none">question précédente</p>
+                                                            <div class="clear"></div><br/>
+                                                          </div>
+                                                          <div class="clear"></div>
+                                                          <div class="block block_100 qcm  question_2 "> 
+                                                            <p class="time"></p>
+                                                            <span style="position: absolute; right: 10px; top: 10px;">3/10</span>
+                                                            <h4>Question n° 3 : Dans quel cas s&rsquo;appliquera cette règles ?</h4>
+                                                            <img class="blocks blocks_100" src="">
+                                                            <label for="reponse_2_2">
+                                                              <input id="reponse_2_2" type="radio" name="question[2]" value="Sur tous les écrans HD.">
+                                                              <p>Sur tous les écrans HD.</p>
+                                                             </label>
+                                                             <label for="reponse_2_4">
+                                                              <input id="reponse_2_4" type="radio" name="question[2]" value="Sur les portables en mode portrait ?">
+                                                              <p>Sur les portables en mode portrait ?</p>
+                                                            </label>
+                                                            <label for="reponse_2_3">
+                                                              <input id="reponse_2_3" type="radio" name="question[2]" value="Sur tous les écrans en mode portrait ?">
+                                                              <p>Sur tous les écrans en mode portrait ?</p>
+                                                            </label>
+                                                            <label for="reponse_2_1">
+                                                              <input id="reponse_2_1" type="radio" name="question[2]" value="Sur les périphérique portables en mode paysage ?">
+                                                              <p>Sur les périphérique portables en mode paysage ?</p>
+                                                            </label>
+                                                            <input type="hidden" name="questions[2]" value="Dans quel cas s&rsquo;appliquera cette règles ?"><input type="hidden" name="reponse[2]" value="Sur les portables en mode portrait ?">
+                                                            <p class="suivante" style="display:none">question suivante</p>
+                                                            <p class="qcm_retour" style="display:none">question précédente</p>
+                                                            <div class="clear"></div><br/>
+                                                          </div>
+                                                          <input class="repondre" type="submit" value="Correction" name="qcm" >
+                                                        </form>            
+                                                      </div>
+                                                  </div>
+                                                </div><!-- #content -->
+                                              </div>
+                                              <a class="scroll-top">
+                                                  <i class="fa fa-angle-double-up"></i>
+                                              </a>
+                                            </div>
+                                        </div>
+                                        <div class="active tab-pane" id="videos">
+
+           
+                              
+                                        </div>
+          
+                                      </div>
+                                    </div>
+
+
+
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript_footer_add %}
+<style>
+
+  .pb-filemng-template {
+    margin-top: 40px;
+    font-family: 'Sansita', sans-serif;
+  }
+
+  .pb-filemng-navbar {
+    margin-bottom: 0;
+  }
+
+  .treeview-toggle-btn {
+    margin-left: 15px;
+  }
+
+  .pb-filemng-template-btn {
+    background-color: Transparent;
+      background-repeat:no-repeat;
+      border: none;
+      cursor:pointer;
+      outline:none;
+      color: gray;
+      padding: 0px 13px 0px 13px;
+  }
+
+  .pb-filemng-active {
+    border-bottom: 2px solid #6d97db;
+    color: #5f6977;
+  }
+
+  .pb-filemng-template-btn:hover {
+    color: blue;
+  }
+
+  .pb-filemng-body-folders > img:hover {
+    cursor: pointer;
+  }
+
+  .btn-align {
+    margin-top: 7px;
+  }
+
+  .pb-filemng-template-treeview {
+    border-right: 1px solid gray;
+  }
+
+  .pb-filemng-folder {
+    color: orange;
+    padding-bottom: 3px;
+  }
+
+  .pb-filemng-paragraphs {
+    margin-top: -20px;
+    text-align: center;
+  }
+
+  .img-responsive {
+    margin: 0 auto;
+  }
+
+@media screen and (max-width: 767px) {
+
+.pb-filemng-template-treeview {
+  border-right: none;
+}
+
+#options {
+  text-align: center;
+}
+
+#options > li {
+  display: inline-block;
+}
+
+#pb-filemng-navigation > ul {
+  text-align: center;
+}
+
+#pb-filemng-navigation > ul > li {
+  display: inline-block;
+}
+
+}
+</style>
+
+<link href="assets/evaluation/css/style.css" rel="stylesheet" type="text/css"/>
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+<script type="text/javascript" src="assets/js/shieldui-all.min.js"></script>
+<script type="text/javascript" src="assets/js/fileManagerData.js"></script>
+<!-- JS -->
+<script src="assets/evaluation/js/plugin/jquery.flexslider.js" type="text/javascript"></script>
+<script src="assets/evaluation/js/main.js" type="text/javascript"></script>
+<script>
+    var time = 60;
+    function Timer() 
+    {
+        time = time - 1;
+        minute = Math.ceil(time / 60);
+        seconde = time % 60;
+        $('.time').html('Temps restant : ' + minute + ' min ' + seconde + ' sec ');
+        if (time) 
+        {
+            setTimeout("Timer()", 1000);
+        }
+        else 
+        {
+            var event = jQuery.Event("submit");
+            $('.mail_qcm').show();
+            $('.qcm_nom').val('eleve');
+            $('.qcm_mail').val('manestetoo@gmail.com.com');
+            $(".repondre").trigger('click');
+        }
+    }
+    Timer()
+</script> 
+<script >
+
+  $(function () {
+      $("#treeview").shieldTreeView({
+          dataSource: dataSrc
+      });
+
+      for (var key in folderData) {
+          $(".pb-filemng-template-body").append(
+              '<div class=\"col-3 pb-filemng-body-folders\">' +
+              folderData[key].icon + '<br />' + 
+              '<p class="pb-filemng-paragraphs">' + folderData[key].text + '</p>' + 
+              '</div>'
+          );
+      }
+  });
+
+</script>
+  
+
+{% endblock %} 
+

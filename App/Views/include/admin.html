@@ -1,0 +1,164 @@
+{% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) or (id_role == 6) or (id_role == 7) or (id_role == 8)) %}
+
+<li class="nav-item">
+    <a class="nav-link collapsed text-center" href="index.php?p=admin_prof_listAll" aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fas fa-fw fa-user faa-pulse animated" style="font-size: 2rem;"></i><br>
+        <span>Gestion des Professeurs</span>
+    </a>
+</li>
+{% endif %} {% if (id_role is defined) and ((id_role == 6) or (id_role == 3) or (id_role == 5) or (id_role == 4) or (id_role == 1) or (id_role == 2) or (id_role == 7) or (id_role == 8)) %}
+<li class="nav-item">
+    <a class="nav-link collapsed text-center" href="#" data-toggle="collapse" data-target="#collapseTwo1" aria-expanded="true" aria-controls="collapseTwo1">
+        <i class="fas fa-fw fa-users faa-shake animated" style="font-size: 2rem;"></i><br>
+        <span>Gestion des Étudiants</span>
+    </a>
+    <div id="collapseTwo1" class="collapse" aria-labelledby="headingTwo1" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+
+
+            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+            <a class="collapse-item" href="index.php?p=admin_inscrip_etud">
+                <i class='fa fa-edit' style="font-size:1rem;color:#87a0e8;"></i> Demandes d'Inscription des Étudiants</a>
+            <a class="collapse-item" href="index.php?p=admin_eleve_classe">
+                <i class='fa fa-file' style="font-size:1rem;color:#87a0e8;"></i> Affectation à une classe</a>
+            <!-- <a class="collapse-item" href="index.php?p=admin_prof_dossier">Dossier Etudiants</a> -->
+            {% endif %}
+            <a class="collapse-item" href="index.php?p=admin_parent_listAll">
+                <i class='fa fa-user-friends' style="font-size:1rem;color:#87a0e8;"></i> Gestion des parents</a>
+            <a class="collapse-item" href="index.php?p=admin_elev_listAll">
+                <i class='fa fa-users' style="font-size:1rem;color:#87a0e8;"></i> Liste des Étudiants</a>
+            <a class="collapse-item" href="index.php?p=admin_elev_cieScol">
+                <i class='fa fa-restroom' style="font-size:1rem;color:#87a0e8;"></i> Vie Scolaire Étudiants</a>
+            <a class="collapse-item" href="index.php?p=stage_etudiants">
+                <i class='fa fa-user-edit' style="font-size:1rem;color:#87a0e8;"></i> Gestion des stages</a>
+            <a class="collapse-item" href="index.php?p=anciens_etudiants">
+                <i class='fa fa-user-graduate' style="font-size:1rem;color:#87a0e8;"></i> Réseaux des anciens</a>
+
+        </div>
+    </div>
+</li>
+{% endif %} {% if (id_role is defined) and ((id_role == 5) or (id_role == 1) or (id_role == 4) or (id_role == 2) or (id_role == 6) or (id_role == 7) or (id_role == 8)) %}
+<li class="nav-item">
+    <a class="nav-link collapsed text-center" href="#" data-toggle="collapse" data-target="#collapseTwo2" aria-expanded="true" aria-controls="collapseTwo2">
+        <i class="fas fa-fw fa-home faa-horizontal animated" style="font-size: 2rem;"></i><br>
+        <span>Gestion des Filières</span>
+    </a>
+    <div id="collapseTwo2" class="collapse" aria-labelledby="headingTwo2" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) or (id_role == 7) or (id_role == 8)) %}
+            <a class="collapse-item" href="index.php?p=admin_ceerClasse">
+                <i class='fa fa-copy' style="font-size:1rem;color:#87a0e8;"></i> Filières
+            </a>
+            <a class="collapse-item" href="index.php?p=admin_classe_attrib_filliere">
+                <i class='fa fa-clipboard-list' style="font-size:1rem;color:#87a0e8;"></i> Classe/Groupe </a>
+            <a class="collapse-item" href="index.php?p=admin_classe_infos">
+                <i class='fa fa-user-graduate' style="font-size:1rem;color:#87a0e8;"></i> Classe/Groupe Infos</a>
+            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+            <a class="collapse-item" href="index.php?p=admin_repart_mat">
+                <i class='fa fa-list-alt' style="font-size:1rem;color:#87a0e8;"></i> Répartition des Matières</a> {% endif %} {% endif %}
+            <a class="collapse-item" href="index.php?p=admin_classe_emploiTps">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Emploi du temps Classes</a>
+        </div>
+    </div>
+</li>
+{% endif %} {% if (id_role is defined) and ((id_role == 1) or (id_role == 4) or (id_role == 2) or (id_role == 7) or (id_role == 8)) %}
+<li class="nav-item">
+    <a class="nav-link collapsed text-center" href="#" data-toggle="collapse" data-target="#collapseTwo3" aria-expanded="true" aria-controls="collapseTwo3">
+        <i class="fas fa-fw fa-university  faa-bounce animated" style="font-size: 2rem;"></i><br>
+        <span>Gestion des Salles</span>
+    </a>
+    <div id="collapseTwo3" class="collapse" aria-labelledby="headingTwo3" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+            <a class="collapse-item" href="index.php?p=admin_ceerSalle">
+                <i class='fa fa-university' style="font-size:1rem;color:#87a0e8;"></i> Création de Salle</a> {% endif %}
+            <a class="collapse-item" href="index.php?p=admin_ceerSalle_Liste">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Liste des salles</a>
+            <a class="collapse-item" href="index.php?p=admin_salle_prog">
+                <i class='fa fa-battery-half' style="font-size:1rem;color:#87a0e8;"></i> État des Salles</a>
+        </div>
+    </div>
+</li>
+{% endif %} {% if (id_role is defined) and ( (id_role == 4) or (id_role == 2) or (id_role == 1) ) %}
+<li class="nav-item">
+    <a class="nav-link collapsed text-center" href="#" data-toggle="collapse" data-target="#collapseTwo6" aria-expanded="true" aria-controls="collapseTwo6">
+        <i class="fas fa-fw fa-list faa-tada animated" style="font-size: 2rem;"></i><br>
+        <span>Examen et Evaluation</span>
+    </a>
+    <div id="collapseTwo6" class="collapse" aria-labelledby="headingTwo6" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) ) %}
+            <a class="collapse-item" href="index.php?p=admin_eval_auto">
+                <i class='fa fa-calendar' style="font-size:1rem;color:#87a0e8;"></i> Programmation
+            </a>
+            <a class="collapse-item" href="index.php?r=admin_notes">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Notes
+            </a>
+            <a class="collapse-item" href="index.php?p=admin_eval_moyenne">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Moyennes
+            </a>
+            <a class="collapse-item" href="index.php?p=admin_relever">
+                <i class='fa fa-clone' style="font-size:1rem;color:#87a0e8;"></i> Modèle/Bilan
+            </a>
+            <a class="collapse-item" href="index.php?p=admin_eval_pv">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> PV/Bulletin
+            </a>
+            <a class="collapse-item" href="index.php?r=admin_finannee">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Délibération
+            </a>            
+            {% endif %}
+        </div>
+    </div>
+</li>
+{% endif %} {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 6) or (id_role == 4) or (id_role == 7) or (id_role == 8))%}
+<li class="nav-item">
+    <a class="nav-link collapsed text-center" href="#" data-toggle="collapse" data-target="#collapseTwo5" aria-expanded="true" aria-controls="collapseTwo5">
+        <i class="fas fa-10x fa-briefcase faa-float animated" style="font-size: 2rem;"></i>
+        <br>
+        <span>Administration</span>
+    </a>
+    <div id="collapseTwo5" class="collapse" aria-labelledby="headingTwo5" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 4) or (id_role == 7) or (id_role == 8)) %} {% if (id_role is defined) and (id_role != 7) and (id_role !=8) %}
+            <a class="collapse-item" href="index.php?p=admin_user_active">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Comptes
+            </a>
+            {% endif %} {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) ) %}
+            <a class="collapse-item" href="index.php?p=admin_creerannee">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Années Scolaire </a>
+            <a class="collapse-item" href="index.php?p=admin_ceerNiveau">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Niveau
+            </a>
+            <a class="collapse-item" href="index.php?p=admin_ceerMatiere">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Matières
+            </a>
+            <!--  <a class="collapse-item" href="index.php?p=admin_attribution">Attribution</a>-->
+            {% endif %} {% if (id_role is defined) and ((id_role == 1) or (id_role == 6) or (id_role == 7) or (id_role == 8)) %}
+            <a class="collapse-item" href="index.php?p=admin_comptabilite">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Comptabilité
+            </a>
+            {% endif %} {% if (id_role is defined) and (id_role == 1) %}
+            <a class="collapse-item" href="index.php?p=logs">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Historiques des activités</a>
+            <a class="collapse-item" href="index.php?p=admin_roles">
+                <i class='fa fa-file-alt' style="font-size:1rem;color:#87a0e8;"></i> Rôles/Privilèges
+            </a>
+            {% endif %} {% endif %}
+        </div>
+    </div>
+</li>
+{% endif %} {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 5) or (id_role == 7) or (id_role == 8)) %}
+<li class="nav-item">
+    <a class="nav-link text-center" href="index.php?p=admin_notif" aria-expanded="true">
+        <i class="fas fa-fw fa-info faa-horizontal animated" style="font-size: 2rem;"></i><br>
+        <span>Notification</span>
+    </a>
+</li>
+{% endif %}
+<li>{{ user.username|e }}</li>
+<li class="nav-item">
+    <a class="nav-link text-center" href="/public/chat-admin/index.html" target="_blank" aria-expanded="true">
+        <i class="fas fa-fw fa-comments faa-flash animated" style="font-size: 2rem;"></i><br>
+        <span>Chat</span>
+    </a>
+</li>

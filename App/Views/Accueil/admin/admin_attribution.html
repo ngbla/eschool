@@ -1,0 +1,641 @@
+{% extends "main.html" %} 
+{% block title %}Admin{% endblock %} 
+{% block content %}
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<table class="header"><tbody><tr class="st"><td class="header1"><h2><span class="module-icon Students"></span> Université Elearning</h2></td></tr></tbody></table>
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary"> Création d'une Année Scolaire </h6>
+    </div>
+
+    <div class="card-body">
+
+      <div class="container">
+        <div id="attribution_myCarousel" class="carousel slide" data-interval="false" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#attribution_myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#attribution_myCarousel" data-slide-to="1"></li>
+            <li data-target="#attribution_myCarousel" data-slide-to="2"></li>
+            <li data-target="#attribution_myCarousel" data-slide-to="3"></li>
+          </ol>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            
+            <form method="POST">
+
+              <div class="carousel-item active">
+
+                <fieldset >
+                  <!-- Form Name -->
+                  <div class="col-xl-12 col-md-12 mb-12">
+                    <div class="card border-left-success shadow h-100 py-2">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Etape 1 : Création du Groupe</div>
+                            <div class="row no-gutters align-items-center">
+                              <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">00%</div>
+                              </div>
+                              <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                  <div class="progress-bar bg-success" role="progressbar" style="width: 00%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="col-12 row">
+                    <div class="col-xl-6 col-md-6 mb-6">
+                      <div class="card mb-4 py-3 border-bottom-primary">
+                        <div class="card-body">
+                          <div class="form-group">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Choix Année Scolaire</div>
+                            <select class="form-control" id="attribution_annee_id" name="attribution_annee"  required>
+                              <option value="0"></option>
+                              {% if allAnneeScolaire is defined %}
+                                {% for key, value in allAnneeScolaire  %}
+                                 <option value="{{ value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                {% endfor %} 
+                              {% endif %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xl-6 col-md-6 mb-6">
+                      <div class="card mb-4 py-3 border-bottom-primary">
+                        <div class="form-group">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Choix Classe</div>
+                        <select class="form-control"  id="attribution_classe_id" name="attribution_classe" required>
+                          <option value="0"></option>
+
+                          {% if allclasses is defined %}
+                            {% for key, value in allclasses  %}
+                            <option value="{{ value.id_classe_classe }}">{{ value.libelle }}</option>
+                            {% endfor %} 
+                          {% endif %}
+                        </select>
+                        </div>
+                        <div class="form-group">
+                        <label class="col-md-4 control-label" for="textinput">Nom du Groupe</label>
+                        <div class="col-md-4">
+                            <input class="form-control" id="attribution_groupe_nom" name="attribution_groupe_nom" placeholder="GECOM 1" type="text"  required/>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                
+              </div>
+        
+              <div class="carousel-item">
+                  <!-- Form Name -->
+                   <!-- Text input-->
+                  <div class="col-xl-12 col-md-12 mb-12">
+                    <div class="card border-left-success shadow h-100 py-2">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Etape 2 : Ajout des matières aux parties de l'année scolaire</div>
+                            <div class="row no-gutters align-items-center">
+                              <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">40%</div>
+                              </div>
+                              <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                  <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <fieldset id="attribution_etape2_infos">
+
+                    <div class="row">
+                      <div class="col-xl-12 col-md-12 mb-12">
+                       
+                        <div class="card shadow mb-4">
+                          <!-- Card Header - Accordion -->
+                          <a href="#collapseCardExample_etp2" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample_etp2">
+                            <h6 class="m-0 font-weight-bold text-primary">AJOUT</h6>
+                          </a>
+                          <!-- Card Content - Collapse -->
+                          <div class="collapse show" id="collapseCardExample_etp2">
+                            <div class="card-body">
+                              <!-- PARTIE ANNEE -->
+                              <div class="form-row">
+                              <div class="col">
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-info">Choix de la Partie de l'année</button>
+                                  </div>
+                                  <!-- /btn-group -->
+                                  <select class="form-control" id="attrib_etap2_partannee_id" name="attrib_etap2_partannee">
+                                    <option>Veuillez choisir une partie</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                               <!-- MATIERE -->
+                              <div class="form-row">
+                                <div class="col">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button type="button" class="btn btn-info">Choix de la matière</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <select class="form-control" id="attrib_etap2_mat_id" name="attrib_etap2_mat">
+                                      <option>option 1</option>
+                                      <option>option 2</option>
+                                      <option>option 3</option>
+                                      <option>option 4</option>
+                                      <option>option 5</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button type="button" class="btn btn-info">Coefficient</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="number" id="attrib_etap2_mat_coef" name="attrib_etap2_mat_coef" class="form-control">
+                                  </div>
+                                </div>
+                              </div>
+                               <!-- SOUS MATIERE 1-->
+                              <div class="form-row">
+                                <div class="col">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button type="button" class="btn btn-info">Choix sous matière 1</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <select class="form-control" id="attrib_etap2_mats1_id" name="attrib_etap2_mats1">
+                                      <option>option 1</option>
+                                      <option>option 2</option>
+                                      <option>option 3</option>
+                                      <option>option 4</option>
+                                      <option>option 5</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button type="button" class="btn btn-info">Coefficient sous matière 1</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="number" class="form-control" id="attrib_etap2_mats1_coef" name="attrib_etap2_mats1_coef">
+                                  </div>
+                                </div>
+                              </div>
+                               <!-- SOUS MATIERE 2-->
+                              <div class="form-row">
+                                <div class="col">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button type="button" class="btn btn-info">Choix de la sous matière 2</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <select class="form-control" id="attrib_etap2_mat_ids2" name="attrib_etap2_mats2">
+                                      <option>option 1</option>
+                                      <option>option 2</option>
+                                      <option>option 3</option>
+                                      <option>option 4</option>
+                                      <option>option 5</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button type="button" class="btn btn-info">Coefficient sous matière 2</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="number" class="form-control" id="attrib_etap2_mat_coefs2" name="attrib_etap2_mat_coefs2">
+                                  </div>
+                                </div>
+                              </div>
+                               <!-- SOUS MATIERE 3-->
+                              <div class="form-row">
+                                <div class="col">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button type="button" class="btn btn-info">Choix de la sous matière 3</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <select class="form-control" id="attrib_etap2_mat_ids3" name="attrib_etap2_mats3">
+                                      <option>option 1</option>
+                                      <option>option 2</option>
+                                      <option>option 3</option>
+                                      <option>option 4</option>
+                                      <option>option 5</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <button type="button" class="btn btn-info">Coefficient sous matière 3</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="number" class="form-control" id="attrib_etap2_mat_coefs3" name="attrib_etap2_mat_coefs3">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <a id="btn_attrib_etap2_ajout_mat" href="#" class="btn btn-secondary btn-icon-split">
+                                <span class="icon text-white-50">
+                                  <i class="fas fa-arrow-right"></i>
+                                </span>
+                                <span class="text">Ajouter</span>
+                              </a>
+
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-xl-12 col-md-12 mb-12">
+                        <div class="card shadow mb-4">
+                          <!-- Card Header - Accordion -->
+                          <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                            <h6 class="m-0 font-weight-bold text-primary">Liste des matières par année partie</h6>
+                          </a>
+                          <!-- Card Content - Collapse -->
+                          <div class="collapse show" id="collapseCardExample">
+                            <div class="card-body">                          
+                                <!-- DataTales Example -->
+                              <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable_attrib_mat" width="100%" cellspacing="0">
+                                  <thead>
+                                    <tr>
+                                      <th>Nom Partie</th>
+                                      <th>matière</th>
+                                      <th>Coéfficient</th>
+                                      <th>matière parent</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tfoot>
+                                    <tr>
+                                      <th>Nom Partie</th>
+                                      <th>matière</th>
+                                      <th>Coéfficient</th>
+                                      <th>matière parent</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </tfoot>
+                                  <tbody id="dataTable_attrib_mat_tbody">
+                    
+                        
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+       
+                    </div>
+                    
+                  </fieldset>
+
+              </div>
+            
+              <div class="carousel-item">
+
+                <!-- eTAPE -->
+                <div class="col-xl-12 col-md-12 mb-12">
+                  <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Etape 3 : Emploi du temps</div>
+                          <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">75%</div>
+                            </div>
+                            <div class="col">
+                              <div class="progress progress-sm mr-2">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                
+                <fieldset>
+
+                <div class="row">
+                  <div class="col-12">
+                    <!-- Custom Tabs -->
+                    <div class="card">
+                      <div class="card-header d-flex p-0">
+                        <h3 class="card-title p-3">Jours :</h3>
+                        <ul class="nav nav-pills ml-auto p-2">
+                          <li class="nav-item"><a class="nav-link active show" href="#tab_1" data-toggle="tab">Lundi</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Mardi</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Mercredi</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab">Jeudi</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab">Vendredi</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#tab_6" data-toggle="tab">Samedi</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab">Dimanche</a></li>
+        
+                        </ul>
+                      </div><!-- /.card-header -->
+                      <div class="card-body">
+                        <div class="tab-content">
+
+                          <div class="tab-pane active show" id="tab_1">
+                            <!-- Choix  de la matières -->
+                            <div class="card shadow mb-4">
+                              <!-- Card Header - Accordion -->
+                              <a href="#collapse_Lundi_1" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse_Lundi_1">
+                                <h6 class="m-0 font-weight-bold text-primary">Choix  de la matières</h6>
+                              </a>
+                              <!-- Card Content - Collapse -->
+                              <div class="collapse show" id="collapse_Lundi_1" >
+
+                                <div class="card-body">
+                                  
+                                  <div class="form-row">
+                                    <div class="col">
+                                      <select name="attribution_emlploiTps_mat_select" class="form-control" id="attribution_emlploiTps_mat_Lundi">
+                                        <option value="0">Selectioner une matières</option>
+                                      </select>
+                                    </div>
+                                    <div class="col">
+                                      
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- Choix  de la matières -->
+                            <!-- Programme  de la matières -->
+                            <div class="card shadow mb-4">
+                              <!-- Card Header - Accordion -->
+                              <a href="#collapse_Lundi_2" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse_Lundi_2">
+                                <h6 class="m-0 font-weight-bold text-primary">Programme de la matières</h6>
+                              </a>
+                              <!-- Card Content - Collapse -->
+                              <div class="collapse show" id="collapse_Lundi_2" >
+
+                                <div class="card-body">
+                                  
+                                  <div class="form-row">
+                                    <div class="col">
+                                      <span class="input-group-addon"><i class="fa fa-clock-o"></i> Heure Debut </span>
+                                      <input type="time" value="00:00" class="form-control" id="heuredebut_Lundi" name="heuredebut_Lundi" placeholder="Entrez l'heure debut du programme ici" >
+                                    </div>
+                                    <div class="col">
+                                      <span class="input-group-addon"><i class="fa fa-clock-o"></i> Heure Fin </span>
+                                      <input type="time" value="00:00" class="form-control" id="heurefin_Lundi" name="heurefin_Lundi" placeholder="Entrez l'heure fin du programme ici" >
+                                    </div>
+                                  </div>
+
+                                  <div class="form-row">
+                                    <div class="col">
+                                      <span class="input-group-addon"><i class="fa fa-user"></i> Enseignant </span>
+                                      <select class="form-control" id="enseignant_Lundi" name="enseignant_Lundi" >
+                                        <option value="0">Selectioner un enseignant</option>
+                                      </select>
+      
+                                    </div>
+                                    <div class="col">
+                                      <br>
+                                      <a href="#" id="bt_ajout_mat_attrib_Lundi" class="bt_ajout_mat_attrib_Lundi btn btn-secondary btn-icon-split">
+                                        <span class="icon text-white-50">
+                                          <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                        <span class="text">Ajouter</span>
+                                      </a>
+                                      
+                                    </div>
+                                  </div>
+                                  
+                              </div>
+                
+
+                              </div>
+                              <hr>
+                              
+                            </div>
+
+                            <!-- DataTales Programme exemple -->
+                            <div class="card shadow mb-4">
+                              <!-- Card Header - Accordion -->
+                              <a href="#collapse_Lundi_3" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse_Lundi_3">
+                                <h6 class="m-0 font-weight-bold text-primary">Programme de la matières</h6>
+                              </a>
+                              <!-- Card Content - Collapse -->
+                              <div class="collapse show" id="collapse_Lundi_3" >
+
+                                <div class="card-body">
+                                  
+                                  <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable_Lundi" width="100%" cellspacing="0">
+                                      <thead>
+                                        <tr>
+                                          <th>Heure de Début</th>
+                                          <th>Heure de Fin</th>
+                                          <th>matière</th>
+                                          <th>Professeur</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tfoot>
+                                        <tr>
+                                          <th>Heure de Début</th>
+                                          <th>Heure de Fin</th>
+                                          <th>matière</th>
+                                          <th>Professeur</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </tfoot>
+                                      <tbody>
+      
+                                      </tbody>
+                                    </table>
+                                  </div>
+
+                                  
+                                </div>
+                
+
+                              </div>
+
+                            </div>
+
+     
+
+                          </div>
+                          <!-- Programme  de la matières -->
+                          <!-- /.tab-pane -->
+                          <div class="tab-pane" id="tab_2"></div>
+                          <!-- /.tab-pane -->
+                          <div class="tab-pane" id="tab_3"></div>
+                          <div class="tab-pane" id="tab_4"></div>
+                          <div class="tab-pane" id="tab_5"></div>
+                          <div class="tab-pane" id="tab_6"></div>
+                          <div class="tab-pane" id="tab_7"></div>
+                          <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                      </div><!-- /.card-body -->
+                    </div>
+                    <!-- ./card -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                  
+
+
+                </fieldset>
+                
+
+              </div>
+
+              <div class="carousel-item">
+
+                <!-- eTAPE -->
+                <div class="col-xl-12 col-md-12 mb-12">
+                  <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Dernière étape : Validation</div>
+                          <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">100%</div>
+                            </div>
+                            <div class="col">
+                              <div class="progress progress-sm mr-2">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                
+                <fieldset >
+                  <legend></legend> <!-- Text input-->
+                  <div class="col-12 row">
+
+                    <div class="col-xl-8 col-md-8 mb-8">
+
+                      <div class="card mb-4 py-3 border-bottom-primary">
+                        <div class="card-body">
+
+                          <div class="form-group">
+
+                            <div class="col-lg-6 mb-4">
+                              <div class="card bg-info text-white shadow">
+                                <div class="card-body" id="attrib_etapfinal_info">
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="col-xl-4 col-md-4 mb-4">
+
+                      <div class="card mb-4 py-3 border-bottom-primary">
+                        <div class="form-row">
+                          <div class="col">
+                            <button type="reset" class="btn btn-danger btn-icon-split">
+                              <span class="icon text-white-50">
+                                <i class="fas fa-trash"></i>
+                              </span>
+                              <span class="text">Annuler</span>
+                            </button>
+                          </div>
+                          <div class="col">
+                            <button type="submit" class="btn btn-success btn-icon-split">
+                              <span class="icon text-white-50">
+                                <i class="fas fa-check"></i>
+                              </span>
+                              <span class="text">Valider</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </fieldset>
+                
+              </div>
+        
+
+            </form>
+          </div>
+      
+          <!-- Left and right controls -->
+          <a id="attribution_form_prec" class="left carousel-control" href="#attribution_myCarousel" data-slide="prev">
+            <span class="	fa fa-arrow-circle-left">Précédent</span>
+            <span class="sr-only">Précédent</span>
+          </a> &nbsp;&nbsp;&nbsp;
+          <a id="attribution_form_suivant" class="right carousel-control" href="#attribution_myCarousel" data-slide="next">
+            <span class="	fa fa-arrow-circle-right">Suivant</span>
+            <span class="sr-only">Suivant</span>
+          </a>
+        </div>
+      </div>
+      
+    </div>
+
+</div>
+
+{% endblock %}
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+{% endblock %} 

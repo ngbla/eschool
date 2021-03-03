@@ -1,0 +1,302 @@
+<div class="row text-center">
+    <br/>
+    <div class="col-md-1"> <br/> </div>
+    <div class="col-md-10 showback" style="margin-left: 1%;">
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4">
+                    <p align="justify" class="text-form"><b>Nom *</b></p>
+                    <input type="text" placeholder="Entrez votre Nom" name="nom" id="nom" class="text-uppercase form-control text-maj" required onkeyup="this.value=this.value.upperCase();" value="{% if post.nom is defined %}{{ post.nom }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Prénom * </b></p>
+                    <input type="text" placeholder="Entrez votre prénom" name="prenom" id="prenom" class="text-uppercase form-control text-maj" required value="{% if post.prenom is defined %}{{ post.prenom }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Adresse e-mail * </b></p>
+                    <input type="email" placeholder="Exemple: exemple@mail.com" name="mail1" id="mail1" class="form-control" required value="{% if post.mail1 is defined %}{{ post.mail1 }}{% endif%}" /><br/>
+                </div>
+
+                <div class="col-md-4">
+                    <p class="text-form"><b>Date de naissance * </b></p>
+                    <input type="date" placeholder="Entrez sa date de naissance" name="datenaiss" id="datenaiss" class="form-control text-maj" required value="{% if post.datenaiss is defined %}{{ post.datenaiss }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Lieu de naissance * </b></p>
+                    <input type="text" placeholder="Entrez votre lieu de naissance" name="lieunaiss" id="lieunaiss" class="form-control text-maj" required value="{% if post.lieunaiss is defined %}{{ post.lieunaiss }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Nationalité * </b></p>
+                    <input type="text" placeholder="Ivoirienne (sinon précisez)" name="nationnalite" id="nationnalite" class="text-uppercase form-control text-maj" value="{% if post.nationnalite is defined %}{{ post.nationnalite }}{% else %} IVOIRIENNE{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Téléphone portable * </b></p>
+                    <input class="phone" type="tel" name="contact" id="contact" class="form-control text-maj" required="" value="{% if post.contact is defined %}{{ post.contact }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Téléphone fixe </b></p>
+                    <input class="phone" type="tel" name="telfixe" id="telfixe" class="form-control text-maj" value="{% if post.telfixe is defined %}{{ post.telfixe }}{% endif%}" /><br/>
+                </div>
+
+                <div class="col-md-4">
+                    <p class="text-form"><b>Commune de résidence * </b></p>
+                    <input type="text" placeholder="Ex: COCODY" name="commune" id="commune" class="text-uppercase form-control text-maj" required="" value="{% if post.commune is defined %}{{ post.commune }}{% endif%}" />
+                    <br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b> Quartier de résidence * </b></p>
+                    <input type="text" placeholder="Entrez votre quartier" name="quartie" id="quartie" class="text-uppercase form-control text-maj" required="" value="{% if post.quartie is defined %}{{ post.quartie }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Situation matrimoniale * </b></p>
+                    <select class="form-control text-maj" name="stuationmat" size="1" required="">
+              {% if post.stuationmat is defined %}<option value="{{ post.stuationmat }}">{{ post.stuationmat }}</option>{% endif%}
+              <option value=""  disabled selected>Sélectionner votre Situation matrimoniale</option>
+              <option value="CELIBATAIRE">CELIBATAIRE</option>
+              <option value="MARIÉ">MARIÉ</option>
+              <option value="DIVORCÉ">DIVORCÉ</option>
+              <option value="VEUF">VEUF</option>
+            </select ><br/>
+        </div>
+        <div class="col-md-4">
+            <p class="text-form"><b>Sexe *</b></p>
+            <select name="sexe" required="" class="form-control text-maj">
+                {% if post.sexe is defined %}<option value="{{ post.sexe }}">{{ post.sexe }}</option>{% endif%}
+
+                <option value=""  disabled selected>Sélectionner votre sexe</option>
+                <option value="M">M</option>
+                <option value="F">F</option>
+            </select><br/>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-form"><b>Civilité *</b></p>
+                    <select name="civilite" required="" class="form-control">
+                {% if post.civilite is defined %}<option value="{{ post.civilite }}">{{ post.civilite }}</option>{% endif%}
+
+                <option value=""  disabled selected>Sélectionner votre Civilité</option>
+                <option value="M.">M.</option>
+                <option value="Mme">Mme</option>
+                <option value="Mlle">Mlle</option>
+            </select><br/>
+                </div>
+
+                <div class="col-md-12">
+                    <hr style="color: grey; border: solid 3px;" />
+                    <div class="well well-sm text-left alert alert-info"> <strong>PARENT</strong> </div>
+                </div>
+
+                <div class="col-md-4"><br/>
+                    <label for="nom_pere"><b>Nom du père :  </b></label>
+                    <input type="text" name="nom_pere" id="nom_pere" class="text-uppercase form-control text-maj" value="{% if post.nom_pere is defined %}{{ post.nom_pere }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4"><br/>
+                    <label for="prof_pere"><b>Profession du Père :</b></label>
+                    <input type="text" name="prof_pere" id="prof_pere" class="form-control text-maj" value="{% if post.prof_pere is defined %}{{ post.prof_pere }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4"><br/>
+                    <label for="tel_pere"><b>Contact du Père  :</b></label>
+                    <input type="tel" class="phone" name="tel_pere" id="tel_pere" class="form-control text-maj" value="{% if post.tel_pere is defined %}{{ post.tel_pere }}{% endif%}" /><br/>
+                </div>
+
+                <div class="col-md-4"><br/>
+                    <label for="nom_mere"><b>Nom de la Mère :  </b></label>
+                    <input type="text" name="nom_mere" id="nom_mere" class="text-uppercase form-control text-maj" value="{% if post.nom_mere is defined %}{{ post.nom_mere }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4"><br/>
+                    <label for="prof_mere"><b>Profession de la Mère :  </b></label>
+                    <input type="text" name="prof_mere" id="prof_mere" class="form-control text-maj" value="{% if post.prof_mere is defined %}{{ post.prof_mere }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4"><br/>
+                    <label for="tel_mere"><b>Contact de la Mère :  </b></label>
+                    <input type="tel" class="phone" name="tel_mere" id="tel_mere" class="form-control text-maj" value="{% if post.tel_mere is defined %}{{ post.tel_mere }}{% endif%}" /><br/>
+                </div>
+
+
+                <div class="col-md-12">
+                    <hr style="color: grey; border: solid 3px;" />
+                    <div class="well well-sm text-left alert alert-info"> <strong>PAYEUR LÉGAL</strong> </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="nom_payeur"><b>Nom </b></label>
+                    <input type="text" name="nom_payeur" id="nom_payeur" class="form-control text-maj" required="" value="{% if post.nom_payeur is defined %}{{ post.nom_payeur }}{% endif%}" /><br/>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="email_payeur"><b>Email </b></label>
+                    <input type="text" name="email_payeur" id="email_payeur" class="form-control text-maj" value="{% if post.email_payeur is defined %}{{ post.email_payeur }}{% endif%}" /><br/>
+                </div>
+
+                <div class="col-md-4">
+                    <p class="text-form"><b> Téléphone </b></p>
+                    <input type="tel" class="text-uppercase phone" name="tel_payeur" id="tel_payeur" class="form-control text-maj" required="" value="{% if post.tel_payeur is defined %}{{ post.tel_payeur }}{% endif%}" /><br/>
+                </div>
+
+
+                <div class="col-md-12">
+                    <hr style="color: grey; border: solid 3px;" />
+                    <div class="well well-sm text-left alert alert-info"> <strong>CORRESPONDANT</strong> </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="nomurget"><b>Nom du Correspondant</b></label>
+                    <input type="text" name="nomurget" id="nomurget" class="form-control text-maj" value="{% if post.nomurget is defined %}{{ post.nomurget }}{% endif%}" required/><br/>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="emailurget"><b>Email du Correspondant </b></label>
+                    <input type="text" name="emailurget" id="emailurget" class="form-control text-maj" value="{% if post.emailurget is defined %}{{ post.emailurget }}{% endif%}" required/><br/>
+                </div>
+
+                <div class="col-md-4">
+                    <p class="text-form"><b> Téléphone du Correspondant </b></p>
+                    <input type="tel" class="text-uppercase phone" name="telurget" id="telurget" class="form-control text-maj" value="{% if post.telurget is defined %}{{ post.telurget }}{% endif%}" required/><br/>
+                </div>
+
+                <div class="col-md-12">
+                    <hr style="color: grey; border: solid 3px;" />
+                </div>
+
+
+
+                <div class="col-md-4">
+                    <label for="anciennete"><b>Niveau étude précédent*  </b></label>
+                    <select name="anciennete" required="" class="form-control text-maj">
+                      <option value=""  disabled selected>Sélectionner votre Niveau étude précédent</option>
+                      <option class="text-warning" value=""  disabled  > <strong class="text-warning">ENSEIGNEMENT SUPERIEURE</strong></option>
+                      <option class="cycle_sup" value="BTS 1ere Annee (BTS 1)">BTS 1ere Année (BTS 1)</option>
+                      <option class="cycle_sup" value="BTS 2ieme Annee (BTS 2)">BTS 2ieme Année (BTS 2)</option>
+                      <option class="cycle_sup" value="LICENCE 1">LICENCE 1</option>
+                      <option class="cycle_sup" value="LICENCE 2">LICENCE 2</option>
+                      <option class="cycle_sup" value="LICENCE 3">LICENCE 3</option>
+                      <option class="cycle_sup" value="MASTER 1">MASTER 1 </option>
+                      <option class="cycle_sup" value="MASTER 2">MASTER 2 </option>
+
+                      <option class="text-warning" value="" disabled >LYCEE</option>
+
+                      <option class="cycle_inf" value="TERMINALE A (Tle A)">TERMINALE A (Tle A)</option>
+                      <option class="cycle_inf" value="TERMINALE D (Tle D)">TERMINALE D (Tle D)</option>
+                      <option class="cycle_inf" value="TERMINALE C (Tle C)">TERMINALE C (Tle C)</option>
+                      <option class="cycle_inf" value="TERMINALE G1 (Tle G1)">TERMINALE G1 (Tle G1)</option>
+                      <option class="cycle_inf" value="TERMINALE G2 (Tle G2)">TERMINALE G2 (Tle G2)</option>
+                      <option class="cycle_inf" value="TERMINALE B (Tle B)">TERMINALE BT (Tle B)</option>
+
+                      <option class="cycle_inf" value="PREMIERE A (1ere A)">PREMIERE A (1ere A)</option>
+                      <option class="cycle_inf" value="PREMIERE D (1ere D)">PREMIERE D (1ere D)</option>
+                      <option class="cycle_inf" value="PREMIERE C (1ere C)">PREMIERE C (1ere C)</option>
+                      <option class="cycle_inf" value="PREMIERE B (1ere B)">PREMIERE B (1ere B)</option>
+                      <option class="cycle_inf" value="PREMIERE G1 (1ere G1)">PREMIERE G1 (1ere G1)</option>
+                      <option class="cycle_inf" value="PREMIERE G2 (1ere G2)">PREMIERE G2 (1ere G2)</option>
+
+                      <option class="cycle_inf" value="SECOND A (2nd A)">SECOND A (2nd A)</option>
+                      <option class="cycle_inf" value="SECOND D (2nd D)">SECOND D (2nd D)</option>
+                      <option class="cycle_inf" value="SECOND C (2nd C)">SECOND C (2nd C)</option>
+                      <option class="cycle_inf" value="SECOND AB (2nd AB)">SECOND AB (2nd AB)</option>
+                      <option class="cycle_inf" value="SECOND G1 (2nd G1)">SECOND G1 (2nd G1)</option>
+                      <option class="cycle_inf" value="SECOND G2 (2nd G2)">SECOND G2 (2nd G2)</option>
+
+                      <option class="cycle_inf" value="PREMIERE ANNEE BT (1ere annee BT)">PREMIERE ANNEE BT (1ere annee BT)</option>
+                      <option class="cycle_inf" value="DEUXIEME ANNEE BT (2ieme annee BT)">DEUXIEME ANNEE BT (2ieme annee BT)</option>
+                      <option class="cycle_inf" value="TROIXIEME ANNEE BT (3ieme annee BT)">TROIXIEME ANNEE BT (3ieme annee BT)</option>
+
+                      <option class="text-warning" value="" disabled > COLLEGE </option>
+
+                      <option class="cycle_inf" value="SIXIEME (6ieme)">SIXIEME (6ieme)</option>
+                      <option class="cycle_inf" value="CINQUIEME (5ieme)">CINQUIEME (5ieme)</option>
+                      <option class="cycle_inf" value="QUATRIEME (4ieme)">QUATRIEME (4ieme)</option>
+                      <option class="cycle_inf" value="TROIXIEME (3ieme)">TROIXIEME (3ieme)</option>
+
+                    </select>
+                    <br/>
+                </div>
+
+                <div class="col-md-4" id="DivMaskParcours">
+                    <label for="parcours"><b>Filière Souhaitée * </b></label>
+                    <select name="parcours" size="1" class="form-control text-maj" id="parcours">
+                    <option value=""  disabled selected>Sélectionner la Filière où vous souhaitez vous inscrire</option>
+                    {% if get_liste_filieres is defined %}
+                    {% for list_fil in get_liste_filieres  %}
+                      <option class="cycle_inf" value="{{list_fil.libelle}}">{{list_fil.libelle}}</option>
+                    {% endfor %} 
+                    {% endif%}
+                  </select><br/>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="niveauetude"> <b>Niveau étude où vous souhaitez vous inscrire*  </b> </label>
+                    <select name="niveauetude" size="1" class="form-control text-maj" required="" id="SelectNiveau" onchange="SearchNiveau()">
+                      {% if post.niveauetude is defined %}<option value="{{ post.niveauetude }}">{{ post.niveauetude }}</option>{% endif%}
+
+                      <option value=""  disabled selected disabled selected>Sélectionner votre niveau d'étude actuel</option>
+                      {% if get_liste_niveau is defined %}
+                        {% for list_niv in get_liste_niveau  %}
+                          <option class="cycle_inf" value="{{list_niv.libelle_niveau}}">{{list_niv.libelle_niveau}}</option>
+                        {% endfor %} 
+                      {% endif%}
+                      
+                    </select><br/>
+                </div>
+
+                <div class="col-md-4"><br>
+                    <label for="diplome"><b>Dernier diplôme obtenu  * </b></label>
+                    <input type="text" placeholder="Entrez votre diplôme obtenu" name="diplome" id="diplome" class="text-uppercase form-control text-maj" value="{% if post.diplome is defined %}{{ post.diplome }}{% endif%}" required /><br/>
+                </div>
+
+                <div class="col-md-4"><br/>
+                    <label for="seriebac"><b>Série du BAC  </b></label>
+                    <input type="text" placeholder="Entrez la serie du BAC obtenu" name="seriebac" id="seriebac" class="text-uppercase form-control text-maj" value="{% if post.seriebac is defined %}{{ post.seriebac }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4"><br>
+                    <label for="numbac"><b>N° de table</b></label>
+                    <input type="text" placeholder="Entrez le N° de table " name="numbac" id="numbac" class="form-control text-maj" value="{% if post.numbac is defined %}{{ post.numbac }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4"><br>
+                    <label for="num_mesrs"><b>N° MESRS</b></label>
+                    <input type="text" placeholder="Entrez le N° MESRS" name="num_mesrs" id="num_mesrs" class="form-control text-maj" value="{% if post.num_mesrs is defined %}{{ post.num_mesrs }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4"><br>
+                    <label for="num_menet"><b>N° MENET</b></label>
+                    <input type="text" placeholder="Entrez le N° MENET" name="num_menet" id="num_menet" class="form-control text-maj" value="{% if post.num_menet is defined %}{{ post.num_menet }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4"><br>
+                    <label for="num_affect"><b>N° d'Affectation</b></label>
+                    <input type="text" placeholder="Entrez le N° D'Affectation " name="num_affect" id="num_affect" class="form-control text-maj" value="{% if post.num_affect is defined %}{{ post.num_affect }}{% endif%}" /><br/>
+                </div>
+
+
+                <div class="col-md-4">
+                    <label for="profilcandidat"><b>Profession  * </b></label>
+                    <select name="profilcandidat" required="" class="form-control text-maj">
+              <option value=""  disabled selected>Sélectionner votre statut</option>
+              <option value="ELEVE">ELEVE</option>
+              <option value="ETUDIANT">ETUDIANT</option>
+              <option value="TRAVAILLEUR">TRAVAILLEUR</option>
+              <option value="AUTRE">AUTRE</option>
+          </select><br/>
+                </div>
+
+                <div class="col-md-4">
+                    <p class="text-form"><b> Activités professionnelles  </b></p>
+                    <input type="text" placeholder="Entrez votre activité professionnelle" name="activite" id="activite" class="form-control text-maj" value="{% if post.activite is defined %}{{ post.activite }}{% endif%}" /><br/>
+                </div>
+                <div class="col-md-4">
+                    <label for="carteetudiant"><b>N° carte étudiant(facultatif) <br> Laissez vide si vous en avez pas! </b></label>
+                    <input type="text" placeholder="Entrez le numéro de votre carte étudiant" name="carteetudiant" id="carteetudiant" class="form-control text-maj" value="{% if post.carteetudiant is defined %}{{ post.carteetudiant }}{% endif%}" /><br/>
+                </div>
+
+            </div>
+
+            <div class="col-md-12">
+                <hr style="color: #2a82bf; border: solid 3px;">
+            </div>
+            <div class=" col-md-10">
+                <button class="btn btn-default" type="reset">ANNULER</button>
+                <button class="btn btn-primary btn-lg" type="submit" name="FormNewInscriptionE1" value="phase1">VALIDER</button>
+            </div>
+        </form>
+    </div>
+    <div class=" col-md-1"> </div>
+</div>
+
+<br>
+<br>

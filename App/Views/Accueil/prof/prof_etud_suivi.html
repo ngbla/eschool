@@ -1,0 +1,95 @@
+{% extends "main_prof.html" %} {% block title %}Professeurs - Mes Cours{% endblock %} {% block content %}
+
+<div class="container-fluid">
+
+    <div class="row" style="
+  background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;padding-top: 20px; ">
+
+        <input type="hidden" value="{% if id_type is defined %}{{id_type}}{% endif %}" id="type_id">
+
+        <div class="card shadow mb-4">
+
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary"> Listes des Classes </h6>
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-striped" id="dataTable_prof_classe" width="100%" cellspacing="0" table>
+                        <thead>
+                            <tr>
+                                <th>Annee Scolaire</th>
+                                <th>Libelle Classe</th>
+                                <th>Matière</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Annee Scolaire</th>
+                                <th>Libelle Classe</th>
+                                <th>Matière</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <!--                 cree_matiere_etat             
+          {% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+              {% if etat_inscrip is defined %}
+          {% endif %} {% set annee = 'bar' %}{% set varannee = allAnneeScolaire[0].annee_libelle %}
+              {{ varannee }}
+          -->
+                            {% if allProf_eval is defined %} {% for key, value in allProf_eval %}
+                            <tr>
+
+                                <!--
+                <td>{{ value.id_annee_partie }}</td>
+                <td>{{ value.id_anneeScolaire }}</td>
+                  <td>{{ value.id_anscol_annee_scolaire }}</td> 
+                -->
+                                <td>{{ value.eval_libelle }}</td>
+                                <td>{{ value.groupe_libelle }}</td>
+                                <td>{{ value.matierelib }}</td>
+                                <td>{{ value.eval_desc }}</td>
+
+                                <td class="form-row">
+
+                                    <form class="col" method="POST">
+
+                                        <button title="Voir" name="btn_voir_eval" type="submit" value="voir_{{value.prof_eval_id}}" class="btn btn-info btn-circle">
+                    <i class="fas fa-info"></i>
+                    </button>
+                                    </form>
+
+                                    <form class="col" method="POST">
+
+                                        <button title="Supprimer" name="btn_sup_eval" type="submit" value="sup_{{value.prof_eval_id}}" class="btn btn-danger btn-circle">
+                    <i class="fas fa-trash"></i>
+                    </button>
+                                    </form>
+
+
+                                </td>
+
+                            </tr>
+                            {% endfor %} {% endif %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_prof.js"></script>
+{% endblock %}

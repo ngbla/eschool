@@ -1,0 +1,100 @@
+{% extends "main.html" %} {% block title %}Procès Verbaux{% endblock %} {% block content %}
+<script src='assets/vendor/html2pdf/html2pdf.bundle.min.js'></script>
+<script>
+    function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("relever");
+        //margin: 0, - 1
+        //filename:'Bulletin',
+        //image: {type:'jpeg', quality: 0.98}, 0-1
+        //html2canvas: {scale:2},
+        //jsPDF: {unit:'in',format:'letter - A4,orientation:'portrait'}
+        var opt ={
+            margin: 0,
+            filename:'Bulletin.pdf',
+            image: {type:'jpeg', quality: 1},
+            html2canvas: {scale:2},
+            jsPDF: {unit:'in',format:'A4',orientation:'landscape'}
+
+        }
+        // Choose the element and save the PDF for our user.
+        html2pdf()
+            .set(opt)
+            .from(element)
+            .save();
+    }
+</script>
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+<br>
+<div class="row">
+    <div class="col-12">
+        <form method="POST" class="form-row">
+            <div class="input-group mb-3 col">
+                <div class="input-group-prepend ">
+                    <button type="button" class="btn btn-primary">Période</button>
+                </div>
+                <select class="form-control" name="periode">
+                    <option value="" disabled selected hidden>Choisissez une période</option>
+                    {% if get_anneScol_Partie_By is defined %}
+                    {% for key, value in get_anneScol_Partie_By  %}
+                    <option value="{{value.id_annee_partie}}">{{value.libele_partie}}</option>
+                    {% endfor %} 
+                    {% endif %}
+                </select>
+            </div>
+            <div class="input-group mb-3 col">
+                <div class="input-group-prepend ">
+                    <button type="button" class="btn btn-primary">Session</button>
+                </div>
+                <select class="form-control" name="session">
+                    <option value="" disabled selected hidden>Choisissez une Session</option>
+                    {% if get_annee_session is defined %}
+                    {% for key, value in get_annee_session  %}
+                    <option value="{{value.id_session_session}}">{{value.Libelle_session}}</option>
+                    {% endfor %} 
+                    {% endif %}
+                </select>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary btn-icon-split" name="btn_pv">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-arrow-right"></i>
+                    </span>
+                    <span class="text">Générer</span>
+                </button>
+            </div>
+            <input type="hidden" name="id_annee" value="{{info_annee}}">
+            <input type="hidden" name="id_groupe" value="{{info_groupe}}">
+        </form>
+    </div>
+    <hr>
+
+    <div class="col-12">
+
+        <div class="callout callout-info">
+
+            <button type="button" onclick="generatePDF();" class="btn btn-primary float-right" style="margin-right: 5px;">
+                <i class="fa fa-download"></i> Generer le PDF
+            </button>
+        </div>
+
+    </div>
+</div>
+<hr>
+<div class="row">
+
+    <div id="relever" class="container-fluid" style="color: black ;background-color:white ">
+        <!-- Content Wrapper. Contains page content -->
+        {% if univInfos.0 is defined %} 
+            {{ include('include/modele_fiche/'~univInfos.0.initiale_univ~'/pv_entete.html') }} 
+            {{ include('include/modele_fiche/pv_corps.html') }} 
+            {{ include('include/modele_fiche/'~univInfos.0.initiale_univ~'/fp_footer.html') }} 
+        {% endif %}
+        <!-- /.content -->
+    </div>
+</div>
+
+{% endblock %}

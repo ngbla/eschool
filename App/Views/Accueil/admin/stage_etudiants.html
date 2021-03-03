@@ -1,0 +1,932 @@
+{% extends "main.html" %}
+{% block title %}Admin - Gestion des stages{% endblock %}
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row" style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; min-height: 1024px; ">
+
+  <div class="col-md-12">
+    <div class="card">
+
+      <div class="card-header p-2">
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a class="nav-link {% if panel==0 %} active{% endif %}" href="#activity_prof" data-toggle="tab">Liste des stagiaires</a></li>
+          <li class="nav-item"><a class="nav-link {% if panel==1 %} active{% endif %}" href="#timeline_prof" data-toggle="tab">Fiche
+              Stagiaires</a></li>
+          <li class="nav-item"><a class="nav-link {% if panel==2 %} active{% endif %}" href="#settings_prof" data-toggle="tab">Attribuer un stage</a></li>
+          <li class="nav-item"><a class="nav-link {% if panel==3 %} active{% endif %}" href="#historique" data-toggle="tab">Historiques des stage</a></li>
+        </ul>
+      </div>
+      <!-- Notifications -->
+
+      <div class="card-body">
+        <div class="tab-content">
+          <!-- stagiaires -->
+          <div class="tab-pane {% if panel==0 %} active show{% endif %}" id="activity_prof">
+
+            <form class="form-row" method="POST">
+              <div class="col-1">
+                <label for="anneeScolaire_stage">Année Scolaire :</label>
+              </div>
+
+              <div class="col-7">
+                <select name="anneeScolaire_stage" id="anneeScolaire_stage" class="form-control"
+                  data-error="Année Solaire non valide !" required style="width: 100%;" required>
+                  <option disabled selected> Choisissez l'année Scolaire </option>
+                  {% if getAnneeScolaire is defined %}
+                  {% for key, value in getAnneeScolaire  %}
+                  <option value="{{value.id_anscol_annee_scolaire}}"> {{value.annee_libelle}} </option>
+                  {% endfor %}
+                  {% endif %}
+                </select>
+              </div>
+              <div class="col-4">
+                <button title="Rechercher" type="submit" name="btn_voir_listStage" class="btn btn-info">
+                  <i class="fas fa-info"></i> Rechercher
+                </button>
+              </div>
+
+            </form>
+
+            <hr style="border:2px solid #fdece2;">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover" id="dataTable_list_fillierenews" style="width:100%;font-size: 11px;"
+                cellspacing="0">
+                <thead>
+                  <tr class="info" style="text-align: center;">
+                    <th>Stagiaire</th>
+                    <th>Thème</th>
+                    <th>Directeur Ecole</th>
+                    <th>Maître de Stage</th>
+                    <th>Entreprise</th>
+                    <th>Durée</th>
+                    <th>Evaluation</th>
+                  </tr>
+                </thead>
+
+                <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                  {% if get_stage_etudiant is defined %}
+
+                  {% for infos in get_stage_etudiant %}
+                  <tr>
+                    <td>
+                      <div class="well well-sm">{{ infos.matricule }} </div>
+                      <div class="well well-sm"> <strong>{{ infos.nom_prenom }}</strong> </div>
+                      <br>
+                      {{ infos.lib_classe }}
+                      <br>
+                      {{ infos.libelle_niveau }}
+                      <br>
+                      {{ infos.groupe_libelle }}
+                      <br> <br>
+                      {% if infos.etat_reso_ancien == 1 %}
+                        <button id="btn_reso_ancien_sup_{{ infos.fk_idetudiant }}" type="button" class="btn btn-outline-danger  btn-sm btn_reso_ancien_sup" value="{{ infos.fk_idetudiant }} "> <i class="fa fa-user-times"></i> Sup. du Réseaux</button>
+                      {% else %}
+                        <button id="btn_reso_ancien_add_{{ infos.fk_idetudiant }}" type="button" class="btn btn-outline-success  btn-sm btn_reso_ancien_add" value="{{ infos.fk_idetudiant }} "> <i class="fa fa-user-plus "></i> Add au Réseaux</button>
+                      {% endif %}
+                    </td>
+                    <td>{{ infos.theme_stage}}</td>
+                    <td> <strong>{{ infos.prof_nomprenom}}</strong> <br>
+                      <hr> {{ infos.prof_tel}} </td>
+                    <td> <strong>{{ infos.maitre_stage}}</strong> <br>
+                      <hr> {{ infos.tel_maitre_stage}} <br> Poste: {{ infos.poste_maitre_stage}} </td>
+
+                    <td> <strong>{{ infos.nom_entreprise}}</strong><br>
+                      <hr>{{ infos.tel_entreprise}} <br> {{ infos.email_entreprise}} <br>{{ infos.ville_entreprise}} <br>{{ infos.loca_entreprise}}
+                    </td>
+                    <td> Du : {{ infos.date_debut}} <br> Au :{{ infos.date_fin}}</td>
+                    <td> </td>
+                    <!--<td class="fieldtype_action field-152-td nowrap">
+    
+                          <form action="" method="POST">
+                            <button title="Voir" type="submit" name="btn_voir_eleve" class="btn btn-info">
+                              <input type="hidden" name="id_eleve" value="{{ eleve.id_eleve_eleve }}">
+                            <i class="fas fa-info"></i>
+                            </button>
+                          </form> 
+                      </td>-->
+                      
+                  </tr>
+                  {% endfor %}
+
+                  {% endif %}
+
+                </tbody>
+              </table>
+            </div>
+            <br>
+            <hr>
+
+            <!-- /.post -->
+          </div>
+          <!-- Fiche-->
+          <div class="tab-pane {% if panel==1 %} active show{% endif %}" id="timeline_prof">
+
+            <form method="POST">
+
+              <div class="form-row">
+
+                <div class="col-1">
+                  <label for="etudiant_stgeinfo">Etudiant :</label>
+                </div>
+
+                <div class="col-5">
+                  <select name="etudiant_stgeinfo" id="etudiant_stgeinfo" class="form-control"
+                    data-error="Etudiant non valide !" required style="width: 100%;" required>
+                    <option disabled selected> Choisissez un étudiant </option>
+                    {% if getAllElev is defined %}
+                    {% for key, value in getAllElev  %}
+                    <option value="{{value.id_eleve_eleve}}"> {{value.matricule}} - {{value.nom_prenom}} - Née le
+                      {{value.date_naiss}} à {{value.lieu_naiss}} - {{value.contact}} </option>
+                    {% endfor %}
+                    {% endif %}
+
+                  </select>
+                </div>
+
+                <div class="col-1">
+                  <label for="anneeScolaire_stginfo">Année Scolaire :</label>
+                </div>
+
+                <div class="col-3">
+                  <select name="anneeScolaire_stginfo" id="anneeScolaire_stginfo" class="form-control"
+                    data-error="Année Solaire non valide !" required style="width: 100%;" required>
+                    <option disabled selected> Choisissez l'année Scolaire </option>
+                    {% if getAnneeScolaire is defined %}
+                    {% for key, value in getAnneeScolaire  %}
+                    <option value="{{value.id_anscol_annee_scolaire}}"> {{value.annee_libelle}} </option>
+                    {% endfor %}
+                    {% endif %}
+                  </select>
+                </div>
+
+                <div class="col-2">
+                  <button title="Rechercher" type="submit" name="btn_etud_listStage" class="btn btn-info">
+                    <i class="fas fa-info"></i> Rechercher
+                  </button>
+                </div>
+
+              </div>
+
+            </form>
+            <br>
+            <hr style="border:2px solid #fdece2;">
+            <br>
+            
+            {% if get_all_stgEtudiant.0 is defined %}
+
+                <div class="container row">
+                  <div class="col-12">
+                    <div class="card shadow mb-4">
+                      <div class="card-header py-3 bg-secondary text-white"  style="font-size: small !important;">
+                        <h6 class="m-0 font-weight-bold "  style="font-size: small !important;">Etudiant : {{get_all_stgEtudiant.0.matricule}}-{{get_all_stgEtudiant.0.nom_prenom}} / Groupe : {{get_all_stgEtudiant.0.groupe_libelle}} </h6>
+                        <br>
+                        <h2 class="m-0 font-weight-bold "  style="font-size: small !important;"> Thème : <strong>{{get_all_stgEtudiant.0.theme_stage}}</strong></h2>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="container row" style="background-color: transparent;font-size: xx-small !important;">
+                  <div class="col-4">
+                    <div class="card shadow mb-4 bg-secondary text-white"  style="  height: 200px; ">
+                      <div class="card-body">
+                        <fieldset>
+                          <legend style="font-size: larger;">Stage effectué chez :</legend>
+                          <table class="table table-sm table-responsive table-borderless text-white" style=" font-size: x-small; ">
+                            <tbody">
+                              <tr>
+                                <td>Entreprise :</td>
+                                <td>{{get_all_stgEtudiant.0.nom_entreprise}}</td>
+                              </tr>
+                              <tr>
+                                <td>Contact : </td>
+                                <td>{{get_all_stgEtudiant.0.tel_entreprise}}</td>
+                              </tr>
+                              <tr>
+                                <td>Email :</td>
+                                <td>{{get_all_stgEtudiant.0.email_entreprise}}</td>
+                              </tr>
+                              <tr>
+                                <td>Situé à </td>
+                                <td>{{get_all_stgEtudiant.0.ville_entreprise}} / {{get_all_stgEtudiant.0.loca_entreprise}}</td>
+                              </tr>
+                              <tr>
+                                <td>Email :</td>
+                                <td>{{get_all_stgEtudiant.0.email_entreprise}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="card shadow mb-4 bg-secondary text-white"  style="  height: 200px; ">
+                      <div class="card-body">
+                        <fieldset>
+                          <legend style="font-size: larger;">Maître de stage :</legend>
+                          <table class="table table-sm table-responsive table-borderless text-white" style=" font-size: x-small;  ">
+                            <tbody">
+                              <tr>
+                                <td>{{get_all_stgEtudiant.0.maitre_stage}}</td>
+                              </tr>
+                              <tr>
+                                <td>{{get_all_stgEtudiant.0.poste_maitre_stage}}</td>
+                                <td>{{get_all_stgEtudiant.0.tel_maitre_stage}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </fieldset>
+                        <fieldset>
+                          <legend style="font-size: larger;">Directeur école :</legend>
+                          <table class="table table-sm table-responsive table-borderless text-white" style=" font-size: x-small;  ">
+                            <tbody">
+                              <tr>
+                                <td>{{get_all_stgEtudiant.0.prof_nomprenom}}</td>
+                              </tr>
+                              <tr>
+                                <td>{{get_all_stgEtudiant.0.prof_tel}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="card shadow mb-4 bg-secondary text-white" style="  height: 200px; ">
+                      <div class="card-body">
+                        <fieldset>
+                          <legend style="font-size: larger;">Horaires :</legend> <br>
+                          Du <strong>{{get_all_stgEtudiant.0.date_debut}}</strong> Au <strong>{{get_all_stgEtudiant.0.date_fin}}</strong>
+                          <table class="table table-sm table-responsive table-borderless text-white" style="  font-size: x-small;  ">
+                            <tbody">
+                              <tr>
+                                <td>Lundi </td>
+                                <td>7h-12h et 14h-17h </td>
+                              </tr>
+                              <tr>
+                                <td>Mardi </td>
+                                <td>7h-12h et 14h-17h </td>
+                              </tr>
+                              <tr>
+                                <td>Mercredi </td>
+                                <td>7h-12h et 14h-17h </td>
+                              </tr>                       
+                              <tr>
+                                <td>Jeudi </td>
+                                <td>7h-12h et 14h-17h </td>
+                              </tr>
+                              <tr>
+                                <td>Vendredi </td>
+                                <td>7h-12h et 14h-17h </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <br>
+
+
+                <div class="container row" id="stage_appreciation">
+                  <div class="col-12">
+                    <div class="card shadow mb-4">
+                      <div class="card-header py-3 bg-secondary text-white">
+                        <h6 class="m-0 font-weight-bold ">Appréciations </h6>
+                      </div>
+                      <div class="card-body row">
+                        <fieldset class="col-3">
+                          <legend style="font-size: larger;">Directeur école :</legend>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Note : </li>
+                            <li class="list-group-item">Appréciations : 
+                              <p></p>
+                            </li>
+                          </ul>
+
+                        </fieldset>
+                        <div class="col-1"></div>
+                        <fieldset class="col-3">
+                          <legend style="font-size: larger;">Maître de stage :</legend>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Note : </li>
+                            <li class="list-group-item">Appréciations : 
+                              <p></p>
+                            </li>
+                          </ul>
+                        </fieldset>
+                        <div class="col-1"></div>
+                        <fieldset class="col-3">
+                          <legend style="font-size: larger;">Note soutenance :</legend>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Note :
+                              <input type="number" name="note_soutenance" id="">
+                            </li>
+                            <li class="list-group-item">Appréciations : 
+                              <textarea name="apreciation_soutenance" id="" cols="20" rows="10"></textarea>
+                            </li>
+                          </ul>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="container row" >
+                  <div class="col-12">
+                    <div class="card shadow mb-4">
+                      <div class="card-header py-3 bg-secondary text-white">
+                        <h6 class="m-0 font-weight-bold ">Rapport étudiant </h6>
+                      </div>
+                      <div class="card-body row">
+
+                        <div class="col-12">
+                          <legend style="font-size: larger;">Notifications :</legend>
+                          <table class="table table-sm"  style="font-size: small !important;">
+                            <thead>
+                              <tr>
+                                <th>Date</th>
+                                <th>Source</th>
+                                <th>Informations</th>
+                              </tr>
+                            </thead>
+                            <tbody  style="font-size: small !important;">
+                              <tr>
+                                <td>21/07/2020</td>
+                                <td>Etudiant : kablan Hervé</td>
+                                <td>Début du stage</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <hr style="border:2px solid #fdece2;">
+                        </div>
+
+                        <div class="col-12">
+                          <legend style="font-size: larger;">Avis étudiant sur l'entreprise : /10 </legend>
+                          <table class="table table-sm table-responsive">
+                            <tbody  style="font-size: small !important;">
+                              <tr>
+                                <td>L'accueil à l'arrivée</td>
+                                <td>
+                                  <button type="button" class="btn btn-info"> <span class="badge">7</span></button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Les informations fournies en début du stage, y compris les consignes de sécurité (présentation de l'entreprise, de l'équipe, visite de l'entreprise...)</td>
+                                <td><button type="button" class="btn btn-info"> <span class="badge">7</span></button></td>
+                              </tr>
+                              <tr>
+                                <td>La disponibilité et l'écoute du tuteur</td>
+                                <td><button type="button" class="btn btn-info"> <span class="badge">7</span></button></td>
+                              </tr>
+                              <tr>
+                                <td>L'accompagnement du tuteur (exemples : les conseils apportés, la clarté des consignes...)</td>
+                                <td><button type="button" class="btn btn-info"> <span class="badge">7</span></button></td>
+                              </tr>
+                              <tr>
+                                <td>L'intégration dans l'équipe en tant que stagiaire</td>
+                                <td><button type="button" class="btn btn-info"> <span class="badge">7</span></button></td>
+                              </tr>
+                              <tr>
+                                <td>L'espace de travail lié aux activités quotidiennes</td>
+                                <td><button type="button" class="btn btn-info"> <span class="badge">7</span></button></td>
+                              </tr>
+                              <tr>
+                                <td>Les contacts avec les autres salariés</td>
+                                <td><button type="button" class="btn btn-info"> <span class="badge">7</span></button></td>
+                              </tr>
+                              <tr>
+                                <td>Les relations avec les supérieurs hiérarchiques</td>
+                                <td><button type="button" class="btn btn-info"> <span class="badge">7</span></button></td>
+                              </tr>
+                              <tr>
+                                <td>L'ambiance générale de travail</td>
+                                <td><button type="button" class="btn btn-info"> <span class="badge">7</span></button></td>
+                              </tr>
+
+                              
+                            </tbody>
+                          
+                          </table>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+            {% endif %}
+          </div>
+          <!-- stage-->
+          <div class="tab-pane {% if panel==2 %} active show{% endif %}" id="settings_prof">
+
+            <form action="" class="was-validated" method="POST">
+
+  
+              <div class="row">
+                <div class="col-6">
+                  <label for="anneeScolaire">Année Scolaire :</label>
+                  <select name="anneeScolaire" id="anneeScolaire" class="form-control"
+                    data-error="Année Solaire non valide !" required style="width: 100%;" required>
+                    <option disabled selected> Choisissez l'année Scolaire </option>
+                    {% if getAnneeScolaire is defined %}
+                    {% for key, value in getAnneeScolaire  %}
+                    <option value="{{value.id_anscol_annee_scolaire}}"> {{value.annee_libelle}} </option>
+                    {% endfor %}
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label for="classe">Classe :</label>
+                  <select name="classe" id="classe" class="form-control" data-error="Classe non valide !" required
+                    style="width: 100%;" required>
+                  </select>
+                </div>
+              </div>
+              <br>
+              
+              <div class="row">
+                <div class="col-12">
+                  <label for="anneeScolaire">Etudiant :</label>
+                  <select name="etudiant" id="etudiant" class="form-control" data-error="Etudiant non valide !" required
+                    style="width: 100%;" required>
+
+                    <option disabled selected> Choisissez un étudiant </option>
+
+
+                  </select>
+                </div>
+              </div>
+              <br>
+
+              <div class="row">
+                <div class="col-12">
+                  <label for="anneeScolaire">Thème Stage :</label>
+                  <input type="text" name="theme_stage" class="form-control" placeholder="THEME"
+                    data-error="Thème non valide " required>
+                </div>
+              </div>
+              <br>
+
+              <div class="row">
+                <div class="col-4">
+                  <label for="entreprise">Nom Entreprise:</label>
+                  <input type="text" name="entreprise" class="form-control" placeholder="Entreprise"
+                    data-error="Nom Entreprise non valide " required>
+                </div>
+
+                <div class="col-4">
+                  <label for="tel_entreprise">Contacts :</label>
+                  <input type="text" name="tel_entreprise" class="form-control" placeholder="05040607 / 08070904"
+                    data-error="Contacts non valide " required>
+                </div>
+
+                <div class="col-4">
+                  <label for="tel_entreprise">Email :</label>
+                  <input type="email" name="mail_entreprise" class="form-control" placeholder="entreprise@mail.com"
+                    data-error="Email non valide ">
+                </div>
+
+              </div>
+              <br>
+
+              <div class="row">
+                <div class="col-6">
+                  <label for="loca_entreprise">Ville :</label>
+                  <input type="text" name="ville_entreprise" class="form-control" placeholder="Abidjan"
+                    data-error="ville non valide " required>
+                </div>
+                <div class="col-6">
+                  <label for="tel_entreprise">Localisation :</label>
+                  <input type="text" name="loca_entreprise" class="form-control"
+                    placeholder="Rue 12 Abidjan Treichville" data-error="Localisation non valide " required>
+                </div>
+
+              </div>
+
+              <br>
+              <div class="row">
+                <div class="col-6">
+                  <label for="direct_ecole">Directeur Ecole :</label>
+                  <select name="direct_ecole" class="form-control" data-error="Année Solaire non valide !" required
+                    style="width: 100%;">
+                    <option disabled selected> Choisissez le Professeur </option>
+
+                    {% if getAllProf is defined %}
+                    {% for key, value in getAllProf  %}
+                    <option value="{{value.id_prof_prof}}"> {{value.nom_prenom}} - {{value.contact}} </option>
+                    {% endfor %}
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label for="maitre_stage">Maître de Stage :</label>
+                  <input type="text" name="maitre_stage" class="form-control" placeholder="Nom du Maître de Stage"
+                    data-error="Localisation non valide " required>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-6">
+                  <label for="tel_direct_ecole">Poste du Maître de stage:</label>
+                  <input type="text" name="job_maitre_stage" class="form-control" placeholder="Informaticien"
+                    data-error="Nom Entreprise non valide ">
+                </div>
+                <div class="col-6">
+                  <label for="tel_maitre_stage">Contact Maître de Stage :</label>
+                  <input type="text" name="tel_maitre_stage" class="form-control" placeholder="04070808/05040608"
+                    data-error="Localisation non valide " required>
+                </div>
+              </div>
+
+              <br>
+              <div class="row">
+                <div class="col-6">
+                  <label for="date_debut">Date de Début du Stage :</label>
+                  <input type="date" name="date_debut" class="form-control" placeholder="Rue 12 Abidjan Treichville"
+                    data-error="Localisation non valide " required>
+                </div>
+                <div class="col-6">
+                  <label for="date_fin">Date de Fin du Stage :</label>
+                  <input type="date" name="date_fin" class="form-control" placeholder="Rue 12 Abidjan Treichville"
+                    data-error="Localisation non valide " required>
+                </div>
+              </div>
+              <br>
+              <button type="submit" class="btn btn-info float-right">Créer</button>
+
+            </form>
+          </div>
+          <!-- Historiques -->
+          <div class="tab-pane {% if panel==3 %} active show{% endif %}" id="historique">
+
+            <form class="form-row" method="POST">
+
+              <div class="col-12 row">
+                <div class="col-6">
+                  <label for="anneeScolaire_hist">Année Scolaire :</label>
+                  <select name="anneeScolaire_hist" id="anneeScolaire_hist" class="form-control"
+                    data-error="Année Solaire non valide !" required style="width: 100%;" required>
+                    <option disabled selected> Choisissez l'année Scolaire </option>
+                    {% if getAnneeScolaire is defined %}
+                    {% for key, value in getAnneeScolaire  %}
+                    <option value="{{value.id_anscol_annee_scolaire}}"> {{value.annee_libelle}} </option>
+                    {% endfor %}
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label for="classe_hist">Classe :</label>
+                  <select name="classe_hist" id="classe_hist" class="form-control" data-error="Classe non valide !" required
+                    style="width: 100%;" required>
+                  </select>
+                </div>
+              </div>
+              <br>
+              
+              <div class="col-12 row">
+                <div class="col-10">
+                  <label for="etudiant_hist">Etudiant :</label>
+                  <select name="etudiant_hist" id="etudiant_hist" class="form-control" data-error="Etudiant non valide !" required
+                    style="width: 100%;" required>
+
+                    <option disabled selected> Choisissez un étudiant </option>
+
+                  </select>
+                </div>
+
+                <div class="col-2">
+                  <br>
+                  <button title="Rechercher" type="submit" name="btn_hist_etudiant" class="btn btn-info">
+                    <i class="fas fa-info"></i> Rechercher
+                  </button>
+                </div>
+
+              </div>
+
+            </form>
+
+            <hr style="border:2px solid #fdece2;">
+            <br><br>
+            <div class="col-12">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-secondary text-white" style="font-size: small !important;">
+                  <h6 class="m-0 font-weight-bold " style="font-size: small !important;">Etudiant :  {% if get_Etudiant_allstage is defined %} {{ get_Etudiant_allstage.0.matricule }}- {{ get_Etudiant_allstage.0.nom_prenom }}  {% endif %}</h6>
+                  <br>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover" id="dataTable_stageetud" style="width:100%;font-size: 11px;"
+                cellspacing="0">
+                <thead>
+                  <tr class="info" style="text-align: center;">
+                    <th>Année Scolaire/Groupe</th>
+                    <th>Thème</th>
+                    <th>Directeur Ecole</th>
+                    <th>Maître de Stage</th>
+                    <th>Entreprise</th>
+                    <th>Durée</th>
+                    <th>Evaluation</th>
+                  </tr>
+                </thead>
+
+                <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                  {% if get_Etudiant_allstage is defined %}
+
+                  {% for infos in get_Etudiant_allstage %}
+                  <tr>
+                    <td>
+                      <div class="well well-sm">{{ infos.annee_libelle }} </div>
+                      <br>
+                      {{ infos.libelle_niveau }}
+                      <br>
+                      {{ infos.groupe_libelle }}
+                    </td>
+                    <td>{{ infos.theme_stage}}</td>
+                    <td> <strong>{{ infos.prof_nomprenom}}</strong> <br>
+                      <hr> {{ infos.prof_tel}} </td>
+                    <td> <strong>{{ infos.maitre_stage}}</strong> <br>
+                      <hr> {{ infos.tel_maitre_stage}} <br> Poste: {{ infos.poste_maitre_stage}} </td>
+
+                    <td> <strong>{{ infos.nom_entreprise}}</strong><br>
+                      <hr>{{ infos.tel_entreprise}} <br> {{ infos.email_entreprise}} <br>{{ infos.ville_entreprise}} <br>{{ infos.loca_entreprise}}
+                    </td>
+                    <td> Du : {{ infos.date_debut}} <br> Au :{{ infos.date_fin}}</td>
+                    <td> </td>
+                    <!--<td class="fieldtype_action field-152-td nowrap">
+    
+                          <form action="" method="POST">
+                            <button title="Voir" type="submit" name="btn_voir_eleve" class="btn btn-info">
+                              <input type="hidden" name="id_eleve" value="{{ eleve.id_eleve_eleve }}">
+                            <i class="fas fa-info"></i>
+                            </button>
+                          </form> 
+                      </td>-->
+
+                  </tr>
+                  {% endfor %}
+
+                  {% endif %}
+
+                </tbody>
+              </table>
+            </div>
+            <br>
+            <hr>
+
+            <!-- /.post -->
+          </div>
+        </div>
+        <!-- /.tab-content -->
+      </div><!-- /.card-body -->
+
+    </div>
+    <!-- /.nav-tabs-custom -->
+  </div>
+
+</div>
+
+
+
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+
+
+<script>
+
+  $(document).ready(function () {
+ 
+    //MENU Historique
+    
+    $('#classe_hist').on('change', function (event) {
+      fct_getGroupe_Eleve(event.target.id,'anneeScolaire_hist','classe_hist','etudiant_hist');
+    });
+
+    $('#anneeScolaire_hist').on('change', function (event) {
+      fct_getGroupeBy(event.target.id,'anneeScolaire_hist','classe_hist','etudiant_hist');
+    });
+
+
+    //MENU CREATION
+    $('#classe').on('change', function (event) {
+      fct_getGroupe_Eleve(event.target.id,'anneeScolaire','classe','etudiant');
+    });
+
+    $('#anneeScolaire').on('change', function (event) {
+      fct_getGroupeBy(event.target.id,'anneeScolaire','classe','etudiant');
+    });
+
+    function fct_getGroupe_Eleve(event_id,anneeScolaire,classe,etudiant) {
+
+      //alert($('#anneeScolaire').val());
+      //alert($('#etudiant').val());
+
+      if (typeof ($('#'+anneeScolaire).val()) != undefined && $('#'+anneeScolaire).val() != "" && $('#'+anneeScolaire).val() != null ) {
+      if (typeof ($('#'+classe).val()) != undefined && $('#'+classe).val() != "" && $('#'+classe).val() != null ) {
+
+        $('#'+etudiant).html(' <option disabled selected> Choisissez un Etudiant </option>');
+
+        titre = "//evenement Change sur: #"+classe;
+        info = "  // Valeur=id --> " + event_id;
+        valueur = $('#' + event_id).val();
+        consoleInfo(envi, titre, info, valueur);
+
+        url_info = liens + 'App/Models/info.model.php';
+        values_info = 'action=get_allEleveInGrpe&groupeid=' + $('#'+classe).val()+ '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+
+        idelemt = '#'+etudiant;
+
+        root_AjaxMethod(url_info, values_info, ajax_setGroupe_Eleve, idelemt);
+
+      }
+      }
+
+    }
+    function ajax_setGroupe_Eleve(json_datas) {
+
+      var json_datas = JSON.parse(json_datas);
+      var jsondata = json_datas.getAllElevByGrp;
+
+      if (typeof (jsondata) != undefined && jsondata != "" && jsondata != null) {
+        titre = "//evenement Change sur:ajax_setGroupe_Eleve ";
+        info = "  // Reponse :--> ";
+        valueur = jsondata;
+        consoleInfo(envi, titre, info, valueur);
+
+        if ( jsondata != []) {
+
+          for (const key in jsondata) {
+
+            titre = "//evenement Change sur:jsondata ";
+            info = "  // Reponse :clé " + key;
+            valueur = jsondata[key];
+            consoleInfo(envi, titre, info, valueur);
+
+            $(idelemt).append(' <option value="' + (jsondata[key])["id_eleve_eleve"] + '"> ' + (jsondata[key])["matricule"]+' / '+ (jsondata[key])["nom_prenom"]+' / '+ (jsondata[key])["contact"] + ' </option>');
+
+          }
+          
+        }
+
+
+      }
+      else {
+        titre = "//evenement Change sur:get_groupes ";
+        info = "  // Reponse : Vide ; Aucune information --> ";
+        valueur = jsondata;
+        consoleInfo(envi, titre, info, valueur);
+      }
+
+    }
+
+
+
+
+    function fct_getGroupeBy(event_id,anneeScolaire,classe,etudiant) {
+
+      //alert($('#anneeScolaire').val());
+      //alert($('#etudiant').val()); 
+
+      if (typeof($('#'+anneeScolaire).val()) != undefined && $('#'+anneeScolaire).val()!= "" && $('#'+anneeScolaire).val() != null ) {
+
+        $('#'+classe).html(' <option disabled selected> Choisissez un Groupe (Niveau/Filière/Groupe)</option>');
+        $('#'+etudiant).html(' <option disabled selected> Choisissez un Etudiant </option>');
+        titre = "//evenement Change sur: #"+anneeScolaire+" && #"+classe;
+        info = "  // Valeur=id --> " + event_id;
+        valueur = $('#' + event_id).val();
+        consoleInfo(envi, titre, info, valueur);
+        
+        url_info = liens + 'App/Models/info.model.php';
+        values_info = 'action=get_groupes&anneeScol=' + $('#'+anneeScolaire).val()+ '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+
+        idelemt = '#'+classe;
+        root_AjaxMethod(url_info, values_info, ajax_getGroupeBy, idelemt);
+
+      }
+
+    }
+
+    function ajax_getGroupeBy(jsondata) {
+
+      jsondata = JSON.parse(jsondata);
+
+      if (typeof (jsondata) != undefined && jsondata != "" && jsondata != null) {
+        titre = "//evenement Change sur:get_groupes ";
+        info = "  // Reponse :--> ";
+        valueur = jsondata;
+        consoleInfo(envi, titre, info, valueur);
+        for (const key in jsondata) {
+
+          titre = "//evenement Change sur:jsondata ";
+          info = "  // Reponse :clé " + key;
+          valueur = jsondata[key];
+          consoleInfo(envi, titre, info, valueur);
+
+          $(idelemt).append(' <option value="' + (jsondata[key])["groupe_id"] + '"> ' + (jsondata[key])["libelle_niveau"]+' / '+ (jsondata[key])["class_lib"]+' / '+ (jsondata[key])["groupe_libelle"] + ' </option>');
+
+        }
+      }
+      else {
+        titre = "//evenement Change sur:get_groupes ";
+        info = "  // Reponse : Vide ; Aucune information --> ";
+        valueur = jsondata;
+        consoleInfo(envi, titre, info, valueur);
+      }
+
+    }
+
+
+    $('.btn_reso_ancien_sup').on('click', function (event) {
+
+        tmp_event_id= event.target.id;
+        titre = "//evenement Change sur: .btn_reso_ancien_sup";
+        info = "  // ID --> " + tmp_event_id;
+        valueur = $('#' + tmp_event_id).val();
+        consoleInfo(envi, titre, info, valueur);
+
+        fct_addSupAncienReso(tmp_event_id,valueur,0);
+     
+    });
+    $('.btn_reso_ancien_add').on('click', function (event) {
+
+        tmp_event_id= event.target.id;
+        titre = "//evenement Change sur: .btn_reso_ancien_add";
+        info = "  // ID --> " + tmp_event_id;
+        valueur = $('#' + tmp_event_id).val();
+        consoleInfo(envi, titre, info, valueur);
+
+        fct_addSupAncienReso(tmp_event_id,valueur,1);
+     
+    });
+
+    function fct_addSupAncienReso(get_event_id,id_etudiant,etat_reso) {
+        //action 0-sup et 1 - add
+        var tmp_event_id =get_event_id;
+        $('#' + tmp_event_id).hide();
+        var url_info = liens + 'App/Models/info.model.php';
+        var values_info = 'action=set_resoAncien_etat&id_etudiant=' + id_etudiant+ '&etat_reso='+etat_reso;
+        root_AjaxMethod(url_info, values_info, AjaxReps_fct_addSupAncienReso, tmp_event_id)+ '&global_admin=' + $('#global_admin').val() + '&global_univ=' + $('#global_univ').val();
+
+    }
+
+    function AjaxReps_fct_addSupAncienReso(jsondata) {
+      var infos_stat ="";
+      var classtype ="";
+
+      if (typeof (jsondata) != undefined && jsondata != "" && jsondata != null) {
+
+        jsondata = JSON.parse(jsondata);
+
+        if (jsondata == 1) {
+         
+         
+          infos_stat = "Opération effectué ";
+          classtype = "alert-success";
+          root_fct_showinfos_toast(infos_stat,classtype);
+          location.reload();
+        }
+        else {
+          infos_stat = "Erreur ! l'opération n'a pu être éffectuée";
+          classtype = "alert-danger";
+          root_fct_showinfos_toast(infos_stat,classtype);
+        }
+
+      }
+      else {
+          infos_stat = "Erreur ! réessayer ";
+          classtype = "alert-danger";
+          root_fct_showinfos_toast(infos_stat,classtype);
+        }
+
+    }
+
+
+
+  });
+</script>
+
+{% endblock %}

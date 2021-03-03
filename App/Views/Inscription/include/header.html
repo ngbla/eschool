@@ -1,0 +1,130 @@
+ {{ include('Inscription/include/entete.html') }}
+
+<div class="row text-center no-margin alert alert-info " style="margin-top: 20px;padding:5px">
+
+    <div class="col-1" align="center"> </div>
+
+    <div class="col-1" align="center"> </div>
+    <!--<div class="col-3" align="center">
+                <a href="#" class="btn btn-danger"> RECLAMATION EN LIGNE </a>
+             </div>-->
+    <div class="col-5" align="center"> </div>
+    <div class="col-5" align="center"> Déjà Inscrit ?
+        <a href="#" type="button" class="btn btn-info " data-toggle="modal" data-target="#myModal_fiche"> Imprimer votre fiche</a>
+    </div>
+
+</div>
+
+<!-- Modal Impression-->
+<div id="myModal_fiche" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Impression de Fiche</h4>
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                {{ include('Inscription/include/form_fiche.html') }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Impression-->
+<div id="myModal_ficheimpression" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+
+            <div class="modal-body">
+                {{ include('Inscription/include/form_fiche_model.html') }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% if inscript_reps is defined %} {% if inscript_reps == "success" %}
+<div class="alert alert-success">
+    <strong>Félicitation !</strong> Votre Inscription à été effectuée avec succès.
+</div>
+{% else%}
+<div class="alert alert-{{inscript_reps}}">
+    <strong> {% if msg_infos is defined %} {{msg_infos}} {% else%} Veuillez réessayer l'opération ! {% endif%}</strong>
+</div>
+{% endif%} {% endif%}
+<!--
+<div class="row no-margin">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:20px">
+        <h5 style="border-bottom:4px solid #2a82bf"><i class="fa fa-info"  style="color: #2a82bf;"></i> &nbsp;&nbsp; DOSSIER A FOURNIR</h5>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <p>Fournir un dossier complet comportant : </p>
+                <ol>
+                    <li>Une demande motivée d’inscription adressée au Directeur de ESSET POINCARE</li>
+                    <li>Un attestation de réussite à la Maîtrise ou Equivalent</li>
+                    <li>Le dernier diplôme obtenu pour les travailleurs (photocopie légalisée)</li>
+                    <li>Une photocopie de l’extrait de naissance + 1 CV</li>
+                    <li>Une fiche de candidature à télécharger</li>
+                    <li>Une attestation de travail précisant le nombre d’années d’expérience (pour les travailleurs)</li>
+                    <li>Frais de préinscription : 10 000 F CFA pour les Etudiants / 20 000 F CFA pour les Professionnels</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<h4><b><i >* Afin de valider votre inscription, veuillez suivre soigneusement toutes les étapes</i></b></h4><br/>
+
+<div class="row no-margin">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:20px">
+        <h5 style="border-bottom:4px solid #2a82bf"><i class="fa fa-info" style="color: #2a82bf;"></i> &nbsp;&nbsp; COMMENT S'INSCRIRE</h5>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <p>L'inscription se décline en quatres (04) phases : </p>
+                <ol>
+                    <li>Remplir le formulaire d'inscription</li>
+                    <li>Vérification des informations renseignées et import des documents requis</li>
+                    <li>Imprimer votre fiche d'inscription</li>
+                    <li>Paiement.</li>
+                </ol>
+                <h6 class="title"><u>PHASE  1&nbsp;: Remplir le formulaire d'inscription</u></h6>
+                <p>La première phase comporte les informations personnelles , scolaires et universitaires de l'étudiant(e), <br> Remplissez soigneusement les différents champs QUI VOUS CONCERNENT !
+                </p>
+
+                <h6 class="title"><u>PHASE  2&nbsp;:Vérification des informations renseignées et import des documents requis</u></h6>
+                <p>
+                    La seconde phase vous permet de vérifier soigneusement vos informations renseignées , modifier ci-nécessaire et importer les documents nécessaire à l'inscription.
+                </p>
+
+                <h6 class="title"><u>PHASE  3&nbsp;: Imprimer votre fiche d'inscription</u></h6>
+                <p>
+                    La Troisième phase traite de l'impression de votre fiche d'inscription.
+                </p>
+
+                <h6 class="title"><u>PHASE  4&nbsp;:Paiement .</u></h6>
+                <p>
+                    La dernière phase traite du paiement des frais d'inscription,<br> Vous avez la possibilité de payer à la caisse (muni de sa fiche d'inscription ) ou <br> D'effectuer votre paiement en ligne directement.
+                </p>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <h4> <i class="fa fa-info" style="color: #2a82bf;"></i> &nbsp;&nbsp;PHASE 1&nbsp;: Remplir le formulaire d'inscription</h4>
+    <hr style="color: #2a82bf; border: solid 3px;">
+</div>

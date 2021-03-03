@@ -1,0 +1,142 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} {% block title %}Mes Cours{% endblock %} {% block content %}
+
+ 
+<input type="hidden" name="global_univ" value="{{fk_iduniv}}" id="global_univ">
+<input type="hidden" name="id_matiere" value="{% if mat_select is defined %}{{mat_select}}{% endif %}" id="id_matiere">
+<!--IDTYPE PROF = profpers_select-->
+<input type="hidden" name="id_personne" value="{% if profpers_select is defined %}{{profpers_select}}{% endif %}" id="id_personne"> 
+{% if groupeid is defined %}
+<input type="hidden" name="idgroupe_plan" value="{{ groupeid }}" id="idgroupe_plan">
+<input type="hidden" name="idtype_prof" value="{{ idtype_prof }}" id="idtype_prof"> 
+{% endif %}
+
+
+
+<div class="card card-body container-fluid" style="
+        background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;padding-top: 20px; 
+        padding-left: 0px;
+        padding-right: 0px;">
+
+
+
+
+    <div class="container-fluid" style="min-height: 1000px;padding-left: 0px; padding-right: 0px;">
+
+        <!--DEBUT-->
+        <div class="col-12 row container-fluid" style="padding-left: 1rem; padding-right: 0rem;">
+
+            <section class="col-12 row container" id="meet" style="
+                background-image: url('loading.gif');
+                background-color: #cccccc;   
+                background-position: center;  
+                background-repeat: no-repeat;  ">
+
+            </section>
+
+
+
+        </div>
+        <!--DEBUT -->
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+
+
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+<!-- TEST EDITOR CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link href="assets/css/editor.css" type="text/css" rel="stylesheet"/>
+
+
+<!-- <script type="text/javascript" src="assets/js/shieldui-all.min.js"></script> -->
+ 
+<!-- VISIO CONF JITSI
+<script src="https://meet.jit.si/libs/lib-jitsi-meet.min.js"></script>-->
+<script src='assets/jitsi/external_api.js'></script>
+
+
+<script>
+    $(function() {
+
+
+        const domain = 'meet.jit.si';
+        //host   moderator  participant
+        const options = {
+            userInfo: {
+                email: '{{email}}',
+                role : "host",
+                displayName: '{{nom_prenom}}'
+            },
+            devices: {
+                audioInput: '<deviceLabel>',
+                audioOutput: '<deviceLabel>',
+                videoInput: '<deviceLabel>'
+            },
+            //jwt: '<jwt_token>',
+            configOverwrite: { startWithAudioMuted: true },
+            interfaceConfigOverwrite: { 
+                DISABLE_DOMINANT_SPEAKER_INDICATOR: true ,
+                TOOLBAR_BUTTONS: [
+                    'microphone', 'camera', 'closedcaptions', 'desktop', 'embedmeeting', 'fullscreen',
+                    'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
+                    'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
+                    'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
+                    'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security'
+                ],
+                SETTINGS_SECTIONS: [ 'devices', 'language', 'host', 'profile', 'calendar' ],
+                SHOW_CHROME_EXTENSION_BANNER: false,
+
+            },
+
+            roomName: 'eschool-{{initiale_univ}}/{{fk_iduniv}}{{profpers_select}}{{mat_select}}',
+            width: '100%',
+            height: 700,
+            parentNode: document.querySelector('#meet')
+        };
+        const api = new JitsiMeetExternalAPI(domain, options);
+
+        // set new password for channel
+        api.addEventListener('participantRoleChanged', function(event) {
+            if (event.role === "host") {
+                api.executeCommand('password', '12345');
+            }
+        });
+        // join a protected channel
+        api.on('passwordRequired', function ()
+        {
+            api.executeCommand('password', '12345');
+        });
+        api.executeCommand('toggleAudio');
+        api.executeCommand('toggleVideo');
+        //api.executeCommand('toggleChat');
+        //api.executeCommand('toggleShareScreen');
+        //api.executeCommand('toggleTileView');
+        api.executeCommand('avatarUrl', '{{liens}}{{id_pers_personne}}/{{id_pers_personne}}.jpg');
+        //api.executeCommand('sendEndpointTextMessage', 'receiverParticipantId', 'text');
+
+
+
+
+
+    })
+</script>
+
+
+
+{% endblock %}

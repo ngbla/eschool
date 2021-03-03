@@ -1,0 +1,1535 @@
+{% extends "main.html" %} {% block title %}Admin - Demande d'Inscription des étudiants {% endblock %} {% block content %}
+
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row" style="background-image:
+    url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;padding-top: 20px; min-height: 1024px;">
+
+    <div class="col-md-12">
+        <div class="card">
+
+            <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link {% if panel==0 %}
+                            active{% endif %}" href="#activity_prof" data-toggle="tab">Liste demandeurs</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link {% if panel==1 %}
+                            active{% endif %}" href="#timeline_prof" data-toggle="tab">Fiche
+                            demandeur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#fichier_import" data-toggle="tab">Import de fichier</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Notifications -->
+
+            <div class="card-body">
+                <div class="tab-content">
+                    <!-- stagiaires -->
+                    <div class="tab-pane {% if panel==0 %} active show{% endif
+                        %}" id="activity_prof">
+
+                        <form class="form-row" method="POST" style="display: none;">
+                            <div class="col-1">
+                                <label for="anneeScolaire_stage">Année Scolaire
+                                    :</label>
+                            </div>
+
+                            <div class="col-7">
+                                <select name="anneeScolaire_stage" id="anneeScolaire_stage" class="form-control-plaintext" data-error="Année Solaire non valide !" required style="width: 100%;" required>
+                                    <option disabled selected> Choisissez
+                                        l'année Scolaire </option>
+                                    {% if getAnneeScolaire is defined %}
+                                    {% for key, value in getAnneeScolaire %}
+                                    <option value="{{value.annee_scola}}">
+                                        {{value.annee_scola}} </option>
+                                    {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <button title="Rechercher" type="submit" name="btn_voir_dmd" class="btn btn-info">
+                                    <i class="fas fa-info"></i> Rechercher
+                                </button>
+                            </div>
+
+                        </form>
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#tab1" data-toggle="tab">DOSSIERS EN ATTENTES</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#tab2" data-toggle="tab">PAIEMENTS EN ATTENTES</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#tab3" data-toggle="tab">ACTIVATION DE COMPTES EN ATTENTES</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#tab4" data-toggle="tab">INSCRIPTIONS FINALISÉES</a></li>
+                        </ul>
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+                        <div class="tab-content">
+                            <!-- /.DOSSIER EN ATTENTE -->
+                            <div class="tab-pane active" id="tab1">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" id="dataTable_list_fillierenews" style="width:100%;font-size: 11px;" cellspacing="0">
+                                        <thead>
+                                            <tr class="info" style="text-align:
+                                                center;">
+                                                <th>Photo</th>
+                                                <th>Nom Prénom et sexe</th>
+                                                <th>Date et lieu de Naissance</th>
+                                                <th>Email et Tel</th>
+
+                                                <th>Niveau Précédent</th>
+                                                <th>Niveau demandé</th>
+                                                <th>Parcours</th>
+                                                <th>Statut</th>
+                                                <th>Ancienneté</th>
+                                                <th>Date Inscription</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                                            {% if get_AllEtudiant_dmdInscripBy is defined %} {% for infos in get_AllEtudiant_dmdInscripBy %}
+
+                                            {% if infos.etat_pers == '4' %}
+                                            <tr>
+                                                <td> <img id="user_tof_mini" class="img-profile
+                                                        img-thumbnail" src="{{base_liens}}files/{{
+                                                        infos.id_pers_personne}}/tiny{{
+                                                        infos.id_pers_personne}}.jpg" alt="User profile picture">
+                                                </td>
+
+                                                <td> <strong>{{ infos.nom_prenom}}</strong>
+                                                    <br> <br> {{ infos.nationnalite}}
+                                                    <br> Sexe : {{ infos.sexe}} </td>
+                                                <td> Née le {{ infos.date_naiss}} à {{ infos.lieu_naiss}}
+                                                </td>
+                                                <td> {{ infos.email}} <br>{{ infos.contact}} </td>
+                                                <td> {{ infos.anciennete}} </td>
+                                                <td> {{ infos.niveauetude}} </td>
+                                                <td> {{ infos.parcours}} </td>
+
+                                                <td> {{ infos.statut_affecter}} </td>
+                                                <td> {{ infos.statut_interne_externe}}
+                                                </td>
+
+                                                <td> {{ infos.date_inscription}} <br>
+                                                    <br> 
+                                                    {% if infos.etat_pers == '0' %}
+                                                    <p><span class="badge badge-dark">Paiement
+                                                            en attente</span></p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="etudiant_persid" value="{{infos.id_pers_personne}}">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{infos.annee_scola}}">
+                                                            <button name="btn_sup_correct" type="submit" class="btn btn-outline-warning">Corriger</button>
+                                                        </form>
+
+                                                    {% elseif infos.etat_pers == '1' %}
+                                                    <p><span class="badge
+                                                            badge-success">Inscrit !
+                                                            Accès à l'appli.</span></p>
+                                                    {% elseif infos.etat_pers == '3' %}
+                                                    <p><span class="badge
+                                                            badge-warning">Activation en
+                                                            attente</span></p>
+                                                    {% elseif infos.etat_pers == '4' %}
+                                                    <p><span class="badge badge-danger">Inscription
+                                                            en attente</span></p>
+                                                    <p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{
+                                                                infos.annee_scola}}">
+                                                            <input type="hidden" name="etudiant_infos" value="{{
+                                                                infos.id_eleve_eleve}}">
+                                                            <button name="btn_voir_dmd" type="submit" class="btn
+                                                                btn-outline-success">Activer</button>
+                                                        </form>
+
+                                                    </p>
+                                                    <p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="etudiant_persid" value="{{
+                                                                infos.id_pers_personne}}">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{
+                                                                infos.annee_scola}}">
+                                                            <button name="btn_sup_etudiant" type="submit" class="btn
+                                                                btn-outline-danger">Supprimer</button>
+                                                        </form>
+
+                                                    </p>
+                                                    {% else %}
+                                                    <p><span class="badge badge-danger">Statut
+                                                            inconnu</span></p>
+                                                    {% endif %}
+
+                                                </td>
+
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %} {% endif %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.PAIEMENT EN ATTENTE -->
+                            <div class="tab-pane " id="tab2">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" id="list_paie" style="width:100%;font-size: 11px;" cellspacing="0">
+                                        <thead>
+                                            <tr class="info" style="text-align:
+                                                center;">
+                                                <th>Photo</th>
+                                                <th>Nom Prénom et sexe</th>
+                                                <th>Date et lieu de Naissance</th>
+                                                <th>Email et Tel</th>
+
+                                                <th>Niveau Précédent</th>
+                                                <th>Niveau demandé</th>
+                                                <th>Parcours</th>
+                                                <th>Statut</th>
+                                                <th>Ancienneté</th>
+                                                <th>Date Inscription</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody >
+
+
+                                            {% if get_AllEtudiant_dmdInscripBy is defined %} {% for infos in get_AllEtudiant_dmdInscripBy %}
+                                            {% if infos.etat_pers == '0' %}
+                                            <tr>
+                                                <td> <img id="user_tof_mini" class="img-profile
+                                                        img-thumbnail" src="{{base_liens}}files/{{
+                                                        infos.id_pers_personne}}/tiny{{
+                                                        infos.id_pers_personne}}.jpg" alt="User profile picture">
+                                                </td>
+
+                                                <td> <strong>{{ infos.nom_prenom}}</strong>
+                                                    <br> <br> {{ infos.nationnalite}}
+                                                    <br> Sexe : {{ infos.sexe}} </td>
+                                                <td> Née le {{ infos.date_naiss}} à {{ infos.lieu_naiss}}
+                                                </td>
+                                                <td> {{ infos.email}} <br>{{ infos.contact}} </td>
+                                                <td> {{ infos.anciennete}} </td>
+                                                <td> {{ infos.niveauetude}} </td>
+                                                <td> {{ infos.parcours}} </td>
+
+                                                <td> {{ infos.statut_affecter}} </td>
+                                                <td> {{ infos.statut_interne_externe}}
+                                                </td>
+
+                                                <td> {{ infos.date_inscription}} <br>
+                                                    <br> 
+                                                    {% if infos.etat_pers == '0' %}
+                                                    <p><span class="badge badge-dark">Paiement
+                                                            en attente</span></p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="etudiant_persid" value="{{infos.id_pers_personne}}">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{infos.annee_scola}}">
+                                                            <button name="btn_sup_correct" type="submit" class="btn btn-outline-warning">Corriger</button>
+                                                        </form>
+
+                                                    {% elseif infos.etat_pers == '1' %}
+                                                    <p><span class="badge
+                                                            badge-success">Inscrit !
+                                                            Accès à l'appli.</span></p>
+                                                    {% elseif infos.etat_pers == '3' %}
+                                                    <p><span class="badge
+                                                            badge-warning">Activation en
+                                                            attente</span></p>
+                                                    {% elseif infos.etat_pers == '4' %}
+                                                    <p><span class="badge badge-danger">Inscription
+                                                            en attente</span></p>
+                                                    <p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{
+                                                                infos.annee_scola}}">
+                                                            <input type="hidden" name="etudiant_infos" value="{{
+                                                                infos.id_eleve_eleve}}">
+                                                            <button name="btn_voir_dmd" type="submit" class="btn
+                                                                btn-outline-success">Activer</button>
+                                                        </form>
+
+                                                    </p>
+                                                    <p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="etudiant_persid" value="{{
+                                                                infos.id_pers_personne}}">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{
+                                                                infos.annee_scola}}">
+                                                            <button name="btn_sup_etudiant" type="submit" class="btn
+                                                                btn-outline-danger">Supprimer</button>
+                                                        </form>
+
+                                                    </p>
+                                                    {% else %}
+                                                    <p><span class="badge badge-danger">Statut
+                                                            inconnu</span></p>
+                                                    {% endif %}
+
+                                                </td>
+
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %} {% endif %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.ACTIVATION EN ATTENTE -->
+                            <div class="tab-pane " id="tab3">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" id="list_activ" style="width:100%;font-size: 11px;" cellspacing="0">
+                                        <thead>
+                                            <tr class="info" style="text-align:
+                                                center;">
+                                                <th>Photo</th>
+                                                <th>Nom Prénom et sexe</th>
+                                                <th>Date et lieu de Naissance</th>
+                                                <th>Email et Tel</th>
+
+                                                <th>Niveau Précédent</th>
+                                                <th>Niveau demandé</th>
+                                                <th>Parcours</th>
+                                                <th>Statut</th>
+                                                <th>Ancienneté</th>
+                                                <th>Date Inscription</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody >
+
+
+                                            {% if get_AllEtudiant_dmdInscripBy is defined %} {% for infos in get_AllEtudiant_dmdInscripBy %}
+
+                                            {% if infos.etat_pers == '3' %}
+
+                                            <tr>
+                                                <td> <img id="user_tof_mini" class="img-profile
+                                                        img-thumbnail" src="{{base_liens}}files/{{
+                                                        infos.id_pers_personne}}/tiny{{
+                                                        infos.id_pers_personne}}.jpg" alt="User profile picture">
+                                                </td>
+
+                                                <td> <strong>{{ infos.nom_prenom}}</strong>
+                                                    <br> <br> {{ infos.nationnalite}}
+                                                    <br> Sexe : {{ infos.sexe}} </td>
+                                                <td> Née le {{ infos.date_naiss}} à {{ infos.lieu_naiss}}
+                                                </td>
+                                                <td> {{ infos.email}} <br>{{ infos.contact}} </td>
+                                                <td> {{ infos.anciennete}} </td>
+                                                <td> {{ infos.niveauetude}} </td>
+                                                <td> {{ infos.parcours}} </td>
+
+                                                <td> {{ infos.statut_affecter}} </td>
+                                                <td> {{ infos.statut_interne_externe}}
+                                                </td>
+
+                                                <td> {{ infos.date_inscription}} <br>
+                                                    <br> 
+                                                    {% if infos.etat_pers == '0' %}
+                                                    <p><span class="badge badge-dark">Paiement
+                                                            en attente</span></p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="etudiant_persid" value="{{infos.id_pers_personne}}">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{infos.annee_scola}}">
+                                                            <button name="btn_sup_correct" type="submit" class="btn btn-outline-warning">Corriger</button>
+                                                        </form>
+
+                                                    {% elseif infos.etat_pers == '1' %}
+                                                    <p><span class="badge
+                                                            badge-success">Inscrit !
+                                                            Accès à l'appli.</span></p>
+                                                    {% elseif infos.etat_pers == '3' %}
+                                                    <p><span class="badge
+                                                            badge-warning">Activation en
+                                                            attente</span></p>
+                                                    {% elseif infos.etat_pers == '4' %}
+                                                    <p><span class="badge badge-danger">Inscription
+                                                            en attente</span></p>
+                                                    <p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{
+                                                                infos.annee_scola}}">
+                                                            <input type="hidden" name="etudiant_infos" value="{{
+                                                                infos.id_eleve_eleve}}">
+                                                            <button name="btn_voir_dmd" type="submit" class="btn
+                                                                btn-outline-success">Activer</button>
+                                                        </form>
+
+                                                    </p>
+                                                    <p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="etudiant_persid" value="{{
+                                                                infos.id_pers_personne}}">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{
+                                                                infos.annee_scola}}">
+                                                            <button name="btn_sup_etudiant" type="submit" class="btn
+                                                                btn-outline-danger">Supprimer</button>
+                                                        </form>
+
+                                                    </p>
+                                                    {% else %}
+                                                    <p><span class="badge badge-danger">Statut
+                                                            inconnu</span></p>
+                                                    {% endif %}
+
+                                                </td>
+
+                                            </tr>
+                                             {% endif %}
+                                            {% endfor %} {% endif %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.ACTIVER --> 
+                            <div class="tab-pane " id="tab4">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" id="list_final" style="width:100%;font-size: 11px;" cellspacing="0">
+                                        <thead>
+                                            <tr class="info" style="text-align:
+                                                center;">
+                                                <th>Photo</th>
+                                                <th>Nom Prénom et sexe</th>
+                                                <th>Date et lieu de Naissance</th>
+                                                <th>Email et Tel</th>
+
+                                                <th>Niveau Précédent</th>
+                                                <th>Niveau demandé</th>
+                                                <th>Parcours</th>
+                                                <th>Statut</th>
+                                                <th>Ancienneté</th>
+                                                <th>Date Inscription</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody >
+                                            {% if get_AllEtudiant_dmdInscripBy is defined %} {% for infos in get_AllEtudiant_dmdInscripBy %}
+                                             {% if infos.etat_pers == '1' %}
+                                            <tr>
+                                                <td> <img id="user_tof_mini" class="img-profile
+                                                        img-thumbnail" src="{{base_liens}}files/{{
+                                                        infos.id_pers_personne}}/tiny{{
+                                                        infos.id_pers_personne}}.jpg" alt="User profile picture">
+                                                </td>
+
+                                                <td> <strong>{{ infos.nom_prenom}}</strong>
+                                                    <br> <br> {{ infos.nationnalite}}
+                                                    <br> Sexe : {{ infos.sexe}} </td>
+                                                <td> Née le {{ infos.date_naiss}} à {{ infos.lieu_naiss}}
+                                                </td>
+                                                <td> {{ infos.email}} <br>{{ infos.contact}} </td>
+                                                <td> {{ infos.anciennete}} </td>
+                                                <td> {{ infos.niveauetude}} </td>
+                                                <td> {{ infos.parcours}} </td>
+
+                                                <td> {{ infos.statut_affecter}} </td>
+                                                <td> {{ infos.statut_interne_externe}}
+                                                </td>
+
+                                                <td> {{ infos.date_inscription}} <br>
+                                                    <br> 
+                                                    {% if infos.etat_pers == '0' %}
+                                                    <p><span class="badge badge-dark">Paiement
+                                                            en attente</span></p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="etudiant_persid" value="{{infos.id_pers_personne}}">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{infos.annee_scola}}">
+                                                            <button name="btn_sup_correct" type="submit" class="btn btn-outline-warning">Corriger</button>
+                                                        </form>
+
+                                                    {% elseif infos.etat_pers == '1' %}
+                                                    <p><span class="badge
+                                                            badge-success">Inscrit !
+                                                            Accès à l'appli.</span></p>
+                                                    {% elseif infos.etat_pers == '3' %}
+                                                    <p><span class="badge
+                                                            badge-warning">Activation en
+                                                            attente</span></p>
+                                                    {% elseif infos.etat_pers == '4' %}
+                                                    <p><span class="badge badge-danger">Inscription
+                                                            en attente</span></p>
+                                                    <p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{
+                                                                infos.annee_scola}}">
+                                                            <input type="hidden" name="etudiant_infos" value="{{
+                                                                infos.id_eleve_eleve}}">
+                                                            <button name="btn_voir_dmd" type="submit" class="btn
+                                                                btn-outline-success">Activer</button>
+                                                        </form>
+
+                                                    </p>
+                                                    <p>
+                                                        <form method="POST">
+                                                            <input type="hidden" name="etudiant_persid" value="{{
+                                                                infos.id_pers_personne}}">
+                                                            <input type="hidden" name="anneeScolaire_stage" value="{{
+                                                                infos.annee_scola}}">
+                                                            <button name="btn_sup_etudiant" type="submit" class="btn
+                                                                btn-outline-danger">Supprimer</button>
+                                                        </form>
+
+                                                    </p>
+                                                    {% else %}
+                                                    <p><span class="badge badge-danger">Statut
+                                                            inconnu</span></p>
+                                                    {% endif %}
+
+                                                </td>
+
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %} {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <br>
+                        <hr>
+
+                        <!-- /.post -->
+                    </div>
+                    <!-- Fiche-->
+                    <div class="tab-pane {% if panel==1 %} active show{% endif
+                        %}" id="timeline_prof">
+
+                        {% if get_UniqEtudiant_dmdInscripBy.0 is defined %}
+                        <div class="container row">
+                            <div class="col-12 row">
+
+                                <div class="col-9">
+
+                                    <dl class="dl-horizontal form-horizontal">
+                                        <dt class="form-group">
+                                            Année Scolaire : <strong> {{
+                                                get_UniqEtudiant_dmdInscripBy.0.annee_scola}}</strong>
+                                        </dt>
+                                        <br>
+
+                                        <dt class="row">
+                                            <div class="col-2"><strong>Nom :
+                                                </strong></div>
+                                            <div class="col-10"><input
+                                                    type="text" class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos_pers"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnom_prenom"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.nom_prenom}}"></div>
+                                        </dt>
+                                        <br>
+                                        <dt class="row">
+                                            <div class="col-2"><strong>Nationalité
+                                                    :</strong></div>
+                                            <div class="col-4"><input
+                                                    type="text" class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnationnalite"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.nationnalite}}"></div>
+                                            <div class="col-2"><strong>Situation
+                                                    :</strong></div>
+                                            <div class="col-4"><input
+                                                    type="text" class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µstuationmat"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.stuationmat}}"></div>
+                                        </dt>
+                                        <br>
+                                        <dt class="row">
+                                            <div class="col-2">
+                                                <strong>Née le</strong>
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text"
+                                                    class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos_pers"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µdate_naiss"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.date_naiss}}">
+                                            </div>
+                                            <div class="col-1">
+                                                à
+                                            </div>
+                                            <div class="col-5">
+                                                <input type="text"
+                                                    class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos_pers"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µlieu_naiss"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.lieu_naiss}}">
+                                            </div>
+                                        </dt>
+                                        <br>
+                                        <dt class="row">
+                                            <div class="col-2"> <strong>Email :</strong>
+                                            </div>
+                                            <div class="col-4"> <input
+                                                    type="text" class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos_pers"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µemail"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.email}}">
+                                            </div>
+                                            <div class="col-1"> <strong>| Tel :
+                                                </strong> </div>
+                                            <div class="col-5"> <input
+                                                    type="text" class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos_pers"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µcontact"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.contact}}"></div>
+                                        </dt>
+                                        <br>
+                                        <dt class="row">
+                                            <div class="col-2"> <strong>Commune
+                                                    :</strong> </div>
+                                            <div class="col-3"><input
+                                                    type="text" class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µcommune"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.commune}}"></div>
+                                            <div class="col-2"> <strong>|
+                                                    Quartier :</strong> </div>
+                                            <div class="col-5"><input
+                                                    type="text" class="input-sm
+                                                    form-control-plaintext
+                                                    etud_infos"
+                                                    id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µquartie"
+                                                    value="{{
+                                                    get_UniqEtudiant_dmdInscripBy.0.quartie}}"></div>
+                                        </dt>
+                                    </dl>
+
+                                </div>
+
+                                <div class="col-3">
+
+
+                                    <img id="user_tof_mini" class="img-profile
+                                        img-thumbnail" src="{{base_liens}}files/{{
+                                        get_UniqEtudiant_dmdInscripBy.0.id_pers_personne}}/{{
+                                        get_UniqEtudiant_dmdInscripBy.0.id_pers_personne}}.jpg" alt="Photo {{
+                                        get_UniqEtudiant_dmdInscripBy.0.nom_prenom}}">
+                                    <br>
+                                    <span class="text-align:center">Sexe : {{
+                                        get_UniqEtudiant_dmdInscripBy.0.sexe}}</span>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+
+                        <div class="container row">
+                            <div class="col-12"><dt> <strong>INFORMATIONS
+                                        SCOLAIRE</strong> <hr> </dt></div>
+
+                            <div class="col-4">
+                                <br>
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong> <b>Date d'Inscription :
+                                                </b> </strong></td>
+                                        <td><strong> <b>
+                                                    {{
+                                                    get_UniqEtudiant_dmdInscripBy.0.date_inscription|format_datetime(locale='fr')
+                                                    }} </b></strong></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Profession : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µprofilcandidat" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.profilcandidat}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                            <div class="col-12"><br></div>
+
+
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Diplôme : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µdiplome" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.diplome}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Série du BAC : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µseriebac" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.seriebac}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>N° Table BAC: </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnumbac" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.numbac}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-12"><br></div>
+
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>N° MESRS  : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnum_mesrs_menet" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.num_mesrs_menet}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>N° MENET  : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnum_menet" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.num_menet}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>N° Affectation : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnum_affectation" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.num_affectation}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-12"><br></div>
+
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Niveau précédent : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µanciennete" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.anciennete}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Filière demandé : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µparcours" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.parcours}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Niveau demandé : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µniveauetude" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.niveauetude}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-12"><br></div>
+                            <div class="col-6">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Statut Ancienneté (interne /
+                                                externe) : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µstatut_interne_externe" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.statut_interne_externe}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                        </div>
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+
+                        <div class="container row">
+                            <div class="col-12">
+                                <dt> <strong>INFORMATIONS SUR LES PARENTS </strong> <hr> 
+                                </dt>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Nom du Père : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnom_pere" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.nom_pere}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Profession du Père :
+                                            </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µprofession_pere" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.profession_pere}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Tel du Père : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                phone
+                                                form-control-plaintext-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µtel_pere" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.tel_pere}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-12"><br></div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Nom de la Mère : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnom_mere" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.nom_mere}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Profession du Mère :
+                                            </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µprofession_mere" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.profession_mere}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Tel du Mère : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                phone
+                                                form-control-plaintext-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µtel_mere" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.tel_mere}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+
+                        <div class="container row">
+                            <div class="col-12">
+                                <dt> <strong>INFORMATIONS SUR LE PAYEUR LÉGAL </strong> <hr> 
+                                </dt>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Nom  : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnom_payeur" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.nom_payeur}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Email :
+                                            </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µemail_payeur" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.email_payeur}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Tel du Père : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                phone
+                                                form-control-plaintext-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µtel_payeur" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.tel_payeur}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+
+                        <div class="container row">
+                            <div class="col-12">
+                                <dt> <strong>CORRESPONDANT </strong> <hr> 
+                                </dt>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Nom: </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µnomurget" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.nomurget}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Email :
+                                            </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                form-control-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µemailurget" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.emailurget}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <table class="text-xs small">
+                                    <tr>
+                                        <td><strong>Tel : </strong></td>
+                                        <td><input type="text" class="input-sm
+                                                phone
+                                                form-control-plaintext-plaintext
+                                                etud_infos" id="{{get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}µtelurget" value="{{
+                                                get_UniqEtudiant_dmdInscripBy.0.telurget}}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                        <br>
+
+
+
+
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+                        <dt><strong> <u> Documents importés</u> </strong></dt>
+                        <br>
+                        <div class="card container">
+                            <div class="container row">
+
+                                {% if get_dossierContenu is defined %} {% for key, docs in get_dossierContenu %}
+
+                                <div class="col-4" style="border: 2px solid
+                                    #5a5c69 ; min-height: 300px;">
+                                    <div class="text-center">
+
+                                        <iframe src="{{docs.0}}" width="100%" height="70%"> </iframe>
+                                        <br>
+                                        <br>
+                                        <a type="button" class="btn
+                                            btn-outline-primary" target="_blank" rel="nofollow" href="{{docs.0}}">
+                                            {{key}} </a>
+                                    </div>
+                                </div>
+
+                                {% endfor %} {% else %}
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body">Aucun Document n'a été importé !</div>
+                                </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                        <br>
+                        <hr style="border:2px solid #fdece2;">
+                        <br>
+
+                        <div class="container row">
+                            <div class="col-12 row">
+
+                                <form method="POST" class="col-12 row
+                                    was-validated">
+                                    <input type="hidden" name="id_etudiant" value="{{
+                                        get_UniqEtudiant_dmdInscripBy.0.id_eleve_eleve}}" required>
+                                    <input type="hidden" name="id_anneescol" value="{{
+                                        get_UniqEtudiant_dmdInscripBy.0.annee_scola}}" required>
+                                    <input type="hidden" name="id_pers_etudiant" value="{{
+                                        get_UniqEtudiant_dmdInscripBy.0.id_pers_personne}}" required>
+
+                                    <div class="form-group col-4">
+                                        <label for="filiere_id">Filière :</label>
+                                        <select class="form-control" id="filiere_id" name="filiere_id" required>
+                                            <option value="" disabled selected>Sélectionnez
+                                                une filière</option>
+                                            {% if getClassesBy is defined %}
+                                            {% for filiere in getClassesBy %}
+                                            <option
+                                                value="{{filiere.id_classe_classe}}_{{filiere.libelle}}">{{filiere.libelle}}</option>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="niveau_id">Niveau :</label>
+                                        <select class="form-control" id="niveau_id" name="niveau_id" required>
+                                            <option value="" disabled selected>Sélectionnez
+                                                un Niveau</option>
+                                            {% if getNiveau is defined %}
+                                            {% for niv in getNiveau %}
+                                            <option
+                                                value="{{niv.id_niveau}}_{{niv.libelle_niveau}}">{{niv.libelle_niveau}}</option>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="statut_affect">Statut
+                                            affecté :</label>
+                                        <select class="form-control" id="statut_affect" name="statut_affect" required>
+                                            <option value="N_AFF">NON AFF.</option>
+                                            <option value="O_AFF">AFF.</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-4">
+                                        <label for="statut_boursier">Statut
+                                            boursier :</label>
+                                        <select class="form-control" id="statut_boursier" name="statut_boursier" required>
+                                            <option value="NON_BOURS">NON BOURS.</option>
+                                            <option value="OUI_BOURS">BOURS.</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="statut_redoub">Statut
+                                            Redoublant :</label>
+                                        <select class="form-control" id="statut_redoub" name="statut_redoub" required>
+                                            <option value="NON_RED">NON REDOUB.</option>
+                                            <option value="OUI_RED">REDOUB.</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="matricule">Matricule :</label>
+                                        <input type="text" class="input-sm
+                                            form-control" id="matricule" value="{{
+                                            get_UniqEtudiant_dmdInscripBy.0.matricule}}" placeholder="Matricule" name="matricule" required>
+                                        <div class="valid-feedback">matricule valide
+                                        </div>
+                                        <div class="invalid-feedback">Saisissez un matricule valide.</div>
+                                    </div>
+
+
+
+                                    <button type="submit" class="btn
+                                        btn-outline-warning" name="btn_activeinscrip">Valider</button>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        {% endif %}
+
+
+
+
+                    </div>
+                    <!-- Fiche-->
+                    <div class="tab-pane " id="fichier_import">
+
+                        <form enctype="multipart/form-data"  method="POST">
+                            <div class="form-group row">
+                      
+                                <div class="col-md-4" id="DivMaskParcours">
+                                    <label for="parcours"><b>Filière Souhaitée * </b></label>
+                                    <select name="parcours"  class="form-control" required>
+                                        <option value=""  disabled selected>Sélectionner la Filière où vous souhaitez vous inscrire</option>
+                                        {% if getClassesBy is defined %}
+                                        {% for list_fil in getClassesBy  %}
+                                        <option class="cycle_inf" value="{{list_fil.libelle}}">{{list_fil.libelle}}</option>
+                                        {% endfor %} 
+                                        {% endif%}
+                                    </select><br/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="niveauetude"> <b>Niveau étude où vous souhaitez vous inscrire*  </b> </label>
+                                    <select name="niveauetude"  class="form-control" required >
+
+                                        <option value=""  disabled selected disabled selected>Sélectionner votre niveau d'étude actuel</option>
+                                        {% if getNiveauBy is defined %}
+                                            {% for list_niv in getNiveauBy  %}
+                                            <option class="cycle_inf" value="{{list_niv.libelle_niveau}}">{{list_niv.libelle_niveau}}</option>
+                                            {% endfor %} 
+                                        {% endif%}
+                                    
+                                    </select><br/>
+                                </div>
+                                <div class="col-12">
+                                    <br>
+                                    <table>
+                                        <tr>
+                                            <td><input name="file_excell" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/></td>
+                                            <td><button type="submit" class="btn btn-outline-success">Importer</button></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.nav-tabs-custom -->
+    </div>
+
+</div>
+
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+
+        //MATRICULE
+        var var_rand = 0;
+        var mat_etud = '0';
+        var mat_filC = '0';
+        var mat_nivC = '0';
+
+        $('#filiere_id').on('change', function(event) {
+            if ($('#filiere_id').val() != '' && $('#filiere_id').val() != null && typeof($('#filiere_id').val()) != undefined && $('#niveau_id').val() != null && typeof($('#niveau_id').val()) != undefined && $('#niveau_id').val() != '') {
+                var_rand = Math.floor(Math.random() * 8000) + 1000;
+
+                console.log(($("#filiere_id option:selected").text()).charAt(0));
+                mat_filC = ($("#filiere_id option:selected").text()).charAt(0);
+
+                console.log(($("#niveau_id option:selected").text()).charAt(0));
+                mat_nivC = ($("#niveau_id option:selected").text()).charAt(0);
+
+                mat_etud = mat_filC + '' + mat_nivC + ($('#filiere_id').val()).charAt(0) + ($('#niveau_id').val()).charAt(0) + '21' + var_rand;
+
+                $('#matricule').val(mat_etud);
+
+            }
+
+        });
+        $('#niveau_id').on('change', function(event) {
+            if ($('#filiere_id').val() != '' && $('#filiere_id').val() != null && typeof($('#filiere_id').val()) != undefined && $('#niveau_id').val() != null && typeof($('#niveau_id').val()) != undefined && $('#niveau_id').val() != '') {
+                var_rand = Math.floor(Math.random() * 8000) + 1000;
+
+                console.log(($("#filiere_id option:selected").text()).charAt(0));
+                mat_filC = ($("#filiere_id option:selected").text()).charAt(0);
+
+                console.log(($("#niveau_id option:selected").text()).charAt(0));
+                mat_nivC = ($("#niveau_id option:selected").text()).charAt(0);
+
+                mat_etud = mat_filC + '' + mat_nivC + ($('#filiere_id').val()).charAt(0) + ($('#niveau_id').val()).charAt(0) + '21' + var_rand;
+
+                $('#matricule').val(mat_etud);
+
+            }
+
+        });
+
+
+        //MAJ INFOS ETUDIANTS
+
+        $('.etud_infos').on('change', function(event) {
+
+            titre = "//evenement Change sur: .etud_infos";
+            info = "  // id --> " + event.target.id + " :: Valeur= ";
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=MAJetudiantInfos&table=eleve&infos=' + event.target.id + '&valeur=' + $('#' + event.target.id).val();
+            idelemt = '#' + event.target.id;
+
+            root_AjaxMethod(url_info, values_info, ajax_etudinfos, idelemt);
+
+            //alert($('#' + event.target.id).val());
+
+        });
+        $('.etud_infos_pers').on('change', function(event) {
+
+            titre = "//evenement Change sur: .etud_infos_pers";
+            info = "  // id --> " + event.target.id + " :: Valeur= ";
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=MAJetudiantInfos&table=personne&infos=' + event.target.id + '&valeur=' + $('#' + event.target.id).val();
+            idelemt = '#' + event.target.id;
+
+            root_AjaxMethod(url_info, values_info, ajax_etudinfos, idelemt);
+
+            //alert($('#' + event.target.id).val());
+
+        });
+
+        function ajax_etudinfos(jsondatas) {
+
+            var json_datas = JSON.parse(jsondatas);
+
+            if (typeof(json_datas) != undefined && json_datas != "" && json_datas != null) {
+
+                if (json_datas == 1) {
+                    infos_stat = "Mise à jour éffectuée!";
+                    classtype = "alert-success";
+                } else {
+                    infos_stat = "Mise à jour non éffectuée!";
+                    classtype = "alert-danger";
+                }
+
+                root_fct_showinfos_toast(infos_stat, classtype);
+            }
+
+        }
+
+
+        //MENU Historique
+
+        $('#classe_hist').on('change', function(event) {
+            fct_getGroupe_Eleve(event.target.id, 'anneeScolaire_hist', 'classe_hist', 'etudiant_hist');
+        });
+
+        $('#anneeScolaire_hist').on('change', function(event) {
+            fct_getGroupeBy(event.target.id, 'anneeScolaire_hist', 'classe_hist', 'etudiant_hist');
+        });
+
+
+        //MENU CREATION
+        $('#classe').on('change', function(event) {
+            fct_getGroupe_Eleve(event.target.id, 'anneeScolaire', 'classe', 'etudiant');
+        });
+
+        $('#anneeScolaire').on('change', function(event) {
+            fct_getGroupeBy(event.target.id, 'anneeScolaire', 'classe', 'etudiant');
+        });
+
+        function fct_getGroupe_Eleve(event_id, anneeScolaire, classe, etudiant) {
+
+            //alert($('#anneeScolaire').val());
+            //alert($('#etudiant').val());
+
+            if (typeof($('#' + anneeScolaire).val()) != undefined && $('#' + anneeScolaire).val() != "" && $('#' + anneeScolaire).val() != null) {
+                if (typeof($('#' + classe).val()) != undefined && $('#' + classe).val() != "" && $('#' + classe).val() != null) {
+
+                    $('#' + etudiant).html(' <option disabled selected> Choisissez un Etudiant </option>');
+
+                    titre = "//evenement Change sur: #" + classe;
+                    info = "  // Valeur=id --> " + event_id;
+                    valueur = $('#' + event_id).val();
+                    consoleInfo(envi, titre, info, valueur);
+
+                    url_info = liens + 'App/Models/info.model.php';
+                    values_info = 'action=get_allEleveInGrpe&id_groupe=' + $('#' + classe).val();
+                    idelemt = '#' + etudiant;
+
+                    root_AjaxMethod(url_info, values_info, ajax_setGroupe_Eleve, idelemt);
+
+                }
+            }
+
+        }
+
+        function ajax_setGroupe_Eleve(json_datas) {
+
+            var json_datas = JSON.parse(json_datas);
+            var jsondata = json_datas.getAllElevByGrp;
+
+            if (typeof(jsondata) != undefined && jsondata != "" && jsondata != null) {
+                titre = "//evenement Change sur:ajax_setGroupe_Eleve ";
+                info = "  // Reponse :--> ";
+                valueur = jsondata;
+                consoleInfo(envi, titre, info, valueur);
+
+                if (jsondata != []) {
+
+                    for (const key in jsondata) {
+
+                        titre = "//evenement Change sur:jsondata ";
+                        info = "  // Reponse :clé " + key;
+                        valueur = jsondata[key];
+                        consoleInfo(envi, titre, info, valueur);
+
+                        $(idelemt).append(' <option value="' + (jsondata[key])["id_eleve_eleve"] + '"> ' + (jsondata[key])["matricule"] + ' / ' + (jsondata[key])["nom_prenom"] + ' / ' + (jsondata[key])["contact"] + ' </option>');
+
+                    }
+
+                }
+
+
+            } else {
+                titre = "//evenement Change sur:get_groupes ";
+                info = "  // Reponse : Vide ; Aucune information --> ";
+                valueur = jsondata;
+                consoleInfo(envi, titre, info, valueur);
+            }
+
+        }
+
+
+
+
+        function fct_getGroupeBy(event_id, anneeScolaire, classe, etudiant) {
+
+            //alert($('#anneeScolaire').val());
+            //alert($('#etudiant').val());
+
+            if (typeof($('#' + anneeScolaire).val()) != undefined && $('#' + anneeScolaire).val() != "" && $('#' + anneeScolaire).val() != null) {
+
+                $('#' + classe).html(' <option disabled selected> Choisissez un Groupe (Niveau/Filière/Groupe)</option>');
+                $('#' + etudiant).html(' <option disabled selected> Choisissez un Etudiant </option>');
+                titre = "//evenement Change sur: #" + anneeScolaire + " && #" + classe;
+                info = "  // Valeur=id --> " + event_id;
+                valueur = $('#' + event_id).val();
+                consoleInfo(envi, titre, info, valueur);
+
+                url_info = liens + 'App/Models/info.model.php';
+                values_info = 'action=get_groupes&anneeScol=' + $('#' + anneeScolaire).val();
+                idelemt = '#' + classe;
+                root_AjaxMethod(url_info, values_info, ajax_getGroupeBy, idelemt);
+
+            }
+
+        }
+
+        function ajax_getGroupeBy(jsondata) {
+
+            jsondata = JSON.parse(jsondata);
+
+            if (typeof(jsondata) != undefined && jsondata != "" && jsondata != null) {
+                titre = "//evenement Change sur:get_groupes ";
+                info = "  // Reponse :--> ";
+                valueur = jsondata;
+                consoleInfo(envi, titre, info, valueur);
+                for (const key in jsondata) {
+
+                    titre = "//evenement Change sur:jsondata ";
+                    info = "  // Reponse :clé " + key;
+                    valueur = jsondata[key];
+                    consoleInfo(envi, titre, info, valueur);
+
+                    $(idelemt).append(' <option value="' + (jsondata[key])["groupe_id"] + '"> ' + (jsondata[key])["libelle_niveau"] + ' / ' + (jsondata[key])["class_lib"] + ' / ' + (jsondata[key])["groupe_libelle"] + ' </option>');
+
+                }
+            } else {
+                titre = "//evenement Change sur:get_groupes ";
+                info = "  // Reponse : Vide ; Aucune information --> ";
+                valueur = jsondata;
+                consoleInfo(envi, titre, info, valueur);
+            }
+
+        }
+
+
+        $('.btn_reso_ancien_sup').on('click', function(event) {
+
+            tmp_event_id = event.target.id;
+            titre = "//evenement Change sur: .btn_reso_ancien_sup";
+            info = "  // ID --> " + tmp_event_id;
+            valueur = $('#' + tmp_event_id).val();
+            consoleInfo(envi, titre, info, valueur);
+
+            fct_addSupAncienReso(tmp_event_id, valueur, 0);
+
+        });
+        $('.btn_reso_ancien_add').on('click', function(event) {
+
+            tmp_event_id = event.target.id;
+            titre = "//evenement Change sur: .btn_reso_ancien_add";
+            info = "  // ID --> " + tmp_event_id;
+            valueur = $('#' + tmp_event_id).val();
+            consoleInfo(envi, titre, info, valueur);
+
+            fct_addSupAncienReso(tmp_event_id, valueur, 1);
+
+        });
+
+        function fct_addSupAncienReso(get_event_id, id_etudiant, etat_reso) {
+            //action 0-sup et 1 - add
+            var tmp_event_id = get_event_id;
+            $('#' + tmp_event_id).hide();
+            var url_info = liens + 'App/Models/info.model.php';
+            var values_info = 'action=set_resoAncien_etat&id_etudiant=' + id_etudiant + '&etat_reso=' + etat_reso;
+            root_AjaxMethod(url_info, values_info, AjaxReps_fct_addSupAncienReso, tmp_event_id);
+        }
+
+        function AjaxReps_fct_addSupAncienReso(jsondata) {
+            var infos_stat = "";
+            var classtype = "";
+
+            if (typeof(jsondata) != undefined && jsondata != "" && jsondata != null) {
+
+                jsondata = JSON.parse(jsondata);
+
+                if (jsondata == 1) {
+
+
+                    infos_stat = "Opération effectué ";
+                    classtype = "alert-success";
+                    root_fct_showinfos_toast(infos_stat, classtype);
+                    location.reload();
+                } else {
+                    infos_stat = "Erreur ! l'opération n'a pu être éffectuée";
+                    classtype = "alert-danger";
+                    root_fct_showinfos_toast(infos_stat, classtype);
+                }
+
+            } else {
+                infos_stat = "Erreur ! réessayer ";
+                classtype = "alert-danger";
+                root_fct_showinfos_toast(infos_stat, classtype);
+            }
+
+        }
+
+
+
+        // Setup 1 - add a text input to each footer cell
+        $('#list_paie tfoot th').each(function() {
+            var title = $(this).text();
+            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        });
+        // Setup 1 - add a text input to each footer cell
+        var list_paie = $('#list_paie').DataTable({});
+        // Setup 1 - add a text input to each footer cell
+ 
+        // Setup 1 - add a text input to each footer cell
+        var list_activ = $('#list_activ').DataTable({ });
+        // Setup 1 - add a text input to each footer cell
+ 
+        // Setup 1 - add a text input to each footer cell
+        //var list_final = $('#list_final').DataTable({ });
+        var list_final = $('#list_final').DataTable({
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            },
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+    });
+</script>
+{% endblock %}

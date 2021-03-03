@@ -1,0 +1,149 @@
+<!--SECTION-->
+<ul style="list-style: none;padding: 0px;">
+
+    {% for key, value in get_cour_section %}
+
+    <li id="section_{{value.id_cours_plan}}" class="section main clearfix" role="region" aria-label="Welcome">
+        <h3 class="sectionname">
+            <span>
+                <a href="#"><i class="fa fa-bookmark"></i> &nbsp; {{value.plan_titre|upper}} </a>
+                <a href="#"><i title="Supprimer" class="fa fa-trash text-danger text-xs cour_sectiondel" id="delsection_{{value.id_cours_plan}}" valeur="{{value.id_cours_plan}}"></i> </a> 
+                &nbsp; 
+                <a href="#" data-toggle="modal" data-target="#modal_cour_modif"><i title="Modifier" class="fa fa-edit text-info text-xs mod_cour_info" id="{{value.id_cours_plan}}" valeur="{{value.id_cours_plan}}"></i> </a>
+                &nbsp; 
+                <span class="input-group-addon">
+                    <i title="Modifier" class="fa fa-arrows text-warning text-xs " id="mod_cour_{{value.id_cours_plan}}"></i> 
+                </span>
+                <input class="input-sm text-xs col-1 possection" type="number" id="possection_{{value.id_cours_plan}}" value="{{value.plan_position_num}}">
+              
+
+            </span> 
+              {% if groupeid is defined %}
+                <p style="text-align: right;">
+                    <input type="checkbox" id="inputetat_{{value.id_cours_plan}}" class="form-check-input input_coursuivie_etat" name="input_coursuivie" title="Cocher si Terminer" {% if value.etat_progression==1 %}checked{% endif %}>
+                </p>
+                <p style="text-align: left;">
+                    <a href="#" title="Autoriser la classe à voir" class="btn_active_courplan_classe_a">
+                        <i class="fa fa-eye btn_active_courplan_classe" id="btnvoir_{{value.id_cours_plan}}" aria-hidden="true" style="font-size:20px;color: {% if value.vue_groupe == 1 %} green {% else %} red {% endif %} ;"></i>
+                    </a>
+                </p>
+            {% endif %}
+
+        </h3>
+        <div class="content">
+            <div class="summary">
+                <div class="no-overflow">
+                    <p> {{ value.plan_description|raw }} </p>
+                </div>
+            </div>
+            <br>
+            <!--  RESSOURCES -->
+            {% if get_matiere_docsvideo is defined %}
+            <ul style="list-style: none;" class="border-left-warning">
+                <div class="mod-indent mod-indent-outer w-100">
+                    <p>
+                        <h6> <strong style="color: #f98012;font-weight: 400;">  <i class="fa fa-archive" aria-hidden="true"> RESSOURCES</i></strong></h6>
+                    </p>
+                </div>
+
+                {% for videodocs in get_matiere_docsvideo %} {% if value.id_cours_plan == videodocs.courplan_id %} {{ include('Elearning/Prof/include/include_ressources.html') }} {% endif %} {% endfor %}
+            </ul>
+            {% endif %}
+
+            <!--  PARTIE -->
+            {% if get_cour_partie is defined %} {{ include('Elearning/Prof/include/include_partie.html') }} {% endif %}
+        </div>
+    </li>
+    <hr> {% endfor %}
+</ul>
+
+<script>
+    $(document).ready(function() {
+
+        $('.cour_sectiondel').on('click', function(event) {
+
+            titre = "//evenement Change sur:include_section.html == .cour_sectiondel";
+            info = "  // Valeur=id --> " + event.target.id;
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=delete_courlement&infos=' + event.target.id;
+            idelemt = '#' + event.target.id;
+
+            root_AjaxMethod(url_info, values_info, ajax_deleteresult_toast, idelemt);
+
+        });
+
+        function ajax_deleteresult_toast(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                if (jsondata == 1) {
+                    classtype = "alert-success";
+                    infos_stat = "Cour Section supprimer";
+                    window.location.reload();
+                } else {
+                    classtype = "alert-danger";
+                    infos_stat = "erreur lier à la suppression de la Section du cour";
+                }
+
+                root_fct_showinfos_toast(infos_stat, classtype);
+            }
+
+        }
+
+        $('.possection').on('change', function(event) {
+
+            titre = "//evenement Change sur: .possection";
+            info = "  // Valeur=id --> " + event.target.id;
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=changecourplan_pos&infos=' + event.target.id+'&valeur='+$('#' + event.target.id).val()+'&global_admin='+$('#id_personne').val()+'&global_univ='+$('#global_univ').val();
+            idelemt = '#' + event.target.id;
+
+            root_AjaxMethod(url_info, values_info, ajax_changecourplan_pos_toast, idelemt);
+
+        });
+
+        function ajax_changecourplan_pos_toast(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                if (jsondata == 1) {
+                    classtype = "alert-success";
+                    infos_stat = "Changement de position effectuer";
+                    window.location.reload();
+                } else {
+                    classtype = "alert-danger";
+                    infos_stat = "erreur lier au Changement de position";
+                }
+
+                stop_fct_realod_bytime();
+                fct_realod_bytime();
+
+                root_fct_showinfos_toast(infos_stat, classtype);
+
+
+            }
+
+        }
+
+        var myVar;
+
+        function fct_realod_bytime() {
+            myVar = setTimeout(function(){ location.reload(); }, 80000);
+        }
+
+        function stop_fct_realod_bytime() {
+            clearTimeout(myVar);
+        }
+
+
+
+
+        
+    });
+</script>

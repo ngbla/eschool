@@ -1,0 +1,344 @@
+{% extends "main.html" %} 
+{% block title %}Admin - Réseau des anciens{% endblock %} 
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row" style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; min-height: 1024px; ">
+
+  <div class="col-md-12">
+    <div class="card">
+
+      <div class="card-header p-2">
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a class="nav-link {% if panel==0 %} active{% endif %}" href="#activity_prof" data-toggle="tab">
+            Liste des Anciens</a></li>
+          <li class="nav-item"><a class="nav-link {% if panel==1 %} active{% endif %}" href="#timeline_prof" data-toggle="tab">
+            Fiche Ancien</a></li>
+           <!-- <li class="nav-item"><a class="nav-link {% if panel==2 %} active{% endif %}" href="#settings_prof" data-toggle="tab">
+            Attribuer un stage</a></li>
+          <li class="nav-item"><a class="nav-link {% if panel==3 %} active{% endif %}" href="#historique" data-toggle="tab">
+            Historiques des stage</a></li>-->
+        </ul>
+      </div>
+      <!-- Notifications -->
+
+      <div class="card-body">
+        <div class="tab-content">
+          <!-- stagiaires -->
+          <div class="tab-pane {% if panel==0 %} active show{% endif %}" id="activity_prof">
+
+            <form class="form-row" method="POST">
+              <div class="col-1">
+                <label for="filliere_anci">Filière :</label>
+              </div>
+
+              <div class="col-7">
+                <select name="filliere_anci" id="filliere_anci" class="form-control"
+                  data-error="Année Solaire non valide !" required style="width: 100%;" required>
+                  <option disabled selected> Choisissez une filière </option>
+                  {% if getClasses is defined %}
+                    {% for key, value in getClasses  %}
+                      <option value="{{value.id_classe_classe}}"> {{value.libelle}} </option>
+                    {% endfor %}
+                  {% endif %}
+                </select>
+              </div>
+              <div class="col-4">
+                <button title="Rechercher" type="submit" name="btn_voir_ancien" class="btn btn-info">
+                  <i class="fas fa-info"></i> Rechercher
+                </button>
+              </div>
+
+            </form>
+
+            <hr style="border:2px solid #fdece2;">
+            <div class="table-responsive">
+              <caption>
+                <div class="alert alert-warning" style="text-transform:uppercase;">
+                  <strong>Listes des anciens étudiants de la filière</strong>
+                </div>
+                <br> 
+              </caption>
+              <table class="table table-bordered table-hover" id="dataTable_list_fillierenews" style="width:100%;font-size: 11px;"
+                cellspacing="0">
+                <thead>
+                  <tr class="info" style="text-align: center;">
+                    <th>Nom Prénom</th>
+                    <th>Contacts</th>
+                    <th>Statut</th>
+                    <th>Entreprise</th>
+                  </tr>
+                </thead>
+
+                <tbody id="eleve_attrib_classe_ListElvClss">
+
+
+                  {% if get_Ancien_EtudiantBy is defined %}
+
+                  {% for infos in get_Ancien_EtudiantBy %}
+                  <tr>
+                    <td>
+                      <div class="well well-sm">{{ infos.matricule }} </div>
+                      <div class="well well-sm"> <strong>{{ infos.nom_prenom }}</strong> ({{ infos.sexe }} )</div>
+                      <br>
+                      {{ infos.lib_classe }}
+                      <br>
+                      {{ infos.libelle_niveau }}
+                      <br>
+                      {{ infos.groupe_libelle }}
+                      <br>
+                      <br>
+                      <form method="POST">
+                        <input type="hidden" name="filliere" value="{{ infos.groupe_classe }}">
+                        <input type="hidden" name="groupe" value="{{ infos.groupe_libelle }}">
+                        <button id="info_ancien" name="info_ancien" type="submit" class="btn btn-outline-success  btn-sm" value="{{ infos.id_eleve_eleve }} "> <i class="fa fa-info"></i> Voir plus</button>
+                      </form>
+                    </td>
+                
+                    <td> 
+                      <strong>{{ infos.contact}}</strong> <br>
+                      <strong>{{ infos.email}}</strong> <br>
+                    </td>
+
+                    <td>
+                      {{ infos.profilcandidat}}
+                    </td>
+
+                    <td> 
+                      {{ infos.activite}}
+                    </td>
+
+              
+                  </tr>
+                  {% endfor %}
+
+                  {% endif %}
+
+                </tbody>
+              </table>
+            </div>
+            <br>
+            <hr>
+
+            <!-- /.post -->
+          </div>
+          <!-- Fiche-->
+          <div class="tab-pane {% if panel==1 %} active show{% endif %}" id="timeline_prof">
+
+            {% if get_UniqueAncien_EtudiantBy is defined %}
+            {% for infos in get_UniqueAncien_EtudiantBy %}
+            
+                <div class="container row">
+
+                  <div class="col-12">
+                    <div class="card shadow mb-4">
+                      <div class="card-header py-3 bg-secondary text-white row"  style="font-size: small !important;">
+                        <div class="col-6">
+                            <img id="user_tof" class="rounded img-thumbnail mx-auto d-block img-fluid" src="{% if base_liens is defined %}{{base_liens}}/files/{{infos.id_pers_personne}}/{{infos.id_pers_personne}}.jpg {% else %}# {% endif %}" alt="Image Etudiant" style="max-height: 300px;">
+                        </div>
+                        <div class="col-6">
+                          <h6 class="m-0 font-weight-bold "  style="font-size: small !important;">
+                            Ancien Etudiant : {{infos.nom_prenom}} <br>
+                            Genre : {{infos.sexe}} </h6>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="container row" style="background-color: transparent;">
+             
+                  <div class="col-6">
+                    <div class="card shadow mb-4 bg-secondary text-white"  style="  height: 200px; ">
+                      <div class="card-body">
+                        <fieldset>
+                          <legend style="font-size: larger;">Contacts :</legend>
+                          <table class="table table-sm table-responsive table-borderless text-white" >
+                            <tbody">
+                              <tr>
+                                <td>{{get_all_stgEtudiant.0.maitre_stage}}</td>
+                              </tr>
+                              <tr>
+                                <td>{{infos.contact}}</td>
+                              </tr>
+                              <tr>
+                                <td>{{infos.email}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </fieldset>
+            
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="card shadow mb-4 bg-secondary text-white" style="  height: 200px; ">
+                      <div class="card-body">
+                        <fieldset>
+                          <legend style="font-size: larger;">Entreprise :</legend>
+                          <table class="table table-sm table-responsive table-borderless text-white" >
+                            <tbody">
+                              <tr>
+                                <td>Métier :  {{infos.options}}</td>
+                              </tr>
+                              <tr>
+                                <td>Poste : {{infos.profilcandidat}}</td>
+                              </tr>
+                              <tr>
+                                <td>Nom de l'Entreprise :  {{infos.activite}}</td>
+                              </tr>
+                              
+                            </tbody>
+                          </table>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <br>
+
+
+                <div class="container row">
+                  <div class="col-12">
+                    <div class="card shadow mb-4">
+                      <div class="card-header py-3 bg-secondary text-white">
+                        <h6 class="m-0 font-weight-bold ">Mise à Jour </h6>
+                      </div>
+                      <div class="card-body row">
+
+                        <fieldset class="col-12">
+                          <legend style="font-size: larger;">Elément à modifier :</legend>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+
+                              <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <select class="form-control" id="critere_ancien">
+                                      <option value="" disabled selected>Choisissez élément à modifier</option>
+                                      <option value="metier"> Métier </option>
+                                      <option value="poste"> Poste </option>
+                                      <option value="entreprise"> Nom de l'Entreprise </option>
+                                      <option value="tel"> Téléphone </option>
+                                      <option value="email"> Email </option>
+                                    </select>
+                                </div>
+                                <!-- /btn-group -->
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-info fa-fw"></i> Edit </span>
+                                  </div>
+                                  <input type="text" class="form-control" placeholder="Information" id="critere_infos">
+                              </div>
+
+
+                            </li>
+       
+                          </ul>
+                          <br>
+                          <button type="button" class="btn btn-outline-warning" id="btn_updateancien_infos"> Modifier </button>
+                          <input type="hidden" value="{{infos.id_eleve_eleve}}" id="ancien_idetudiant">
+                        </fieldset>
+                
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+   
+
+                {% endfor %}
+                {% endif %}
+          </div>
+        
+        </div>
+        <!-- /.tab-content -->
+      </div><!-- /.card-body -->
+
+    </div>
+    <!-- /.nav-tabs-custom -->
+  </div>
+
+</div>
+
+
+
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+  <script src="assets/js/mescript_admin.js"></script>
+
+
+  <script>
+
+    $(document).ready(function () {
+  
+      $('#btn_updateancien_infos').on('click', function (event) {
+        
+          titre = "//evenement Change sur: #btn_updateancien_infos";
+          info = "   #critere_ancien --> "+$('#critere_ancien').val()+" #critere_infos --> "+$('#critere_infos').val();
+          valueur = '#ancien_idetudiant = '+$('#ancien_idetudiant').val();
+          consoleInfo(envi, titre, info, valueur);
+
+          if (typeof($('#ancien_idetudiant').val()) !=undefined && $('#ancien_idetudiant').val() != null && $('#ancien_idetudiant').val()!="" && typeof($('#critere_ancien').val()) !=undefined && $('#critere_ancien').val() != null && $('#critere_ancien').val()!="" ) {
+            if (typeof($('#critere_infos').val()) !=undefined && $('#critere_infos').val() != null && $('#critere_infos').val()!="" ) {
+              
+              fct_MajsAncienInfos($('#critere_ancien').val(),$('#critere_infos').val(),$('#ancien_idetudiant').val());
+            }
+          }
+          
+          //fct_addSupAncienReso(tmp_event_id,valueur,1);
+
+      });
+
+      function fct_MajsAncienInfos(critere_ancien,critere_infos,ancien_idetudiant) {
+        //action 0-sup et 1 - add
+        $('#btn_updateancien_infos').hide();
+        var url_info = liens + 'App/Models/info.model.php';
+        var values_info = 'action=set_ancienInfos&typeinfos=' + critere_ancien+ '&info='+critere_infos+ '&ancien_idetudiant='+ancien_idetudiant;
+        root_AjaxMethod(url_info, values_info, AjaxReps_MajsAncienInfos, 'btn_updateancien_infos');
+      }
+
+      function AjaxReps_MajsAncienInfos(jsondata) {
+        var infos_stat ="";
+        var classtype ="";
+
+        if (typeof (jsondata) != undefined && jsondata != "" && jsondata != null) {
+
+        jsondata = JSON.parse(jsondata);
+
+        if (jsondata == 1) {
+        
+          classtype = "alert-success";
+          root_fct_showinfos_toast(infos_stat,classtype);
+          location.reload();
+        }
+        else {
+          infos_stat = "Erreur ! l'opération n'a pu être éffectuée";
+          classtype = "alert-danger";
+          root_fct_showinfos_toast(infos_stat,classtype);
+        }
+
+        }
+        else {
+          infos_stat = "Erreur ! réessayer ";
+          classtype = "alert-danger";
+          root_fct_showinfos_toast(infos_stat,classtype);
+        }
+
+      }
+
+    });
+  </script>
+
+{% endblock %}

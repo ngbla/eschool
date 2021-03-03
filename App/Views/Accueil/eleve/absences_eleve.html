@@ -1,0 +1,136 @@
+{% extends "main_eleve.html" %} 
+
+{% block title %}Eleve - Absence{% endblock %} 
+
+{% block content %}
+
+  <div class="row" style="
+  background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;padding-top: 20px; ">
+
+      <section class="content col-12 row">
+        <div class="container-fluid col-12 row">
+            <div class="card col-12">
+                <div class="card-header p-2">
+                  <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" href="#activity_prof" data-toggle="tab">Mon Carnet d'Absence</a></li>
+                  </ul>
+                </div><!-- Notifications -->
+                <div class="card-body">
+                  <div class="tab-content">
+                    <div class="active tab-pane" id="activity_prof">
+                      <div class="card shadow">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-sm table-striped" id="db_list_absence" style="font-size: small;" width="100%" cellspacing="0">
+
+                                <thead class="bg-gradient-info text-white text-center">
+                                    <tr>
+                                      <th >Période</th>
+                                      <th >Date et Heure</th>
+                                      <th >Matière</th>
+                                      <th >Prof.</th>
+                                      <th >Motif</th>
+                                      <th >Absence</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                  {% if get_eleve_abs is defined %}
+                                  {% for key, value in get_eleve_abs  %}
+                                  <tr> 
+
+                                    <td> {{value.libele_partie}}</td>
+                                    <td> {{ value.emploitps_date|format_date(locale='fr') }} de {{value.emploitps_h_debut}} à {{value.emploitps_h_fin}}</td>
+                                    <td> {{value.mat_libelle}}</td>
+                                    <td> {{value.nom_prenom}}</td>
+                                    <td> {{value.abs_motifs}}</td>
+                                    <td> 
+                                        {% if value.abs_justif==1 %}
+                                        <span class="label btn-info">Justifier</span>
+                                        {% else %}
+                                        <span class="label btn-danger">Non Justifier</span>
+                                        {% endif %}
+                                    </td>
+                                  </tr>
+                                  
+                                  {% endfor %} 
+                                  {% endif %}
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+
+  </div>
+
+
+{% endblock %}
+
+
+
+{% block javascript_footer_add %}
+
+<script src="assets/js/mescript_eleve.js"></script>
+<script>
+$(document).ready(function() {
+
+    // Setup - add a text input to each footer cell
+    $('table tfoot th').each(function() {
+        var title = $(this).text();
+        $(this).html('<input style="width: 100%;" type="text" placeholder="Search ' + title + '" />');
+    });
+
+    // DataTable with search colom
+    var db_list_absence = $('#db_list_absence').DataTable({
+        initComplete: function() {
+            // Apply the search
+            this.api().columns().every(function() {
+                var that = this;
+
+                $('input', this.footer()).on('keyup change clear', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        },
+        dom: 'Blfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                titleAttr: 'Copy'
+            },
+            {
+                extend: 'excelHtml5',
+                text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                titleAttr: 'Excel'
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                titleAttr: 'CSV'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                titleAttr: 'PDF'
+            }
+
+        ]
+    });
+
+});
+</script>
+{% endblock %} 
+

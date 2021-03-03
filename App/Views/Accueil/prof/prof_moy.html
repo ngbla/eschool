@@ -1,0 +1,68 @@
+{% extends "main_prof.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+<input type="hidden" value="{% if id_type is defined %}{{id_type}}{% endif %}" id="type_id">
+
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"> Listes des classes et Matières enseigner </h6>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <table class="table table-striped" id="dataTable_prof_groupe" width="100%" cellspacing="0" table>
+                <thead>
+                    <tr>
+                        <th>Annee Scolaire</th>
+                        <th>Libelle Classe</th>
+                        <th>Matière</th>
+                        <th>Moyennes</th>
+                    </tr>
+
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Annee Scolaire</th>
+                        <th>Libelle Classe</th>
+                        <th>Matière</th>
+                        <th>Moyennes</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <!--                 cree_matiere_etat             
+                {% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+                    {% if etat_inscrip is defined %}
+                {% endif %} {% set annee = 'bar' %}{% set varannee = allAnneeScolaire[0].annee_libelle %}
+                    {{ varannee }}
+                -->
+                    {% if getAllGroupeANDmat is defined %} {% for key, value in getAllGroupeANDmat %}
+                    <tr>
+                        <td>{{ value.annee_libelle }}</td>
+                        <td>{{ value.groupe_libelle }}</td>
+                        <td>{{ value.code }}-{{ value.mat_lib }}</td>
+
+                        <td class="form-row">
+                            <form class="col" method="POST">
+                                <button title="Voir les notes" name="btn_voir_classe_notes" type="submit" value="{{value.id_groupe}}_{{value.id_mat}}" class="btn btn-info">
+                            <i class="fas fa-info"></i>
+                            </button>
+                            </form>
+                        </td>
+
+                    </tr>
+                    {% endfor %} {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_prof.js"></script>
+{% endblock %}

@@ -1,0 +1,467 @@
+{% extends "main.html" %} {% block title %}Gestion des Moyennes{% endblock %} {% block content %} {% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> {% endif %}
+
+<div class="row card" style="
+background-image: url('/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; ">
+
+    <div class="card-header p-2">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a class="nav-link {% if tab == 1 %}active{% endif %}" href="#stat_menu" data-toggle="tab">Moyennes par Matière</a></li>
+            <li class="nav-item"><a class="nav-link {% if tab == 2 %}active{% endif %} " href="#activity_prof" data-toggle="tab">Moyennes par Elève/Etudiant</a></li>
+        </ul>
+    </div>
+    <!-- Notifications -->
+    <div class="card-body">
+        <div class="tab-content">
+            <!-- /.card-header -->
+            <div class="tab-pane {% if tab == 1 %}active{% endif %}" id="stat_menu">
+
+                <div class="card-body">
+
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Custom Tabs -->
+                                <form method="POST">
+
+                                    <div class="form-row">
+
+                                        <div class="col-6">
+                                            <div class="input-group mb-3 ">
+                                                <div class="input-group-prepend ">
+                                                    <button type="button" class="btn btn-primary">Année scolaire</button>
+                                                </div>
+                                                <select class="form-control" id="moy_annee" name="moy_annee" required>
+                                                    {% if (moy_annee_lib is defined) and (moy_annee is defined) %}                 
+                                                        <option value="{{moy_annee}}">{{ moy_annee_lib }}</option>
+                                                    {% endif %}
+                                                    <option value="0">Choisissez l'année</option>
+                                                    {% if allannee is defined %}                 
+                                                        {% for key, value in allannee  %}
+                                                        <option value="{{value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                                        {% endfor %} 
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="input-group mb-3 ">
+                                                <div class="input-group-prepend ">
+                                                    <button type="button" class="btn btn-primary">Classe</button>
+                                                </div>
+                                                <select class="form-control" id="moy_classe" name="moy_classe" required>
+                                                         {% if (moy_classe is defined) and (moy_classe_lib is defined) %}                 
+                                                            <option value="{{moy_classe}}">{{ moy_classe_lib }}</option>
+                                                        {% endif %}
+                                                        <option value="0">Choisissez la classe</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="input-group mb-3 ">
+                                                <div class="input-group-prepend ">
+                                                    <button type="button" class="btn btn-primary">Matière</button>
+                                                </div>
+                                                <select class="form-control" id="moy_mat" name="moy_mat" required>
+                                                        {% if (moy_mat is defined) and (moy_mat_lib is defined) %}                 
+                                                            <option value="{{moy_mat}}">{{ moy_mat_lib }}</option>
+                                                        {% endif %}
+                                                        <option value="0">Choisissez la Matière</option>
+                                                      </select>
+                                            </div>
+                                        </div>
+
+                                        <button style="margin: auto;" type="submit" name="btn_afficheMoy" class="btn btn-primary btn-icon-split">
+                                                <span class="icon text-white-50">
+                                                  <i class="fas fa-info-circle"></i>
+                                                </span>
+                                                <span class="text">Afficher</span>
+                                              </button>
+
+                                        <br>
+                                    </div>
+
+                                </form>
+                                <!-- ./card -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </fieldset>
+
+                </div>
+                <div class="card card-body">
+
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover table-sm" id="dtb_list_matmoy" width="100%" cellspacing="0" style="width: 100%;font-size: smaller;">
+                            <caption>Année Académique {{moy_annee_lib}} --- Classe : {{moy_classe_lib}} --- Matières : {{moy_mat_lib}} </caption>
+                            <thead>
+                                <tr>
+                                    <th colspan="9" class="table-info"> Année Académique {{moy_annee_lib}} --- Classe : {{moy_classe_lib}} --- Matières : {{moy_mat_lib}} </th>
+                                </tr>
+                                <tr>
+                                    <th>Matricule</th>
+                                    <th>Nom Prénom</th>
+                                    <th>Informations</th>
+                                    <th>Statut</th>
+                                    <th>Période</th>
+                                    <th>Session 1 </th>
+                                    <th>Session 2</th>
+                                    <th>Moyenne Final</th>
+                                    <th>Résultat</th>
+                                </tr>
+
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Matricule</th>
+                                    <th>Nom Prénom</th>
+                                    <th>Informations</th>
+                                    <th>Statut</th>
+                                    <th>Période</th>
+                                    <th>Session 1</th>
+                                    <th>Session 2</th>
+                                    <th>Moyenne Final</th>
+                                    <th>Résultat</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+
+                                {% if get_info_onMoy is defined %} {% for moy in get_info_onMoy %} {% if moy.id_session == 1 %}
+                                <tr>
+                                    <td> {{moy.matricule}}</td>
+                                    <td> {{moy.nom_prenom}}</td>
+                                    <td> Sexe : {{moy.sexe}} <br> Néé le {{moy.date_naiss}} <br> à {{moy.lieu_naiss}}</td>
+                                    <td> {{moy.statut_affecter}} <br> {{moy.statut_redoublant}}</td>
+                                    <td> {{moy.libele_partie}}</td>
+                                    <td>
+                                        <!--input type="number" name="" id="" value="{{moy.moyenne}}" min="0" max="20" --> <span>
+                                            {% if (moy.moyenne >= 0) and (20 >= moy.moyenne)  %} 
+                                            {{moy.moyenne}}
+                                            {% else %} 
+                                            N.C
+                                            {% endif %} 
+
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% for moysess in get_info_onMoy %} {% if (moysess.id_session == 2) and (moy.id_matiere == moysess.id_matiere) and (moy.fk_part_annee == moysess.fk_part_annee) and (moy.id_eleve == moysess.id_eleve) %}
+                                        <!--input type="number" name="" id="" value="{{moysess.moyenne}}" min="0" max="20" -->
+                                        <span>
+                                        {% if (moysess.moyenne >= 0) and (20 >= moysess.moyenne)  %} 
+                                            {{moysess.moyenne}}
+                                            {% else %} 
+                                            N.C
+                                        {% endif %} 
+                                        </span> 
+                                        {% endif %}{% endfor %}
+                                    </td>
+                                    <td>
+                                        {% set test = 0 %} 
+
+                                        {% for moysess in get_info_onMoy %} 
+
+                                        {% if (moy.id_eleve == moysess.id_eleve) and (moysess.id_session == 2) and (moy.id_matiere == moysess.id_matiere) and (moy.fk_part_annee == moysess.fk_part_annee) and (moy.moyenne < moysess.moyenne) %} 
+
+                                            {% set test=test + 1 %} 
+                                            <span> <strong> <b> 
+                                                {% if (moysess.moyenne >= 0) and (20 >= moysess.moyenne) %} 
+                                                    {{moysess.moyenne}} 
+                                                {% else %} 
+                                                    N.C
+                                                {% endif %} 
+                                            </b></strong> </span> 
+                                            {% set mf = moysess.moyenne %} 
+                                            {% set periode = 'S2' %} 
+                                            
+                                        {% endif %} 
+                                        
+                                        {% endfor %} 
+
+                                        {% if test == 0 %}
+                                          
+                                            <span> <strong> <b>
+                                            {% if (moy.moyenne >= 0) and (20 >= moy.moyenne) %} 
+                                                {{moy.moyenne}} 
+                                            {% else %} 
+                                                N.C
+                                            {% endif %} 
+                                            </b> </strong> </span> 
+                                            {% set mf =moy.moyenne %} 
+                                            {% set periode = 'S1' %} 
+                                        {% endif %}
+
+                                    </td>
+                                    <td> 
+                                        <strong>
+                                         {% if (mf >= 10) and (20 >= mf) %} 
+                                         <span class="text-success">Validé(e) ({{periode}})</span> 
+                                         {% elseif (mf >= 0) and (10 > mf) %} 
+                                          <span class="text-danger">Refusé(e)</span>
+                                         {% else %} 
+                                          <span class="text-warning">N.C</span>
+                                         {% endif %}
+                                        </strong>
+                                    </td>
+                                </tr>
+                                {% endif %} {% endfor %}{% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- /.post -->
+                </div>
+
+            </div>
+            <!-- /.tab-content -->
+            <!-- /.card-header -->
+            <div class="tab-pane {% if tab == 2 %}active{% endif %}" id="activity_prof">
+                <div class="card-body row col-12">
+                    <!-- Custom Tabs -->
+                    <form method="POST" class="row col-12">
+                        <div class="col-6">
+                            <div class="input-group mb-3 ">
+                                <div class="input-group-prepend ">
+                                    <button type="button" class="btn btn-primary">Année scolaire</button>
+                                </div>
+                                <select class="form-control" id="elev_moy_annee" name="elev_moy_annee" required>
+                                            <option value="0">Choisissez l'année</option>
+                                            {% if allannee is defined %}                 
+                                                {% for key, value in allannee  %}
+                                                <option value="{{ value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+                                                {% endfor %} 
+                                            {% endif %}
+                                            </select>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="input-group mb-3 ">
+                                <div class="input-group-prepend ">
+                                    <button type="button" class="btn btn-primary">Classe</button>
+                                </div>
+                                <select class="form-control" id="elev_moy_classe" name="elev_moy_classe" required>
+                                        <option ></option>
+                                        <option value="0">Choisissez la classe</option>
+                                    </select>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="input-group mb-3 ">
+                                <div class="input-group-prepend ">
+                                    <button type="button" class="btn btn-primary">Elève/Etudiant</button>
+                                </div>
+                                <select class="form-control" id="elev_moy_id" name="elev_moy_id" required>
+                                            <option ></option>
+                                            <option value="0">Choisissez la Matière</option>
+                                    </select>
+                            </div>
+                        </div>
+
+                        <button style="margin: auto;" type="submit" name="elev_btn_afficheMoy" class="btn btn-primary btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-info-circle"></i>
+                                    </span>
+                                    <span class="text">Afficher</span>
+                            </button>
+
+                        <br>
+                    </form>
+                </div>
+                <div class="card card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover table-sm" id="dtb_list_elevmoy" width="100%" cellspacing="0" style="width: 100%;font-size: smaller;">
+                            <caption>Année Académique {{elve_annee_lib}} --- Classe : {{elve_classe_lib}} --- Etudiant :({{get_elevBy.0.matricule}})-{{get_elevBy.0.nom_prenom}}</caption>
+                            <thead>
+                                <tr>
+                                    <th colspan="6" class="table-info">Année Académique {{elve_annee_lib}} --- Classe : {{elve_classe_lib}} --- Etudiant :({{get_elevBy.0.matricule}})-{{get_elevBy.0.nom_prenom}}</th>
+                                </tr>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Période</th>
+                                    <th>Session 1 </th>
+                                    <th>Session 2</th>
+                                    <th>Moyenne Final</th>
+                                    <th>Résultat</th>
+                                </tr>
+
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Matière</th>
+                                    <th>Période</th>
+                                    <th>Session 1</th>
+                                    <th>Session 2</th>
+                                    <th>Moyenne Final</th>
+                                    <th>Résultat</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+
+                                {% if get_eleve_all_moy is defined %} {% for moy in get_eleve_all_moy %} {% if moy.id_session == 1 %}
+                                <tr>
+                                    <td>( {{moy.code}})-{{moy.libele}}</td>
+                                    <td> {{moy.libele_partie}}</td>
+                                    <td> <!-- input type="number" name="" id="" value="{{moy.moyenne}}" min="0" max="20" --> <span>{{moy.moyenne}}</span></td>
+                                    <td>
+                                        {% for moysess in get_eleve_all_moy %} {% if (moysess.id_session == 2) and (moy.id_eleve == moysess.id_eleve) and (moy.id_matiere == moysess.id_matiere) and (moy.fk_part_annee == moysess.fk_part_annee) %}
+                                        <!-- input type="number" name="" id="" value="{{moysess.moyenne}}" min="0" max="20" -->
+                                        <span>{{moysess.moyenne}}</span> {% endif %}{% endfor %}
+
+                                    </td>
+                                    <td>
+                                        {% set tests = 0 %} 
+                                        {% set moyenne_elev_tmp = 0 %} 
+                                        {% set periode_tmp = "" %} 
+
+                                        {% for moysess in get_eleve_all_moy %} 
+
+                                        {% if (moysess.id_session == 2) and (moy.id_matiere == moysess.id_matiere) and (moy.id_eleve == moysess.id_eleve) and (moy.fk_part_annee == moysess.fk_part_annee) and (moy.moyenne  < moysess.moyenne) %} 
+                                            
+                                            {% set tests=tests + 1 %} 
+                                            <!-- input type="number" name="" id="" value="{{moysess.moyenne}}" min="0" max="20" --> 
+                                            <span> <b>{{moysess.moyenne}}</b> </span> 
+                                            {% set moyenne_elev_tmp = moysess.moyenne %} 
+                                            {% set periode_tmp = 'S2' %} 
+                                        {% endif %}  
+
+                                        {% endfor %} 
+
+                                        {% if tests == 0 %}
+                                            <!-- input type="number" name="" id="" value="{{moy.moyenne}}" min="0" max="20" --> 
+                                            <span>{{moy.moyenne}}</span> 
+                                            {% set moyenne_elev_tmp =moy.moyenne %} 
+                                            {% set periode_tmp = 'S1' %} 
+                                        {% endif %}
+
+                                    </td>
+                                    <td> <strong>
+                                        <br>
+                                         {% if (moyenne_elev_tmp >= 10) %} 
+                                         <span class="text-success">Validé(e) ({{periode_tmp}})</span>  
+                                         {% else %} <span class="text-danger">Refusé(e)</span> {% endif %}
+                                    </strong></td>
+                                </tr>
+                                {% endif %} {% endfor %}{% endif %}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- /.post -->
+                </div>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+
+
+    {% endblock %} {% block javascript_footer_add %}
+    <script src="assets/js/mescript_admin.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            // Setup - add a text input to each footer cell
+            $('table tfoot th').each(function() {
+                var title = $(this).text();
+                $(this).html('<input style="width: 100%;" type="text" placeholder="Search ' + title + '" />');
+            });
+
+            var dtb_list_matmoy = $('#dtb_list_matmoy').DataTable({
+                dom: 'Blfrtip',
+                initComplete: function() {
+                    // Apply the search
+                    this.api().columns().every(function() {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                "order": [[1, "asc"]],
+                "pageLength": 50,
+
+                buttons: [{
+                        extend: 'copyHtml5',
+                        text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                        titleAttr: 'Copy'
+                    }, {
+                        extend: 'excelHtml5',
+                        text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                        titleAttr: 'Excel'
+                    }, {
+                        extend: 'csvHtml5',
+                        text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                        titleAttr: 'CSV'
+                    }, {
+                        extend: 'pdfHtml5',
+                        text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                        titleAttr: 'PDF',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL',
+                    }
+
+                ]
+            });
+            var dtb_list_elevmoy = $('#dtb_list_elevmoy').DataTable({
+                dom: 'Blfrtip',
+                initComplete: function() {
+                    // Apply the search
+                    this.api().columns().every(function() {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                "order": [[1, "asc"]],
+                "pageLength": 50,
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                buttons: [{
+                        extend: 'copyHtml5',
+                        text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                        titleAttr: 'Copy'
+                    }, {
+                        extend: 'excelHtml5',
+                        text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                        titleAttr: 'Excel'
+                    }, {
+                        extend: 'csvHtml5',
+                        text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                        titleAttr: 'CSV'
+                    }, {
+                        extend: 'pdfHtml5',
+                        text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                        titleAttr: 'PDF',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL',
+                    }
+
+                ]
+            });
+
+        });
+    </script>
+    {% endblock %}

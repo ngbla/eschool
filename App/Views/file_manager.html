@@ -1,0 +1,90 @@
+<div class="container" id="filemanager">
+    <div class="row">
+
+        <div class="col-12 animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <!-- ('jpg', 'jpeg', 'gif', 'png', 'pdf', 'doc', 'docx', 'xlsx', 'xls'); -->
+                    {% if notif_file[notifid] is defined %} {% for keys,doc in notif_file[notifid] %}
+                    <!-- DOC -->
+                    {% if doc.1 in ['doc', 'docx', 'xlsx', 'xls', 'pdf', 'txt'] %}
+                    <div class="file-box">
+                        <div class="file">
+                            <a href="#">
+                                <span class="corner"></span>
+
+                                <div class="icon">
+                                    <i class="fa fa-file"></i>
+                                </div>
+                                <div class="file-name">
+                                    <a href="{{doc.0}}" download="{{keys}}">{{keys}}</a>
+                                    <br>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- IMAGE -->
+                    {% elseif doc.1 in ['jpg', 'jpeg', 'gif', 'png'] %}
+                    <div class="file-box">
+                        <div class="file">
+                            <a href="#">
+                                <span class="corner"></span>
+
+                                <div class="image">
+                                    <img alt="image" class="img-thumbnail" src="{{doc.0}}">
+                                </div>
+                                <div class="file-name">
+                                    <a href="{{doc.0}}" download="{{keys}}">{{keys}}</a>
+                                    <br>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <!-- MUSIC -->
+                    {% elseif doc.1 in ['mp3', 'wav', 'aac'] %}
+                    <div class="file-box">
+                        <div class="file">
+                            <a href="#">
+                                <span class="corner"></span>
+
+                                <div class="icon">
+                                    <i class="fa fa-music"></i>
+                                </div>
+                                <div class="file-name">
+                                    <a href="{{doc.0}}" download="{{keys}}">{{keys}}</a>
+                                    <br>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- VIDEO -->
+                    {% elseif doc.1 in ['mp4', 'mov', 'wmf', 'm4v', 'mpg', 'mpeg'] %}
+                    <div class="file-box">
+                        <div class="file">
+                            <a href="#">
+                                <span class="corner"></span>
+
+                                <div class="icon">
+                                    <i class="img-responsive fa fa-film"></i>
+                                </div>
+                                <div class="file-name">
+                                    <a href="{{doc.0}}" download="{{keys}}">{{keys}}</a>
+                                    <br>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    {% else %} {% endif %} {% endfor %} {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

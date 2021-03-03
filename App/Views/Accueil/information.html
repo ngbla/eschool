@@ -1,0 +1,72 @@
+{% extends "main.html" %}
+
+
+{% block title %}Home{% endblock %}
+
+
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="form-group col-2">
+            <label>Année Scolaire</label>
+            <select class="form-control select2" style="width: 100%;">
+            <option selected="selected">2019-2020</option>
+            <option>2018-2019</option>
+    
+            </select>
+        </div>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Informations Scolaires</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Information</th>
+                <th>Source</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>Date</th>
+                <th>Information</th>
+                <th>Source</th>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr>
+                <td>07/04/2020</td>
+                <td>Examen de PROBA</td>
+                <td>Pr. Mr Coulibaly</td>
+            </tr>
+            <tr>
+                <td>07/04/2020</td>
+                <td>Moyenne du 1er Semestre Disponible</td>
+                <td>SP. Mr Kouakou</td>
+            </tr>
+            
+            </tbody>
+        </table>
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+

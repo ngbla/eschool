@@ -1,0 +1,154 @@
+{% extends "main.html" %} 
+{% block title %}Home{% endblock %} 
+{% block content %}
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+<div class="card" style="
+    background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;padding-top: 20px; min-height: 1024px;">
+
+    
+
+      <div class="card-body">
+
+        <form  method="POST">
+
+          <!-- Content Row -->
+
+          <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-8 col-lg-7">
+              <div class="card shadow mb-4">
+        
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Liste des Niveaux</h6>
+                </div>
+                <!-- Card Body -->    <!-- DataTales Example -->
+                <div class="card-body">
+
+                  <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable_list_creermatiere" width="100%" cellspacing="0" table>
+                      <thead>
+                        <tr>
+                           
+                          <th >Niveau</th>
+                          <th >Description</th>
+                        </tr>
+  
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th >Niveau</th>
+                          <th >Description</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        <!--                 cree_matiere_etat             
+                        {% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+                            {% if etat_inscrip is defined %}
+                        {% endif %} {% set annee = 'bar' %}{% set varannee = allAnneeScolaire[0].annee_libelle %}
+                            {{ varannee }}
+                        --> 
+                        {% if allniveau is defined %}
+                            
+                            {% for key, value in allniveau  %}
+                            <tr>
+                              
+                              <!--	
+                              <td>{{ value.id_annee_partie }}</td>
+                              <td>{{ value.id_anneeScolaire }}</td>
+                                <td>{{ value.id_anscol_annee_scolaire }}</td> 
+                              -->
+                              <td>{{ value.libelle_niveau }}</td>
+                              <td>{{ value.desc_niveau }}</td>
+
+                            </tr>
+
+                            {% endfor %} 
+                        {% endif %}
+
+                      </tbody>
+                    </table>
+                  </div>
+                
+                </div>
+              </div>
+            </div>
+
+            <!-- Pie Chart -->
+            <div class="col-xl-4 col-lg-5">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Création</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+
+                    <div class="form-group form-inline">
+                      <label >Nom Niveau : &nbsp; </label> <br>
+                      <div class="form-group">
+                        <div class='input-group date'>
+                            <input type='text' name="titre" class="form-control" required/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group form-inline">
+                      <label >Description du Niveau : &nbsp; </label>
+                      <div class="form-group">
+                        <div class='input-group date'>
+                            <textarea name="descriptions" id="" cols="30" rows="5"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    
+                    <button type="submit" name="cree_matiere_btn" class="btn btn-primary btn-icon-split">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span class="text">Creer</span>
+                    </button>
+
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+  $(document).ready(function(){
+    //classtype alert-danger , alert-success , alert-warning
+    {% if setNiveau is defined %}
+      {% if setNiveau == 1 %}
+          infos_stat= "Niveau créer";
+          classtype= "alert-success";
+      {% else %}
+          infos_stat= "Veuillez vérifier la présence du niveau, erreur lors de la création !";
+          classtype= "alert-danger";
+      {% endif %}
+
+      root_fct_showinfos_toast(infos_stat,classtype);
+
+	  {% endif %}
+ 
+
+  });
+
+</script>
+{% endblock %} 

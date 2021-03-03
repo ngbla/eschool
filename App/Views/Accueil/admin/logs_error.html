@@ -1,0 +1,200 @@
+{% extends "main.html" %} {% block title %}Administration - Error Logs{% endblock %} {% block content %}
+
+<div class="row" style="
+background-image: url('/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; ">
+
+        <div class="col-12">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Filtre</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        
+
+                        <form method="POST" class="was-validated" style="font-size: small;">
+
+                            <div class="row">
+
+                                <div class="input-group mb-3 input-group-sm col">
+                                    <div class="input-group-prepend">
+                                    <span class="input-group-text">Debut</span>
+                                    </div>
+                                    <input type="date" class="col form-control form-control-sm" name="date_debut" required>
+                                </div>
+
+                                <div class="input-group mb-3 input-group-sm col">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Fin</span>
+                                    </div>
+                                    <input type="date" class="col form-control form-control-sm" name="date_fin" required>
+                                </div>
+
+
+                            </div>
+                            <br>
+                            <div class="row">
+
+                                <div class="input-group mb-3 input-group-sm col-9">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Type Utilisateur</span>
+                                    </div>
+                                    <select class="form-control  form-control-sm col"  name="type_user">
+                                        <option value="0">Tous</option>
+                                        <option value="4">Administrateur</option>
+                                        <option value="3">Professeur</option>
+                                        <option value="1">Etudiant / Eleve</option>
+                                        <option value="2">Parent</option>
+                                        <option value="5">Autres</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group mb-3 input-group-sm col-3">
+                                    <button type="submit" name="btn_search_logs" class="btn btn-outline-success"><i class="fa fa-search-plus" ></i>  Rechercher</button>
+                                </div>
+
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                    </div>
+                    <div class="col-auto">
+                    <i class="fas fa-filter fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 "><br> </div>
+
+
+        <div class="col-12">
+              <div class="card mb-4">
+                <div class="card-header">
+                  {% if post is defined %} 
+                    Logs du  &nbsp; &nbsp;  <strong>{{post.date_debut}} </strong>   &nbsp; &nbsp;   au &nbsp; &nbsp;      <strong>{{post.date_fin}}</strong>   &nbsp; &nbsp;&nbsp; &nbsp;     et  &nbsp; &nbsp;         User =  {% if post.type_user==4 %}  <strong>Administrateur</strong>  {% endif %}
+                    {% if value.type_user==3 %}  <strong>Professeur </strong>{% endif %}
+                    {% if value.type_user==2 %}  <strong>Parent</strong> {% endif %}
+                    {% if value.type_user==1 %}  <strong>Etudiant/Eleve</strong> {% endif %}
+                  {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="col-12 table-responsive ">
+                        <table class="table table-border table-hover table-sm table-bordered table-striped" id="dataTable_list_logs" width="100%" cellspacing="0" table>
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Id Error</th>
+                                    <th>Date</th>
+                                    <th>User Type</th>
+                                    <th>User Info</th>
+                                    <th>Code error</th>
+                                    <th>Message</th>
+                                    <th>Etat</th>
+                                    <th>Univ</th>
+                                </tr>
+
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Id Error</th>
+                                    <th>Date</th>
+                                    <th>User Type</th>
+                                    <th>User Info</th>
+                                    <th>Code error</th>
+                                    <th>Message</th>
+                                    <th>Etat</th>
+                                    <th>Univ</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for key, value in get_all_logs_By  %} 
+                                <tr>
+                                    <td>{{ value.id_error}} </td>
+                                    <td>{{ value.date_error}}</td>
+                                    <td> 
+                                        {% if value.type_pers is defined %}    
+
+                                            {% if value.type_pers==4 %}  Administrateur  {% endif %}
+                                            {% if value.type_pers==3 %}  Professeur  {% endif %}
+                                            {% if value.type_pers==2 %}  Parent  {% endif %}
+                                            {% if value.type_pers==1 %}  Etudiant/Eleve  {% endif %}
+                                        
+                                        
+                                        {% endif %}
+                                    </td>
+                                    <td> 
+                                        {{ value.id_type}} <br>
+                                        {{ value.nom_prenom}} <br>
+                                        {{ value.contact}} <br>
+                                        Née le {{ value.date_naiss}} à {{ value.lieu_naiss}} <br>
+                                        Sexe :  {{ value.sexe}}  <br>
+                                        <br>
+
+                                    </td>
+                                    <td> {{ value.code_error}}</td>
+                                    <td > 
+                                        <pre style="color: brown;"> {{ value.message_error}}</pre>  
+                                    </td>
+                                    <td>{{ value.etat_error}} </td>
+                                    <td>{{ value.fk_iduniv}} </td>
+                                </tr>
+                                {% endfor %} 
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+              </div>
+
+
+        </div>
+
+</div>
+
+{% endblock %} {% block javascript_footer_add %}
+
+<script >
+
+    $(document).ready(function() {
+
+            $('#dataTable_list_logs').DataTable({
+                dom: 'Blfrtip',
+                buttons: [{
+                        extend: 'copyHtml5',
+                        text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                        titleAttr: 'Copy'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                        titleAttr: 'Excel'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                        titleAttr: 'CSV'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                        titleAttr: 'PDF',
+                        title:'Listes des Logs'
+                    }
+
+                ]
+            });
+
+
+
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<li class="nav-item">
+
+    <a class="nav-link collapsed text-center" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+
+    <i class="fas fa-fw fa-cog" style="font-size: 2rem;"></i><br>
+
+    <span>Suivie</span>
+
+    </a>
+
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+
+    <div class="bg-white py-2 collapse-inner rounded">
+
+        
+        {% if get_allEnfantBy is defined %}
+
+            {% for key, value in get_allEnfantBy  %}
+                <i class="fas fa-fw fa-user"></i>
+                <a class="collapse-item" href="index.php?p=parent_etud&id={{value.id_eleve_eleve}}">{{value.nom_prenom}}</a>
+            {% endfor %} 
+
+        {% endif %}
+
+    </div>
+
+    </div>
+
+</li>
+

@@ -1,0 +1,299 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} {% block title %}Mes Cours{% endblock %} {% block content %}
+
+<input type="hidden" name="id_matiere" value="{% if mat_select is defined %}{{mat_select}}{% endif %}" id="id_matiere">
+
+<input type="hidden" name="id_personne" value="{% if profpers_select is defined %}{{profpers_select}}{% endif %}" id="id_personne">
+
+<div class="card">
+
+    <div class="card-body" style="
+        background-image: url('/public/assets/img/background/back_img5.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;padding-top: 20px; ">
+
+        <a class="scroll-to-top rounded text-center" href="#prochain_cour" style="display: inline; top: 150px;">
+            Cours<i class="fas fa-angle-up"></i>
+        </a>
+         <a class="scroll-to-top rounded text-center" href="#mes_matiere" style="display: inline; top: 200px;">
+            Mat.<i class="fas fa-angle-up"></i>
+        </a>
+        <a class="scroll-to-top rounded text-center" href="#classes" style="display: inline; top: 250px;">
+            Classes<i class="fas fa-angle-up"></i>
+        </a>
+
+        <div class="col-12" id="prochain_cour">
+            <div class="card bg-gray-100 shadow">
+                <div class="card-body">
+                    <h5 style="color: #f98012; font-weight: 400;">
+                        <strong>Prochain cours</strong>
+                    </h5>
+                    <br><br>
+
+                    <div class="row col-12 container-fluid thumbnail">
+                        {% if get_prof_prochainmat is defined %} {% for key, value in get_prof_prochainmat %}
+                        <div class="card col-4 mr-auto" style="  margin-bottom: 10px;padding: 0px;">
+                            <a href="#" class=" ">
+
+                                <img class="img-thumbnail" {% if value.liens is defined %}src="{{value.liens}}" {% else %}src="/public/assets/img/background/back_img1.jpg" {% endif %} alt="Image du cours">
+                            </a>
+
+                            <div class="card-body pr-1 course-info-container" id="coursprochain-{{value.id_matiere_matiere}}">
+                                <div class="d-flex align-items-start" id="">
+                                    <div class="w-100 ">
+                                        <div class="text-muted muted d-flex mb-1 flex-wrap">
+
+                                            <span class="sr-only">
+                                          Catégorie de cours
+                                      </span>
+                                            <span class="categoryname ">
+                                          <p>{{value.annee_libelle}} ( {{value.libele_partie}} ) </p>
+                                         <p>Fillière : {{value.filiere_lib}} </p> 
+                                          <p>Classe : {{value.groupe_libelle}}</p> 
+                                         <p>Le : {{value.emploitps_date}}</p>  
+                                        <p>De {{value.emploitps_h_debut}} à {{value.emploitps_h_fin}}</p> 
+                                      </span>
+                                        </div>
+                                        <a href="#" class="coursename mr-2">
+                                            <span class="sr-only">
+                                              Nom du cours
+                                      </span>
+
+                                            <span class="multiline">
+                                        
+                                        <form action="" method="POST">
+                                          <a href="index.php?p=elearning_prof_coursinfos&id_prof='+{{id_pers_personne}}+'&action=getcoursdocs&id_matiere={{value.id_matiere_matiere}}&matiere_select={{value.code_mat}}-{{value.lib_mat}}&groupeid={{value.groupe_id}}&groupelibelle={{value.groupe_libelle}}&datejr={{value.emploitps_date}}&datedebut={{value.emploitps_h_debut}}&datefin={{value.emploitps_h_fin}}" name="id_personne" title="Voir" type="submit" value="mat_id" class="">
+                                            <i class="fa fa-folder" aria-hidden="true"> </i>
+                                            {{value.code_mat}}-{{value.lib_mat}}
+                                        </a></form>
+                                      </span>
+                                        </a>
+                                    </div>
+
+                                    <div class="ml-auto dropdown" id="">
+                                        <button class="btn btn-link btn-icon icon-size-3 coursemenubtn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="">
+                                            <span class="sr-only">
+                                                Actions  
+                                            </span>
+                                    </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer dashboard-card-footer border-0 bg-white">
+
+                                <div class="progress bg-white border">
+                                    <div class="progress-bar bar" role="progressbar" aria-valuenow="{{value.progression}}" style="width: {{value.progression}}%" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="small">
+                                    <span class="sr-only">Progression du cours&nbsp;:</span>
+                                    <strong>{{value.progression}}</strong>&nbsp;% terminé
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %} {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <br><br><br>
+
+        <div class="col-12" id="mes_matiere">
+            <div class="card bg-gray-100 shadow">
+                <div class="card-body">
+                    <h5 style="color: #f98012; font-weight: 400;">
+                        <strong>Mes matières</strong>
+                    </h5>
+                    <br><br>
+
+                    <div class="row col-12 container-fluid thumbnail">
+                        {% if get_matEnseigners is defined %} {% for key, value in get_matEnseigners %}
+                        <div class="card col-4 mr-auto" style="  margin-bottom: 10px;padding: 0px;">
+                            <a href="#" class=" ">
+
+                                <img class="img-thumbnail" {% if value.liens is defined %}src="{{value.liens}}" {% else %}src="/public/assets/img/background/back_img1.jpg" {% endif %} alt="Image du cours">
+                            </a>
+
+                            <div class="card-body pr-1 course-info-container" id="cours-{{value.id_matiere_matiere}}">
+                                <div class="d-flex align-items-start" id="">
+                                    <div class="w-100 ">
+                                        <a href="#" class="coursename mr-2">
+                                            <span class="sr-only">
+                                            Nom du cours
+                                    </span>
+
+                                            <span class="multiline">
+
+                                      <form action="" method="POST">
+                                        <a href="index.php?p=elearning_prof_coursinfos&id_prof='+{{id_pers_personne}}+'&action=getcoursdocs&id_matiere={{value.id_matiere_matiere}}&matiere_select={{value.code}}-{{value.libele}}" name="id_personne" title="Voir" type="submit" value="mat_id" class="">
+                                          <i class="fa fa-folder" aria-hidden="true"> </i>
+                                          {{value.code}}-{{value.libele}}
+                                        </a>
+                                      </form>
+                                      
+                                    </span>
+                                        </a>
+                                    </div>
+
+                                    <div class="ml-auto dropdown" id="">
+                                        <button class="btn btn-link btn-icon icon-size-3 coursemenubtn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="">
+                                          <span class="sr-only">
+                                              Actions 
+                                          </span>
+                                  </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        {% endfor %} {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <br><br><br>
+
+        <div class="col-12" id="classes">
+            <div class="card bg-gray-100 shadow">
+                <div class="card-body">
+                    <h5 style="color: #f98012; font-weight: 400;">
+                        <strong>Mes Classes</strong>
+                    </h5>
+                    <br><br>
+
+                    <div class="row col-12 container-fluid thumbnail">
+
+                        {% if getAllGroupeANDmat is defined %} {% for key, value in getAllGroupeANDmat %}
+                        <div class="col-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        {{value.groupe_libelle}}
+                                    </div>
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        <!-- 
+                                        <a href="index.php?p=elearning_prof_coursinfos&id_prof=57&action=getcoursdocs&id_matiere=5&matiere_select=Math-Mathématiques" name="id_personne" title="Voir" type="submit" value="mat_id" class="">
+                                            <i class="fa fa-folder" aria-hidden="true"> </i>
+                                            ({{value.code}})-{{value.mat_lib}}
+                                        </a>
+                                        -->
+                                        <a href="index.php?p=elearning_prof_coursinfos&id_prof={{value.id_prof}}&action=getcoursdocs&id_matiere={{value.id_mat}}&matiere_select={{value.mat_lib}}&groupeid={{value.groupe_id}}&groupelibelle={{value.groupe_libelle}}" name="id_personne" title="Voir" type="submit" value="mat_id" class="">
+                                            <i class="fa fa-folder" aria-hidden="true"> </i>
+                                            ({{value.code}})-{{value.mat_lib}}
+                                        </a>
+
+                                        
+                                    </div>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{value.pourcentage}}%</div>
+                                        </div>
+                                        <div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: {{value.pourcentage}}%" aria-valuenow="{{value.pourcentage}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="col-auto">
+                                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %} {% endif %}
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+
+
+
+
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+<!--<script type="text/javascript" src="assets/js/shieldui-all.min.js"></script> 
+<script type="text/javascript" src="assets/js/upload_files.js"></script>-->
+
+
+<script>
+    $(function() {
+        var dataSrc = [
+            {% if get_matEnseigners is defined %}
+            {% for key, value in get_matEnseigners %}
+            {
+                "text": "{{value.code}}-{{value.libele}}",
+                "iconCls": "fa fa-book",
+                "matiereid": "{{value.id_matiere_matiere}}"
+            },
+            {% endfor %}
+            {% endif %}
+        ]
+
+        var folderData =
+        [
+            {% if files_get is defined %}
+            {% for key, value in files_get %}
+            {% if (value.1 == 'docx') or(value.1 == 'doc') %}
+                {% set extentionss = 'docx' %}
+            {% elseif(value.1 == 'xls') or(value.1 == 'xlx') %}
+                {% set extentionss = 'xlx' %}
+            {% else %}
+                {% set extentionss = 'pdf' %}
+            {% endif %}
+
+            {
+                "icon": "<img style=\"width:20px;\" class=\"img-responsive\" src=\"assets/img/{{extentionss}}.png\">",
+                "liens": "{{value.0}}",
+                "text": "{{key}}"
+            },
+            {% endfor %}
+            {% endif %}
+        ];
+
+        for (var key in folderData) {
+
+            $(".pb-filemng-template-body").append(
+
+                '<tr><td>' + folderData[key].icon + ' </td><td><a href="' + folderData[key].liens + '"  download="' + folderData[key].text + '"><i class="fa fa-download" aria-hidden="true"></i></a> &nbsp; ' + folderData[key].text + '</td></tr>'
+
+            );
+
+        }
+
+        for (var key in dataSrc) {
+            // alert(dataSrc[key].text);
+            $("#treeview_test").append('<li><form action="" method="POST"><a href="index.php?p=elearning_prof&id_prof=' + {{id_pers_personne}} + '&action=getcoursdocs&id_matiere=' + dataSrc[key].matiereid + '&matiere_select=' + dataSrc[key].text + '" name="id_personne" title="Modifier" type="submit" value="mat_id" class=""><i class="fa fa-folder" aria-hidden="true"></i>' + dataSrc[key].text + '	</a></form></li>');
+        }
+    });
+</script>
+
+{% endblock %}

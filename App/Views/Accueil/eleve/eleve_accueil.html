@@ -1,0 +1,272 @@
+{% extends "main_eleve.html" %} {% block title %}Eleve - Accueil{% endblock %} {% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row" style="
+            background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;padding-top: 20px; ">
+            <div class="col-md-3">
+                {{ include('include/nav_eleve.html') }}
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#activity_prof" data-toggle="tab">Notifications</a></li>
+                            <li class="nav-item"><a id="prof_emploitps_cal" class="nav-link" href="#timeline_prof" data-toggle="tab">Emploi du temps</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#settings_prof" data-toggle="tab">Mes  Informations</a></li>
+                        </ul>
+                    </div>
+                    <!-- Notifications -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <!-- /.card-header -->
+                            <div class="active tab-pane" id="activity_prof">
+                                <!-- NOTIFICATIONS -->
+                                {{ include('notification_menu.html') }}
+                                <!-- /NOTIFICATIONS -->
+
+                            </div>
+                            <!-- /.tab-pane >Emploi du temps-->
+                            <div class="tab-pane" id="timeline_prof">
+                                <div class="calendrier" id="calendar"></div>
+                            </div>
+                            <!-- /.tab-pane Dossier-->
+                            <div class="tab-pane" id="settings_prof">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="email">Email</label>
+                                        <input readonly type="email" name="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="{% if email is defined %}{{ email  }}{% endif %}   " />
+                                    </div>
+                                    <div class="col">
+                                        <label for="tel">Contacts</label>
+                                        <input readonly type="tel" name="tel" class="form-control form-control-user" id="telexplid" placeholder=" {% if contact is defined %}{{ contact  }}{% endif %}" />
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label for="pass1">Mots de Passe</label>
+                                        <input type="password" name="pass1" class="form-control form-control-user" id="exampleInputPassword" placeholder="**********" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="pass2">Repeter Mots de Passe</label>
+                                        <input type="password" name="pass2" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="**********" />
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <dt><strong> <u> Ajouter un fichier scanner</u> </strong></dt>
+                                <br>
+                                <form action="" method="post" enctype="multipart/form-data" class="row">
+                                    <div class="form-group col-5">
+                                        <input type="file" class="form-control-file" id="fichier_scanner" name="fichier_scanner" accept="image/*,.pdf,.doc,.docx,.xlsx">
+                                    </div>
+                                    <div class="form-group col-7">
+
+                                        <button name="btn_send_fichier" class="btn btn-info btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </span>
+                                            <span class="text">Envoyer</span>
+                                        </button>
+
+                                    </div>
+
+                                </form>
+                                <hr>
+                                <br>
+                                <hr style="border:2px solid #fdece2;">
+                                <br>
+
+                                <dt><strong> <u> Documents importés</u> </strong></dt>
+                                <br>
+                                <div class="card container">
+                                    <div class="container row">
+
+                                        {% if get_dossierContenu is defined %} {% for key, docs in get_dossierContenu %}
+
+                                        <div class="col-4" style="border: 2px solid
+                                    #5a5c69 ; min-height: 300px;">
+                                            <div class="text-center">
+
+                                                <iframe src="{{docs.0}}" width="100%" height="70%"> </iframe>
+                                                <br>
+                                                <br>
+                                                <a type="button" class="btn
+                                            btn-outline-primary" target="_blank" rel="nofollow" href="{{docs.0}}">
+                                            {{key}} </a>
+                                            </div>
+                                        </div>
+
+                                        {% endfor %} {% else %}
+                                        <div class="card bg-warning text-white">
+                                            <div class="card-body">Aucun Document n'a été importé !</div>
+                                        </div>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            },
+            defaultDate: new Date(),
+            navLinks: true, // can click day/week names to navigate views
+            businessHours: true, // display business hours
+            editable: true,
+            locale: 'fr',
+            events: [
+                {% for key,value in allEmploiTps %} {
+                    title: 'Cour de {{ value.lib_matiere|escape("js") }} Du {{ value.libele_partie }}  En classe de  : {{ value.groupe_libelle|escape }} Dans la salle : {{ value.lib_salle|escape  }}  ',
+                    start: new Date('{{ value.emploitps_date }}T{{ value.emploitps_h_debut }}:00'),
+                    end: new Date('{{ value.emploitps_date }}T{{ value.emploitps_h_fin }}:00'),
+                    constraint: 'availableForMeeting', // defined below
+                    overlap: false,
+                    color: '#3788d8'
+                }, {% endfor %} {% for key, value in allGrpEval %} {
+                    title: 'Evaluation de {{ value.eval_libelle|escape }} Du {{ value.libele_partie }}  , En classe de  : {{ value.groupe_libelle }} , En salle :  {{ value.libelle|escape }} , Coéficient : {{ value.coef }} , Noté sur :  {{ value.notation }} , Description : {{ value.eval_desc|escape("js") }}  ',
+                    start: new Date('{{ value.eval_date }}T{{ value.eval_hDebut }}:00'),
+                    end: new Date('{{ value.eval_date }}T{{ value.eval_hFin }}:00'),
+                    constraint: 'availableForMeeting', // defined below
+                    overlap: false,
+                    color: '#e74a3b;'
+                }, {% endfor %}
+
+            ]
+
+        });
+
+        calendar.render();
+        calendar.setOption('locale', 'fr');
+    });
+</script>
+
+<script src="assets/js/mescript_eleve.js"></script>
+<script>
+    $(document).ready(function() {
+
+
+        $('#exampleInputPassword').on('change', function(event) {
+
+            if (typeof($('#exampleInputPassword').val()) != undefined && $('#exampleInputPassword').val() != "") {
+
+                if (typeof($('#exampleRepeatPassword').val()) != undefined && $('#exampleRepeatPassword').val() != "") {
+
+                    change_pass();
+
+                }
+
+            }
+
+        });
+
+        $('#exampleRepeatPassword').on('change', function(event) {
+
+            if (typeof($('#exampleInputPassword').val()) != undefined && $('#exampleInputPassword').val() != "") {
+
+                if (typeof($('#exampleRepeatPassword').val()) != undefined && $('#exampleRepeatPassword').val() != "") {
+
+                    change_pass();
+
+                }
+
+            }
+
+
+        });
+
+        function change_pass() {
+
+            if ($('#exampleInputPassword').val() == $('#exampleRepeatPassword').val()) {
+
+
+                titre = "EVENT :: Changement de mots de passe (EGALE)";
+
+                url_info = liens + 'App/Models/info.model.php';
+
+                values_info = 'action=MAJetudiantInfos&infos={% if id_type is defined %}{{ id_type  }}{% else %}0{% endif %}µpass' + '&valeur=' + $('#exampleRepeatPassword').val() + '&table=personne';
+                idelemt = '#exampleInputPassword';
+
+                root_AjaxMethod(url_info, values_info, ajax_resultmodifpass_toast, idelemt);
+
+
+
+            } else {
+                titre = "EVENT :: Changement de mots de passe (DIFFERENTS)";
+            }
+
+
+            info = "event sur = #exampleInputPassword et #exampleRepeatPassword";
+            valueur = "#exampleInputPassword =" + $('#exampleInputPassword').val() + " && #exampleRepeatPassword =" + $('#exampleRepeatPassword').val();
+            consoleInfo(envi, titre, info, valueur);
+
+
+
+
+
+        }
+
+        function ajax_resultmodifpass_toast(jsondata) {
+
+            if (typeof(jsondata) != undefined && jsondata != "") {
+
+                jsondata = JSON.parse(jsondata);
+                if (jsondata == 1) {
+                    classtype = "alert-success";
+                    infos_stat = "Modification de mots de passe éffectuée !";
+                } else {
+                    classtype = "alert-danger";
+                    infos_stat = "Modification de mots de passe, non éffectuée !";
+                }
+
+            } else {
+                classtype = "alert-danger";
+                infos_stat = "Message  envoyé";
+                infos_stat = "Modification de mots de passe , non éffectuée !";
+            }
+
+
+            root_fct_showinfos_toast(infos_stat, classtype);
+        }
+
+
+
+
+
+    });
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "main.html" %} {% block title %}Fiche de présence{% endblock %} {% block content %}
+<script src='assets/vendor/html2pdf/html2pdf.bundle.min.js'></script>
+
+<script>
+    function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("div_print");
+        //margin: 0, - 1
+        //filename:'Bulletin',
+        //image: {type:'jpeg', quality: 0.98}, 0-1
+        //html2canvas: {scale:2},
+        //jsPDF: {unit:'in',format:'letter - A4,orientation:'portrait'}
+        //var mode = document.getElementById('mode').value
+        var mode ="before";
+        var pagebreak = (mode === 'specify') ?
+            { mode: '', before: '.before', after: '.after', avoid: '.avoid' } :
+            { mode: mode };
+
+        var opt ={
+            margin: 0,
+            filename:'FichePresence.pdf',
+            image: {type:'jpeg', quality: 1},
+            html2canvas: {scale:2},
+            pagebreak: pagebreak,
+            //pagebreak: { mode: 'avoid-all', after: '#pagebreak' },
+            jsPDF: {unit:'in',format:'A4',orientation:'portrait'}
+
+        }
+        // Choose the element and save the PDF for our user.
+        html2pdf()
+            .set(opt)
+            .from(element)
+            .save();
+    }
+</script>
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+<br>
+<div class="row">
+
+    <hr>
+
+    <div class="col-12">
+
+        <div class="callout callout-info">
+            <h5> </h5>
+            <h7> </h7>
+            <button type="button" onclick="generatePDF();" class="btn btn-primary float-right" style="margin-right: 5px;">
+                <i class="fa fa-download"></i> Generer le PDF
+            </button>
+        </div>
+
+    </div>
+</div>
+<hr>
+<div class="row">
+
+    <div id="relever" class="container-fluid" style="color: black ;background-color:white ">
+        <!-- Content Wrapper. Contains page content -->
+        {% if univInfos.0.initiale_univ is defined  %} 
+            {{ include('include/modele_fiche/'~univInfos.0.initiale_univ~'/f_attestation.html') }} 
+        {% endif %}
+        <!-- /.content -->
+        
+    </div>
+</div>
+
+{% endblock %}

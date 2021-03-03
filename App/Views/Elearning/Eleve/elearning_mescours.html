@@ -1,0 +1,346 @@
+{% extends "/Elearning/main_eleve_elearning.html" %}
+
+{% block title %}Mes Cours{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+  <div class="card-body" style="
+        background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;padding-top: 20px; ">
+
+    <div class="col-12">
+      <div class="card bg-gray-100 shadow">
+        <div class="card-body">
+          <h5 style="color: #f98012; font-weight: 400;">
+            {% set nbreprochcours = 0 %}
+            {% if get_eleve_prochainmat is defined %} {% for key, value in get_eleve_prochainmat  %}
+            {% set nbreprochcours = nbreprochcours + 1 %}
+            {% endfor %} {% endif %}
+            <strong>Prochain cours ({{nbreprochcours}})</strong>
+          </h5>
+          <br><br>
+
+          <div class="row col-12 container-fluid thumbnail">
+            {% if get_eleve_prochainmat is defined %}
+            {% for key, value in get_eleve_prochainmat  %}
+            <div class="card col-3 mr-auto" style="  margin-bottom: 10px;padding: 0px;">
+              <a href="#" class=" ">
+
+                <img class="img-thumbnail" {% if value.liens is defined %}src="{{value.liens}}"
+                  {% else %}src="/public/assets/img/background/back_img1.jpg" {% endif %} alt="Image du cours">
+              </a>
+
+              <div class="card-body pr-1 course-info-container" id="coursprochain-{{value.id_matiere_matiere}}">
+                <div class="d-flex align-items-start" id="">
+                  <div class="w-100 ">
+                    <div class="text-muted muted d-flex mb-1 flex-wrap">
+
+                      <span class="sr-only">
+                        Catégorie de cours
+                      </span>
+                      <span class="categoryname ">
+                        <p>Période : {{value.libele_partie}} </p>
+                        <p>Classe : {{value.groupe_libelle}}</p>
+                        <p>Le : {{ value.emploitps_date|format_date(locale='fr') }} De {{value.emploitps_h_debut}} à {{value.emploitps_h_fin}}</p>
+                        <p>Salle : {{value.lib_salle}} </p>
+                      </span>
+                    </div>
+                    <a href="#" class="coursename mr-2">
+                      <span class="sr-only">
+                        Nom du cours
+                      </span>
+
+                      <span class="multiline">
+
+                        <form action="" method="POST">
+                          <a href="index.php?p=elearning_eleve_coursinfos&id_eleve='+{{id_type}}+'&action=getcoursdocs&id_matiere={{value.id_matiere_matiere}}&matiere_select={{value.code}}-{{value.lib_matiere}}&groupeid={{value.groupe_id}}&groupelibelle={{value.groupe_libelle}}&profpers_select={{value.emploitps_id_prof}}&etat_online=online"
+                            name="id_personne" title="Voir" type="submit" value="mat_id" class="">
+                            <i class="fa fa-folder" aria-hidden="true"> </i>
+                            {{value.code}}-{{value.lib_matiere}}
+                          </a></form>
+                      </span>
+                    </a>
+                  </div>
+
+                  <div class="ml-auto dropdown" id="">
+                    <button class="btn btn-link btn-icon icon-size-3 coursemenubtn" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false" id="">
+                      <span class="sr-only">
+                        Actions pour le cours actuel Celebrating Cultures
+                      </span>
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer dashboard-card-footer border-0 bg-white">
+
+                <div class="progress bg-white border">
+                  <div class="progress-bar bar" role="progressbar" aria-valuenow="{{value.progression}}"
+                    style="width: {{value.progression}}%" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="small">
+                  <span class="sr-only">Progression du cours&nbsp;:</span>
+                  <strong>{{value.progression}}</strong>&nbsp;% terminé
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <br><br><br>
+
+    <div class="col-12">
+      <div class="card bg-gray-100 shadow">
+        <div class="card-body">
+          <h5 style="color: #f98012; font-weight: 400;">
+            {% set nbrematiere = 0 %}
+            {% if eleve_all_matiere is defined %} {% for key, value in eleve_all_matiere  %}
+            {% set nbrematiere = nbrematiere + 1 %}
+            {% endfor %} {% endif %}
+            <strong>Mes matières ({{nbrematiere}})</strong>
+          </h5>
+          <br><br>
+
+          <div class="row col-12 container-fluid thumbnail">
+            {% if eleve_all_matiere is defined %}
+            {% for key, value in eleve_all_matiere  %}
+            <div class="card col-3 mr-auto" style="  margin-bottom: 10px;padding: 0px;">
+              <a href="#" class=" ">
+
+                <img class="img-thumbnail" {% if value.liens is defined %}src="{{value.liens}}"
+                  {% else %}src="/public/assets/img/background/back_img1.jpg" {% endif %} alt="Image du cours">
+              </a>
+
+              <div class="card-body pr-1 course-info-container" id="cours-{{value.matiere_id_tmp}}">
+                <div class="d-flex align-items-start" id="">
+                  <div class="w-100 ">
+                    <div class="text-muted muted d-flex mb-1 flex-wrap">
+                      <span class="categoryname ">
+                        <p>Année : {{value.annee_libelle}} <br>
+                          Groupe : {{value.groupe_libelle}}
+                        </p>
+                        <p>Coéficient: {{value.coeficient_tmp}} <br>
+                          Crédit : {{value.credit_tmp}} </p>
+                        <p>Professeur : {{value.prof_nom}} </p>
+                        <p>Tel : {{value.prof_contact}} / Email : {{value.prof_email}} </p>
+
+                      </span>
+                    </div>
+                    <a href="#" class="coursename mr-2">
+                      <span class="sr-only">
+                        Nom du cours
+                      </span>
+
+                      <span class="multiline">
+
+                        <form action="" method="POST">
+                          <a href="index.php?p=elearning_eleve_coursinfos&id_eleve='+{{id_type}}+'&action=getcoursdocs&id_matiere={{value.matiere_id_tmp}}&matiere_select={{value.mat_code}}-{{value.matiere_lib}}&groupeid={{value.groupe_id}}&groupelibelle={{value.groupe_libelle}}&profpers_select={{value.id_prof}}&profpers_name={{value.prof_nom}}&profpers_tel={{value.prof_contact}}"
+                            name="id_personne" title="Voir" type="submit" value="mat_id" class="">
+
+                            <i class="fa fa-folder" aria-hidden="true"> </i>
+                            {{value.mat_code}}-{{value.matiere_lib}}
+                          </a>
+                        </form>
+
+                      </span>
+                    </a>
+                  </div>
+
+                  <div class="ml-auto dropdown" id="">
+                    <button class="btn btn-link btn-icon icon-size-3 coursemenubtn" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false" id="">
+                      <span class="sr-only">
+                        Actions pour le cours actuel Celebrating Cultures
+                      </span>
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+            {% endfor %}
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block javascript_footer_add %}
+
+
+
+
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+
+<script type="text/javascript" src="assets/js/shieldui-all.min.js"></script>
+
+<script type="text/javascript" src="assets/js/upload_files.js"></script>
+
+
+
+<script>
+
+
+
+  $(function () {
+
+
+
+    var dataSrc = [
+
+      {% if get_matEnseigners is defined %}
+
+            {% for key, value in get_matEnseigners %}
+
+
+
+  {
+
+    "text": "{{value.code}}-{{value.libele}}",
+
+      "iconCls": "fa fa-book",
+
+        "matiereid": "{{value.id_matiere_matiere}}"
+
+  },
+
+
+
+  {% endfor %}
+
+  {% endif %}
+
+
+
+    ]
+
+
+
+  var folderData =
+
+    [
+
+
+
+      {% if files_get is defined %}
+
+  {% for key, value in files_get %}
+
+  {% if (value.1 == 'docx') or(value.1 == 'doc') %}
+
+  {% set extentionss = 'docx' %}
+
+  {% elseif(value.1 == 'xls') or(value.1 == 'xlx') %}
+
+  {% set extentionss = 'xlx' %}
+
+  {% else %}
+
+  {% set extentionss = 'pdf' %}
+
+  {% endif %}
+
+
+
+  {
+
+    "icon": "<img style=\"width:20px;\" class=\"img-responsive\" src=\"assets/img/{{extentionss}}.png\">",
+
+      "liens": "{{value.0}}",
+
+        "text": "{{key}}"
+
+  },
+
+
+
+  {% endfor %}
+
+  {% endif %}
+
+
+
+    ];
+
+
+
+
+
+
+
+
+
+  for (var key in folderData) {
+
+    $(".pb-filemng-template-body").append(
+
+      '<tr><td>' + folderData[key].icon + ' </td><td><a href="' + folderData[key].liens + '"  download="' + folderData[key].text + '"><i class="fa fa-download" aria-hidden="true"></i></a> &nbsp; ' + folderData[key].text + '</td></tr>'
+
+    );
+
+  }
+
+
+
+
+
+
+
+  for (var key in dataSrc) {
+
+    // alert(dataSrc[key].text);
+
+    $("#treeview_test").append('<li><form action="" method="POST"><a href="index.php?p=elearning_prof&id_prof=' + {{ id_pers_personne }} +'&action=getcoursdocs&id_matiere=' + dataSrc[key].matiereid + '&matiere_select=' + dataSrc[key].text + '" name="id_personne" title="Modifier" type="submit" value="mat_id" class=""><i class="fa fa-folder" aria-hidden="true"></i>' + dataSrc[key].text + '	</a></form></li>');
+
+      }
+
+
+
+
+
+  });
+
+
+
+</script>
+
+
+
+
+
+{% endblock %}

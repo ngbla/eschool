@@ -1,0 +1,164 @@
+<!DOCTYPE html> {% do gantry.document.addFramework('mootools.core') %} {% do gantry.document.addFramework('mootools.more') %}
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}E-SCHOOL - INSCRIPTION{% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="X-PERTIZ GROUPE">
+    <meta name="author" content="X-PERTIZ GROUPE TEAMS">
+    <link rel="icon" href="assets/img/favicon.ico" type="image/ico"> {% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" />
+    <link rel="stylesheet" type="text/css" href="assets/css/sb-admin-2.css" /> {% endblock %}
+</head>
+
+<body style="background-color: #1d4a85;">
+
+    <div class="container-fluid">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="row col-12">
+                        <div class="col-12 text-center d-flex justify-content-center align-self-center">
+                            <h1> {% if univInfos is defined %} {{univInfos.0.non_univ}} {% endif %}</h1>
+                        </div>
+                    </div>
+                    <div class="row col-12">
+                        <div class="col-12 text-center d-flex justify-content-center align-self-center">
+                            <h6> Email : {% if univInfos is defined %} {{univInfos.0.email_univ}} - Tel : {{univInfos.0.contact_univ}} {% endif %}</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" style="background-image: url(assets/img/insc3.jpg);  background-size: cover;background-repeat: no-repeat; background-position: center; min-height: 512px; ">
+                        <div class="container">
+
+                            <div class="row justify-content-center" style="margin-top: 20%;">
+                                <div class="col-12 text-center" style="color: #1d4a85;">
+                                    <!---->
+                                    <h1 style="color: #1d4a85;" class="d-flex justify-content-center align-self-center"> <strong>E-SCHOOL</strong> </h1>
+                                    {% if get_infos.type_user is defined %}
+                                    <h5 style="color: #1d4a85;" class="d-flex justify-content-center align-self-center">Espace {% if get_infos.type_user==1 %}Elève{% endif %}{% if get_infos.type_user==2 %}Professeur{% endif %} {% if get_infos.type_user==3 %}Parent{% endif %}{% if get_infos.type_user==4 %}Administrateur{% endif %} </h5>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Création de compte</h1>
+                            </div>
+                            <form class="user" method="POST">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" name="nom" class="form-control" id="exampleFirstName" placeholder="Nom" required />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" name="prenom" class="form-control" id="exampleLastName" placeholder="prenom" required />
+                                    </div>
+                                </div>
+                                <!-- radio -->
+                                <div class="form-group form-row">
+
+                                    <div class="col-2" style="padding-top: 3%;  text-align: right;">
+                                        <strong>GENRE : </strong>
+                                    </div>
+                                    <div class="col-10">
+                                        <select class="form-control col-12" name="genre" required>
+                                            <option name="genre1" value="M">MASCULIN</option>
+                                            <option name="genre2" value="F">FEMININ</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group form-row">
+                                    <div class="col-sm-6 mb-6 sm-6">
+                                        <label><strong>Date de naissance : </strong></label>
+                                        <input type="date" name="datenaiss" class="form-control" id="datenaiss" placeholder="01/01/2000"/>
+                                    </div>
+                                    <div class="col-sm-6 mb-6 sm-6">
+                                        <label><strong>Lieu de naissance : </strong></label>
+                                        <input type="text" name="lieunaiss" class="form-control" id="lieunaiss" placeholder="Ex : Bouake"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" name="email" class="form-control" id="exampleInputEmail" placeholder="Email Address" required />
+                                </div>
+                                <div class="form-group">
+                                    <input type="tel" name="tel" class="form-control" id="telexplid" placeholder="Contact Ex:01010101" required />
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" name="pass1" class="form-control" id="exampleInputPassword" placeholder="Password" required />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" name="pass2" class="form-control" id="exampleRepeatPassword" placeholder="Repeat Password" required />
+                                    </div>
+                                </div>
+                                <!-- radio -->
+                                <div class="form-group">
+                                    {% if get_infos.type_user is defined %}
+                                    <input type="hidden" name="s0" value="{{get_infos.type_user}}" required> {% else %}
+                                    <label><strong>Vous êtes : </strong></label>
+                                    <select class="form-control" name="s0" required>
+                                    <option name="s1" value="1">Elève</option>
+                                    <option name="s2" value="2">Professeur</option>
+                                    <option name="s3" value="3">Parents</option>
+                                    <option name="s4" value="4">Administrateur</option>
+                                    </select> {% endif %}
+                                </div>
+                                {% if (get_infos.type_user is defined) and( (get_infos.type_user == 1) or (get_infos.type_user == 3)) %}
+                                <div class="form-group">
+
+                                    <label><strong>Matricule(S) : </strong> <br>
+                                        {% if get_infos.type_user == 1 %}
+                                        *Si vous êtes <strong>élèves</strong> Saisissez votre matricule ou entrez <strong>'NOUVEAU'</strong> si vous en avez pas!<br> 
+                                        {% endif %}
+                                        {% if get_infos.type_user == 3 %}
+                                        *Si vous êtes <strong>parents</strong> Saisissez les matricules de vos enfants séparer par le caractère " <strong>;</strong> "
+                                        {% endif %}
+                                    </label>
+                                    <input type="text" name="matricule" class="form-control" id="exampleInputMatri" placeholder="Matricule(s)" />
+                                </div>
+                                {% endif %}
+                                <hr />
+                                <button class="btn btn-primary btn-user btn-block" type="submit">Inscription</button>
+                                <hr />
+                            </form>
+                            <hr />
+                            <div class="text-center">
+                                <a class="small" href="index.php">Mots de passe oublier ?</a>
+                            </div>
+                {% if get_infos.type_user is defined %}    
+                <div class="text-center">
+                  <a class="small" href="index.php?type_user={{get_infos.type_user}}&verif=9ce5bbd2560d90e4238fb3afe1f30a28cb9ac938&cible={{get_infos.cible}}">Vous avez un compte ? Connectez vous!</a >
+                </div>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% block javascript_footer %}
+    <!-- Bootstrap core JavaScript-->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="assets/js/sb-admin-2.min.js"></script>
+    <script src="assets/js/mescript.js"></script>
+
+    {% endblock %}
+  </body>
+</html>

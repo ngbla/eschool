@@ -1,0 +1,197 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} {% block title %}Elève - Elearning - Evaluations{% endblock %} {% block content %}
+
+<!--{% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+
+
+
+   Main content -->
+
+
+<div class="card">
+
+    <div class="card-body" style="
+      background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;padding-top: 20px; ">
+
+        <div class="col-12">
+            <div class="card bg-gray-100 shadow">
+                <div class="card-body">
+                    <h5 style="color: #f98012; font-weight: 400;">
+                        {% set nbreprochcours = 0 %} {% if get_groupe_alleval is defined %} {% for key, value in get_groupe_alleval %} {% set nbreprochcours = nbreprochcours + 1 %} {% endfor %} {% endif %}
+                        <strong>Evaluations en attente  ({{nbreprochcours}})</strong>
+                    </h5>
+                    <br><br>
+
+                    <div class="row col-12 container-fluid thumbnail">
+                        {% if get_groupe_alleval is defined %} {% for key, value in get_groupe_alleval %}
+                        <div class="card col-4 mr-auto" style="  margin-bottom: 10px;padding: 0px;">
+                            <a href="#" class=" ">
+
+                                <img class="img-thumbnail" src="{% if value.eval_type == 'online_QCM' %} 
+                                                        {{base_liens}}/public/assets/img/eval/qcm.jpg
+                                                    {% elseif  value.eval_type == 'online_UPLOAD' %}
+                                                        {{base_liens}}/public/assets/img/eval/upload.jpg
+                                                    {% else  %}
+                                                        {{base_liens}}/public/assets/img/eval/exam.jpg
+                                                    {% endif %}  " alt="Image du cours">
+                            </a>
+
+                            <div class="card-body pr-1 course-info-container" id="coursprochain-{{value.id_matiere_matiere}}">
+                                <div class="d-flex align-items-start" id="">
+                                    <div class="w-100 ">
+                                        <div class="text-muted muted d-flex mb-1 flex-wrap">
+
+                                            <span class="sr-only"> </span>
+                                            <span class="categoryname ">
+                                            <p class="form-row"> <span class="col-6">Type d'évaluation :</span> <strong class="col-6">{{value.eval_type}}</strong> </p>
+                                            <p class="form-row"> <span class="col-6">LIBELLE :</span> <strong class="col-6">{{value.eval_libelle}} </strong> </p>
+                                            <p class="form-row"> <span class="col-6"> Classe :</span> <strong class="col-6">{{value.groupe_libelle}}</strong> </p>
+                                            <p class="form-row"> <span class="col-6">Le :</span> <strong class="col-6">{{value.eval_date}} </strong> </p>
+                                            <p class="form-row"> <span class="col-6">De :</span> <strong class="col-6">{{value.eval_hDebut}} à {{value.eval_hFin}}</strong> </p>
+                                            <p class="form-row"> <span class="col-6">Salle :</span> <strong class="col-6"> {{value.sallelib}}</strong> </p>
+                                            <p class="form-row"> <span class="col-6">Professeur :</span> <strong class="col-6">{{value.nom_prenom}}</strong> </p>
+                                            <p class="form-row"> <span class="col-6">Contact :</span> <strong class="col-6">{{value.contact}}</strong> </p>
+                                            </span>
+                                        </div>
+                                        <a href="#" class="coursename mr-2">
+                                            <span class="sr-only">  </span>
+                                        </a>
+                                        <span class="multiline">
+                                    
+                                            <a  {% if value.eval_type == 'online_QCM' %} 
+                                                    href="../quiz/question.php?eval={{value.eval_id}}&n=1" 
+                                                {% elseif  value.eval_type == 'online_UPLOAD' %}
+                                                    href="index.php?p=elearning_eleve_upload&eval={{value.prof_eval_id}}" 
+                                                {% else  %}
+                                                    href="#" 
+                                                {% endif %}
+                                                title="Voir" type="submit" value="mat_id" class="">
+                                                <i class="fa fa-folder" aria-hidden="true"> </i>
+                                                {{value.codemat}}-{{value.matlib}}
+                                            </a>
+                                    
+                                        </span>
+
+                                    </div>
+
+                                    <div class="ml-auto dropdown" id="">
+                                        <button class="btn btn-link btn-icon icon-size-3 coursemenubtn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="">
+                                          <span class="sr-only">
+                                              evaluation 
+                                          </span>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endfor %} {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+<style>
+    .pb-filemng-template {
+        margin-top: 40px;
+        font-family: 'Sansita', sans-serif;
+    }
+    
+    .pb-filemng-navbar {
+        margin-bottom: 0;
+    }
+    
+    .treeview-toggle-btn {
+        margin-left: 15px;
+    }
+    
+    .pb-filemng-template-btn {
+        background-color: Transparent;
+        background-repeat: no-repeat;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        color: gray;
+        padding: 0px 13px 0px 13px;
+    }
+    
+    .pb-filemng-active {
+        border-bottom: 2px solid #6d97db;
+        color: #5f6977;
+    }
+    
+    .pb-filemng-template-btn:hover {
+        color: blue;
+    }
+    
+    .pb-filemng-body-folders>img:hover {
+        cursor: pointer;
+    }
+    
+    .btn-align {
+        margin-top: 7px;
+    }
+    
+    .pb-filemng-template-treeview {
+        border-right: 1px solid gray;
+    }
+    
+    .pb-filemng-folder {
+        color: orange;
+        padding-bottom: 3px;
+    }
+    
+    .pb-filemng-paragraphs {
+        margin-top: -20px;
+        text-align: center;
+    }
+    
+    .img-responsive {
+        margin: 0 auto;
+    }
+    
+    @media screen and (max-width: 767px) {
+        .pb-filemng-template-treeview {
+            border-right: none;
+        }
+        #options {
+            text-align: center;
+        }
+        #options>li {
+            display: inline-block;
+        }
+        #pb-filemng-navigation>ul {
+            text-align: center;
+        }
+        #pb-filemng-navigation>ul>li {
+            display: inline-block;
+        }
+    }
+</style>
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+<script type="text/javascript" src="assets/js/shieldui-all.min.js"></script>
+<script type="text/javascript" src="assets/js/fileManagerData.js"></script>
+
+
+
+
+{% endblock %}

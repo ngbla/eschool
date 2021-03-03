@@ -1,0 +1,131 @@
+{% extends "main.html" %} {% block title %}
+FREQ
+{% endblock %} {% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row" style="
+background-image: url('/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; ">
+<div class="col-12">
+    <button onclick="generatePdf()" class="btn btn-primary"> <i class="fa fa-download"> Imprimer</i></button>
+</div>
+
+<!--DEBUT CONTENUS-->
+<div class="col-12 row" id="div_print">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4" style="text-align: center;">
+                <img src="assets/IHEMSO/logo2.jpg">
+            </div>
+            <div class="col-8" style="padding-top:10px ; text-align: center;">
+                <B style="color: rgb(115, 115, 252);"><h2>IHEM/SO ABIDJAN</h2></B>
+                
+                Institut des Hautes Etudes de commerce et de Management Samuel Ouli
+                <br>
+                <br>
+                Décision n°2000/314MPTTP/DPSIFDTP/AHKK n°482MLSRSDESPRIV-DAH-CP
+                <br>
+                <br>
+                2007/002/METFP/CAB/DEP
+                <br>
+                <br>
+               <B style="color: rgb(115, 115, 252);">09 BP 3489 Abidjan 09 &nbsp; &nbsp; Tél. : (+225) 22 41 73 02</B>
+            </div>
+        </div>
+         <hr size="10px" color="black" width="100%">
+         <br>  
+    </div>
+    <div class="container" style="text-align: center;">
+    <B style="color: rgb(223, 71, 71);"><h5>ATTESTATION DE FREQUENTATION</h5></B></div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <p class="text-center"><b>Année 2011-2012</b></p>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+     
+    <div class="container">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                Je soussigné, <B>M. OULI SAMUEL</B>, fondateur de <B>L'IHEM/SO Abidjan</B> <br>(Institut des Hautes Etudes de Commerce et de Management- Samuel Ouli)
+                <br> Atteste que :
+                <br> M, Mme, Mlle : <B>KRAMOKO INZA</B>
+                <br> Né (e) le .... <B>13/04/1979</B>
+                <br> Matricule : ........ <B>RIT / 072M</B>
+                <br> Filière : ...... <B>RESEAU INFORMATIQUE ET TELECOMMUNICATION </B>
+                <br> Est régulièrement inscrit(e) dans mon établissement pour l'année académique 2011-2012.
+                <br>
+                <br>  &nbsp;&nbsp;&nbsp; En foi de quoi nous lui délivrons cette présente attestation pour <br>servir et valoir ce que de droit.
+            </div>
+            <div class="col-1"></div>
+       </div>
+        <br>
+        <br>
+        <br>
+        <blockquote class="text-right" style="margin-right: 100px;">
+            <B>
+            LE DIRECTEUR DES Etudes
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            M. KESSE BOUKALOU BRUCE
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            Fait à Abidjan, le 03 octobre 2012
+            </B>
+        </blockquote>
+        <hr size="10px" color="black" width="100%"> 
+
+</div>
+
+<!--FIN CONTENUS-->
+
+</div>
+
+{% endblock %} {% block javascript_footer_add %}
+
+
+<script src="assets/js/mescript_admin.js"></script>
+<script src="assets/vendor/html2pdf/html2pdf.bundle.min.js"></script>
+
+
+<script>
+    function generatePdf(){
+        var element = document.getElementById('div_print');
+        var opt = {
+            margin:       1,
+            filename:     'myfile.pdf',
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
+        };
+        
+        // New Promise-based usage:
+        html2pdf().from(element).set(opt).save();
+    }
+   
+
+</script>
+
+
+
+
+{% endblock %}

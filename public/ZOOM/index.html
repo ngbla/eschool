@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<head>
+    <title>UGES-ZOOM</title>
+	<link rel="shortcut icon" href="https://e-learning.plusdecours.com/web/css/themes/chamilo/images/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="https://e-learning.plusdecours.com/apple-touch-icon.png">
+	
+    <meta charset="utf-8" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.7.4/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.7.4/css/react-select.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body>
+<style>
+    body {
+        padding-top: 50px;
+    }
+</style>
+
+<nav id="nav-tool" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="https://e-learning.plusdecours.com/">
+                <img src="https://e-learning.plusdecours.com/main/img/icons/22/icon-chamilo.png" title="PlusDeCour">
+            </a>
+        </div>
+        <div id="navbar">
+            <form class="navbar-form navbar-right" id="meeting_form">
+                <div class="form-group">
+                    <input type="text" name="display_name" id="display_name" value="WebSDK1.7.4#CDN" placeholder="Votre Nom" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" value="7986510623" name="meeting_number" id="meeting_number" value="" placeholder="Meeting Number" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" value="ajR1T2wxMkUyYWRzTy9QZ3pRRGRUdz09" name="meeting_pwd" id="meeting_pwd" value="" placeholder="Meeting Password" class="form-control">
+                </div>
+          
+                <div class="form-group">
+                    <select style="display:none;" id="meeting_role" class="selectpicker">
+                        <option value=1>Host</option>
+						<option value=0>Attendee</option>
+                        <option value=5>Assistant</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="join_meeting">Démarer la Conférence</button>
+            </form>
+        </div><!--/.navbar-collapse -->
+    </div>
+</nav>
+
+
+<script src="https://source.zoom.us/1.7.4/lib/vendor/react.min.js"></script>
+<script src="https://source.zoom.us/1.7.4/lib/vendor/react-dom.min.js"></script>
+<script src="https://source.zoom.us/1.7.4/lib/vendor/redux.min.js"></script>
+<script src="https://source.zoom.us/1.7.4/lib/vendor/redux-thunk.min.js"></script>
+<script src="https://source.zoom.us/1.7.4/lib/vendor/jquery.min.js"></script>
+<script src="https://source.zoom.us/1.7.4/lib/vendor/lodash.min.js"></script>
+
+<script src="https://source.zoom.us/zoom-meeting-1.7.4.min.js"></script>
+<script src="js/tool.js"></script>
+<script src="js/index.js"></script>
+
+<script>
+   
+</script>
+</body>
+</html>

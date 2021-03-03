@@ -1,0 +1,522 @@
+{% extends "/Elearning/main_eleve_elearning.html" %} {% block title %}Mes Cours{% endblock %} {% block content %}
+
+
+
+<input type="hidden" name="id_matiere" value="{% if mat_select is defined %}{{mat_select}}{% endif %}" id="id_matiere">
+
+<input type="hidden" name="id_personne" value="{% if profpers_select is defined %}{{profpers_select}}{% endif %}" id="id_personne">
+
+
+
+<div class="card">
+
+
+
+    <div class="card-body" style="
+        background-image: url('/public/assets/img/background/back_img5.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;padding-top: 20px; ">
+
+
+
+
+        <div class="container">
+
+
+
+            <li class="list-group-item card border-left-primary shadow h-100 py-2">
+
+                <a href="#">
+
+                    <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+
+                    <i class="fas fa-folder fa-2x text-primary-300"></i> &nbsp; Matières sélectionner : <span class="text-center">{% if matiere_select is defined %}{{matiere_select}}{% endif %}</span>
+
+                  </b>
+
+                </a>
+                <a class="float-right">
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <div class="container pb-filemng-template">
+
+                <div class="row">
+
+                    <div class="col-12">
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-body pb-filemng-panel-body">
+
+                                <div class="row">
+
+                                    <div class="col-4 pb-filemng-template-treeview" style="font-size: 2em;">
+
+                                        <div class="" id="treeview-toggle">
+
+                                            <div id="treeview" class="tabbable tabs-left">
+
+                                                <ul id="menu-accordeon">
+
+                                                    <li>
+
+                                                        <a href="#" class="btn-primary">Matières</a>
+
+                                                        <ul id="treeview_test">
+
+
+
+                                                        </ul>
+
+                                                    </li>
+
+
+
+                                                </ul>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-8 card">
+
+
+
+                                        <div class="card-header p-2">
+
+                                            <ul class="nav nav-pills">
+
+                                                <li class="nav-item"><a class="nav-link active" href="#docs" data-toggle="tab">Documents</a></li>
+
+                                                <li class="nav-item"><a class="nav-link" href="#videos" data-toggle="tab">Vidéos</a></li>
+
+                                                <li class="nav-item"><a class="nav-link" href="#file_upload" data-toggle="tab">Upload</a></li>
+
+                                                <li class="nav-item"><a class="nav-link" href="#plan_cour" data-toggle="tab">Plan du cours</a></li>
+
+
+
+                                            </ul>
+
+                                        </div>
+
+                                        <!-- Notifications -->
+
+
+
+                                        <div class="card-body">
+
+                                            <div class="tab-content">
+
+
+
+                                                <div class=" active tab-pane docs_video_div" id="docs">
+
+
+
+                                                    <table class="table table-striped dataTable" id="dataTable_list_evalnonprog" width="100%">
+
+                                                        <thead>
+
+                                                            <tr>
+
+                                                                <th>Format</th>
+
+                                                                <th>Titre</th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                        <tbody class="pb-filemng-template-body">
+
+
+
+                                                        </tbody>
+
+                                                    </table>
+
+
+
+                                                </div>
+
+
+
+                                                <div class="tab-pane docs_video_div" id="videos">
+
+                                                    {% if get_profmatiere_video is defined %} {% for video in get_profmatiere_video %}
+
+
+
+                                                    <!-- 4:3 aspect ratio -->
+
+                                                    <div class="card shadow mb-4">
+
+                                                        <a href="#collapse{{video.id_videocour}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse{{video.id_videocour}}">
+
+                                                            <h6 class="m-0 font-weight-bold text-primary">{{video.video_libelle}}</h6>
+
+                                                        </a>
+
+                                                        <div class="collapse" id="collapse{{video.id_videocour}}">
+
+                                                            <div class="card-body">
+
+                                                                <div class="embed-responsive embed-responsive-4by3">
+
+                                                                    <iframe frameborder="0" class="embed-responsive-item" src="{{video.lien_video}}" controls autoplay="false"></iframe>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    {% endfor %} {% endif %}
+
+
+
+
+
+                                                </div>
+
+
+
+                                                <div class="tab-pane" id="file_upload">
+
+
+
+                                                    <div class="form-group">
+
+
+
+                                                        <span class="text-warning">* Upload de Documents (.pdf, .xls, .xlsx, .doc, .docx, .ppt,  .pptx )</span>
+
+                                                        <br>
+
+                                                        <div class="progress progress-sm mb-2">
+
+                                                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                                        </div>
+
+                                                        <form class="needs-validation" novalidate>
+
+                                                            <input class="form-control" name="file" type="file" id="file_input" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/pdf, .xlsx, .docx, .pptx" />
+
+                                                            <br>
+
+                                                            <br>
+
+                                                            <a href="#" id="upload-button" class="btn btn-primary btn-icon-split">
+
+                                                                <span class="icon text-white-50">
+
+                                                      <i class="fas fa-arrow-up"></i>
+
+                                                    </span>
+
+                                                                <span class="text">Upload Documents</span>
+
+                                                            </a>
+
+                                                        </form>
+
+
+
+                                                        <hr>
+
+
+
+
+
+
+
+                                                        <span class="text-warning">* Upload de Vidéo (Liens vers la vidéo)</span>
+
+                                                        <br>
+
+                                                        <form class="needs-validation" novalidate>
+
+
+
+                                                            <input class="form-control" name="video_libelle" id="video_libelle" placeholder="Titre de la vidéo" type="text" />
+
+                                                            <br>
+
+                                                            <input class="form-control" name="liens_video" id="liens_video" placeholder="Liens Ex(https://www.youtube.com/watch?v=6THHrPyZQuQ)" type="text" />
+
+                                                            <br>
+
+                                                            <br>
+
+                                                            <a href="#" id="uploadvideo-button" class="btn btn-primary btn-icon-split">
+
+                                                                <span class="icon text-white-50">
+
+                                                      <i class="fas fa-arrow-up"></i>
+
+                                                    </span>
+
+                                                                <span class="text">Upload Liens Vidéo</span>
+
+                                                            </a>
+
+                                                        </form>
+
+
+
+
+
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <div class="tab-pane" id="plan_cour">
+
+                                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal_plan">Ajouter un Plan</button>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="myModal_plan" role="dialog">
+                                                        <div class="modal-dialog">
+
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <p>Some text in the modal.</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <hr><br>
+                                                    <div id="plandecours">
+
+                                                        <ul>
+                                                            <li><input type="checkbox" name="1"> <a href=""> Un composant</a></li>
+                                                            <li><input type="checkbox" name="2"> <a href=""> Un processus :</a>
+                                                                <ol>
+                                                                    <li><input type="checkbox" name="3">Étape 1</li>
+                                                                    <li><input type="checkbox" name="4">Étape 2</li>
+                                                                    <li><input type="checkbox" name="5">Étape 3</li>
+                                                                </ol>
+                                                            </li>
+                                                            <li><a href="">Un composant</a></li>
+                                                        </ul>
+
+                                                    </div>
+
+
+
+
+                                                </div>
+
+
+
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+{% endblock %} {% block javascript_footer_add %}
+
+
+<!-- you need to include the shieldui css and js assets in order for the charts to work -->
+
+<link rel="stylesheet" type="text/css" href="assets/css/all.min.css" />
+
+<script type="text/javascript" src="assets/js/shieldui-all.min.js"></script>
+
+<script type="text/javascript" src="assets/js/upload_files.js"></script>
+
+
+
+<script>
+    $(function() {
+
+
+
+        var dataSrc = [
+
+            { %
+                if get_matEnseigners is defined %
+            }
+
+            { %
+                for key, value in get_matEnseigners %
+            }
+
+
+
+            {
+
+                "text": "{{value.code}}-{{value.libele}}",
+
+                "iconCls": "fa fa-book",
+
+                "matiereid": "{{value.id_matiere_matiere}}"
+
+            },
+
+
+
+            { % endfor %
+            }
+
+            { % endif %
+            }
+
+
+
+        ]
+
+
+
+        var folderData = [
+
+            { %
+                if files_get is defined %
+            }
+
+            { %
+                for key, value in files_get %
+            }
+
+            { %
+                if (value .1 == 'docx') or(value .1 == 'doc') %
+            }
+
+            { % set extentionss = 'docx' %
+            }
+
+            { % elseif(value .1 == 'xls') or(value .1 == 'xlx') %
+            }
+
+            { % set extentionss = 'xlx' %
+            }
+
+            { %
+                else %
+            }
+
+            { % set extentionss = 'pdf' %
+            }
+
+            { % endif %
+            }
+
+            {
+
+                "icon": "<img style=\"width:20px;\" class=\"img-responsive\" src=\"assets/img/{{extentionss}}.png\">",
+
+                "liens": "{{value.0}}",
+
+                "text": "{{key}}"
+
+            },
+
+
+
+            { % endfor %
+            }
+
+            { % endif %
+            }
+
+
+
+        ];
+
+
+
+
+
+
+
+
+
+        for (var key in folderData) {
+
+            $(".pb-filemng-template-body").append(
+
+                '<tr><td>' + folderData[key].icon + ' </td><td><a href="' + folderData[key].liens + '"  download="' + folderData[key].text + '"><i class="fa fa-download" aria-hidden="true"></i></a> &nbsp; ' + folderData[key].text + '</td></tr>'
+
+            );
+
+        }
+
+
+
+
+
+
+
+        for (var key in dataSrc) {
+
+            // alert(dataSrc[key].text);
+
+            $("#treeview_test").append('<li><form action="" method="POST"><a href="index.php?p=elearning_prof&id_prof=' + {
+                {
+                    id_pers_personne
+                }
+            } + '&action=getcoursdocs&id_matiere=' + dataSrc[key].matiereid + '&matiere_select=' + dataSrc[key].text + '" name="id_personne" title="Modifier" type="submit" value="mat_id" class=""><i class="fa fa-folder" aria-hidden="true"></i>' + dataSrc[key].text + '	</a></form></li>');
+
+        }
+
+
+
+
+
+    });
+</script>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,343 @@
+{% extends "main_prof.html" %} 
+{% block title %}Home{% endblock %} 
+{% block content %}
+<!-- Main content 
+{% for key, value in allEmploiTps  %} <li>( {{ key}} )   {% for cle, val in value  %} <li> {{ cle}} [{{ val}}]</li> {% endfor %}  </li> {% endfor %} 
+--> 
+
+  <section class="content">
+    <div class="container-fluid">
+
+      <div class="row" style="
+      background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;padding-top: 20px; ">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+
+              <div class="text-center" id="div_user_tof">
+                <img id="user_tof" class="profile-user-img img-fluid img-circle"
+                src="{% if lien_photo is defined %}{{lien_photo}}{% elseif sexe == 'M' %}assets/img/m.png {% else %}assets/img/f.png {% endif %}"
+                alt="User profile picture">
+              </div>
+
+              <br>
+              <form action="" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                  <div class="input-group">
+
+                    <div class="custom-file" id="div_input_photo">
+                      <input type="file" class="custom-file-input" id="photo_user" name="photo_user" >
+                      <label class="custom-file-label" for="exampleInputFile">Importer</label>
+                    </div>
+
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-warning btn-icon-split" name="btn_send_photo">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </span>
+                  <span class="text">Changer</span>
+                </button>
+
+              </form>
+              <br>
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary"><strong> {% if nom_prenom is defined %}{{ nom_prenom|upper  }}{% endif %} </strong></h6>
+              </div>
+              <br>
+              <p class="text-muted text-center">Professeur</p>
+
+              <ul class="list-group list-group-unbordered mb-3 ">
+
+                <li class="list-group-item card border-left-info shadow h-100 py-2">
+                  <a href="#">
+                  <b class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                      <i class="fas fa-folder text-info"></i> &nbsp; Classes
+                  </b>
+                  <a class="float-right">         
+                    {% if nbreAllGrpe is defined %}
+                    {{ nbreAllGrpe.0.nbre_groupe  }}
+                    {% endif %}    
+                  </a> 
+                  </a> 
+                </li>
+
+                <li class="list-group-item card border-left-warning shadow h-100 py-2">
+                  <a href="#">
+                  <b class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                    <i class="fas fa-clipboard-list fa-2x text-warning"></i>  &nbsp; Matieres 
+                  </b> 
+                  <a  class="float-right">
+                    {% if nbreAllMatiere is defined %}
+                    {{ nbreAllMatiere.0.nbre_matiere  }}
+                    {% endif %}
+                  </a>
+                </a>
+                </li>
+
+                <li class="list-group-item card border-left-primary shadow h-100 py-2">
+                  <a href="#"> 
+                  <b class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                    <i class="fas fa-folder fa-2x text-primary-300"></i> &nbsp; Evaluation
+                  </b> 
+                  <a class="float-right">
+                    {% if result_effectif_all.nbrefiliere is defined %}
+                    {{ result_effectif_all.nbrefiliere.0.nbrefiliere }}
+                    {% endif %}
+                  </a>
+                </a>
+
+                </li>
+              </ul>
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+          <!-- About Me Box -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Informations</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <strong><i class="fa fa-envelope mr-1"></i> Email</strong>
+              <p class="text-muted">
+                {% if email is defined %}{{ email  }}{% endif %}    
+              </p>
+              <hr>
+
+              <strong><i class="fa fa-phone mr-1"></i> Contact</strong>
+              <p class="text-muted">
+                {% if contact is defined %}{{ contact  }}{% endif %}    
+              </p>
+              <hr>
+
+              <strong><i class="fa fa-user mr-1"></i> Sexe</strong>
+              <p class="text-muted">
+                {% if sexe is defined %}{{ sexe  }}{% endif %}    
+              </p>
+              <hr>
+
+              <strong><i class="fa fa-comments mr-1"></i> Notes</strong>
+
+              <p class="text-muted">
+                <textarea name="" id="" cols="auto" rows="10"></textarea>
+              </p>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                
+                <li class="nav-item"><a class="nav-link active" href="#notifs_prof" data-toggle="tab">Notifications</a></li>
+
+                <li class="nav-item"><a  id="prof_emploitps_cal" class="nav-link" href="#emploitps_prof" data-toggle="tab">Emploi du temps</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#infos_setting_prof" data-toggle="tab">Dossier</a></li>
+
+              </ul>
+            </div><!-- Notifications -->
+            <div class="card-body">
+              <div class="tab-content">
+                <!-- /.card-header -->
+                <div class="active tab-pane" id="notifs_prof">
+                  
+                  <!-- NOTIFICATIONS -->
+                  {{ include('notification_menu.html') }}
+                  <!-- /NOTIFICATIONS -->
+                  <br> <hr>
+ 
+                  <!-- /.post -->
+                </div>
+                <!-- /.tab-pane >Emploi du temps-->
+                <div class="tab-pane" id="emploitps_prof">
+                    <div class="calendrier" id="calendar_prof" style="color: white;"></div>
+                </div>
+                <!-- /.tab-pane Dossier-->
+                <div class="tab-pane" id="infos_setting_prof">
+                  <div class="form-row">
+                    <div class="col">
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        class="form-control form-control-user"
+                        id="exampleInputEmail"
+                        placeholder="{% if email is defined %}{{ email  }}{% endif %}   "
+                      />
+                    </div>
+                    <div class="col">
+                      <label for="tel">Contacts</label>
+                      <input
+                        type="tel"
+                        name="tel"
+                        class="form-control form-control-user"
+                        id="telexplid"
+                        placeholder=" {% if contact is defined %}{{ contact  }}{% endif %}"
+                      />
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <label for="pass1">Mots de Passe</label>
+                      <input
+                        type="password"
+                        name="pass1"
+                        class="form-control form-control-user"
+                        id="exampleInputPassword"
+                        placeholder="**********"
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="pass2">Repeter Mots de Passe</label>
+                      <input
+                        type="password"
+                        name="pass2"
+                        class="form-control form-control-user"
+                        id="exampleRepeatPassword"
+                        placeholder="**********"
+                      />
+                    </div>
+                  </div>
+
+   
+                  <hr />
+                  <label for="">Ajouter un fichier</label>
+                  <form action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input"name="user_file">
+                          <label class="custom-file-label" for="user_file">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                    <input style="border-radius: 10px; border : 1px solid #36b9cc" type="text" name="fichiersend" placeholder="Nom du fichier">
+                    <button href="#" class="btn btn-info btn-icon-split">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-add"></i>
+                      </span>
+                      <span class="text">Envoyer</span>
+                    </button>
+                  </form>
+                  <hr>
+                  <br>
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Liste des notes des élèves</h6>
+                    </div>
+                    <!-- Card Body -->    <!-- DataTales Example -->
+                    <div class="card-body">
+        
+                        <div class="table-responsive">
+                        <table class="table table-striped" id="dataTable_list_fichier" width="100%" cellspacing="0" table>
+                            <thead>
+                            <tr>
+                                <th >Date</th>
+                                <th >Libelle</th>
+                                <th >Liens</th>
+                                <th>Action</th>
+                            </tr>
+        
+                            </thead>
+                            <tfoot>
+                            <tr>
+                              <th >Date</th>
+                              <th >Libelle</th>
+                              <th >Liens</th>
+                              <th>Action</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            
+                              <tr> <td> 1</td><td> 1</td><td> 1</td><td> 1</td> </tr>
+        
+                            </tbody>
+                        </table>
+                        </div>
+                    
+                    </div>
+                </div>
+
+
+ 
+                </div>
+                <!-- /.tab-pane -->
+              </div>
+              <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl =  document.getElementById('calendar_prof');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+        },
+        defaultDate: new Date(),
+        navLinks: true, // can click day/week names to navigate views
+        businessHours: true, // display business hours
+        editable: true,
+        locale: 'fr',
+        events: [
+            {% for key, value in allEmploiTps  %}{
+                title: 'Cour de {{ value.lib_matiere|escape("js") }} Du {{ value.libele_partie }}  En classe de  : {{ value.groupe_libelle|escape }} Dans la salle : {{ value.lib_salle|escape  }}  ',
+                start:  new Date('{{ value.emploitps_date }}T{{ value.emploitps_h_debut }}:00'),
+                end:  new Date('{{ value.emploitps_date }}T{{ value.emploitps_h_fin }}:00'),
+                constraint: 'availableForMeeting', // defined below
+                overlap: false,
+                color: '#3788d8'
+              },
+            {% endfor %} 
+            {% for key, value in allGrpEval  %}{
+                title: 'Evaluation de {{ value.eval_libelle|escape }} Du {{ value.libele_partie }}  , En classe de  : {{ value.groupe_libelle }} , En salle :  {{ value.libelle|escape }} , Coéficient : {{ value.coef }} , Noté sur :  {{ value.notation }} , Description : {{ value.eval_desc|escape("js") }}  ',
+                start:  new Date('{{ value.eval_date }}T{{ value.eval_hDebut }}:00'),
+                end:  new Date('{{ value.eval_date }}T{{ value.eval_hFin }}:00'),
+                constraint: 'availableForMeeting', // defined below
+                overlap: false,
+                color: '#e74a3b;'
+              },
+            {% endfor %} 
+
+          ]
+        
+    });
+    
+        calendar.render();
+        calendar.setOption('locale', 'fr');
+  });
+
+
+</script>
+
+<script src="assets/js/mescript_prof.js"></script>
+{% endblock %} 

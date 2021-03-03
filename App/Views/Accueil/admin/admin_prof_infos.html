@@ -1,0 +1,597 @@
+{% extends "main.html" %} {% block title %}Home{% endblock %} {% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<br>
+<span class="text-warning"> <i class="fas fa-info"></i>Infos</span><br>
+<span class="text-warning">Etape 1 : Attribuer une Matière au professeur</span>
+<br>
+<span class="text-warning">Etape 2 : Attribuer un Groupe au professeur</span>
+<br> <br> <br>
+<section class="content">
+    <div class="container-fluid">
+
+        <ul class="nav nav-tabs nav-justified" id="custom-content-above-tab" role="tablist">
+
+            <li class="nav-item">
+                <!-- Onglet - Infos -->
+                <a class="nav-link {% if prof_menu == 'prof_menu_info' %} active {% endif %} " data-toggle="pill" href="#custom-content-couverture" role="tab" >Infos personnel</a>
+            </li>
+            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 3) or (id_role == 4)) %}
+            <!-- Onglet - Attribut matiere -->
+            <!--
+            <li class="nav-item">
+                
+                <a class="nav-link{% if prof_menu == 'prof_menu_mat' %} active {% endif %}" id="custom-content-domaine-tab" data-toggle="pill" href="#custom-content-domaine" role="tab" aria-controls="custom-content-domaine" aria-selected="false">Attribuer matière(s)</a>
+            </li>
+             -->
+            <li class="nav-item">
+                <!-- Onglet - Attribut matiere -->
+                <a class="nav-link{% if prof_menu == 4 %} active {% endif %}"  data-toggle="pill" href="#tab4" role="tab" >Attribuer matière(s)/Classe(s)</a>
+            </li>            
+            <!-- Onglet - Attribut groupe 
+            <li class="nav-item">
+                <a class="nav-link {% if prof_menu == 'prof_menu_groupe' %} active {% endif %}" id="custom-content-services-tab" data-toggle="pill" href="#custom-content-services" role="tab" aria-controls="custom-content-services" aria-selected="false">Attribuer un groupe</a>
+            </li>
+            -->
+            {% endif %}
+
+            <!-- Onglet - Admin 
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-content-apropos-tab" data-toggle="pill" href="#custom-content-apropos" role="tab" aria-controls="custom-content-apropos" aria-selected="false">Administrateur</a>
+                </li>
+            -->
+        </ul>
+
+        <div class="tab-content" id="custom-content-above-tabContent">
+
+            <!-- Contenu - Eleve -->
+            <div class="tab-pane fade {% if prof_menu == 'prof_menu_info' %} show  active{% endif %} " id="custom-content-couverture" role="tabpanel" aria-labelledby="custom-content-couverture-tab" style="margin-top: 20px !important;font-size: 10px !important;">
+
+                <div class="row">
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-3 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800"><a href="#">Image</a></div><br/>
+                                        <div class="h5 mb-0 ">
+
+                                            <dl class="dl-horizontal" style="font-size: 13px !important;">
+                                                <img class="img-thumbnail " src="{% if lien_photo_prof is defined %}
+                                            {{lien_photo_prof}}{% elseif sexe == 'M' %}assets/img/m.png {% else %}assets/img/f.png {% endif %}" alt="user image">
+                                            </dl>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-3 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800"><a href="#">General&nbsp;Info</a></div><br/>
+                                        <div class="h5 mb-0 ">
+
+                                            <dl class="dl-horizontal" style="font-size: 13px !important;">
+                                                <dt>Nom et Prénom</dt>
+                                                <dd>{% if nom_prenom_prof is defined %} 
+                                                    <input  type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  profinfos"  id="{{prof_id_pers}}µnom_prenom"  value="{{nom_prenom_prof}}">
+                                                    {% endif %}
+                                                </dd>
+
+                                                <br>
+                                                <dt>Email</dt>
+                                                <dd>{% if email_prof is defined %}
+                                                    <input  type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  profinfos"  id="{{prof_id_pers}}µemail"  value="{{email_prof}}">
+                                                    {% endif %}
+                                                </dd>
+                                                <br>
+                                                <dt>Dernière connexion</dt>
+                                                <dd>{% if lastConx_prof is defined %} {% endif %}</dd>
+                                                <br>
+                                                <dt>Sexe *(M / F)</dt>
+                                                <dd>{% if sexe_prof is defined %} 
+                                                     <input  type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  profinfos"  id="{{prof_id_pers}}µsexe"  value="{{sexe_prof}}">
+                                                    {% endif %}
+                                                </dd>
+
+                                            </dl>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-3 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class=" text-primary text-uppercase mb-1 font-weight-bold text-gray-800"><a href="#">Adresses & Contacts</a></div><br/>
+                                        <div class="h5 mb-0 ">
+
+                                            <dl class="dl-horizontal" style="font-size: 13px !important;">
+                                                <dt>Telephone</dt>
+                                                <dd>{% if contact_prof is defined %} 
+                                                    <input  type="text" style="text-align:center" type="text text-center" class="input-sm  form-control-plaintext  profinfos"  id="{{prof_id_pers}}µcontact"  value="{{ contact_prof[:2] }} {{ contact_prof[2:2] }} {{ contact_prof[4:2] }} {{ contact_prof[6:2] }}">
+                                                    {% endif %}
+                                                </dd>
+                                                <br>
+                                                <dt>Pays</dt>
+                                                <dd>Côte d'ivoire</dd>
+                                            </dl>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% if (id_role is defined) and ((id_role == 1) or (id_role == 2) or (id_role == 3) or (id_role == 4)) %}
+            <!-- Contenu - Prof {% if prof_menu_mat is defined %}  active  {% endif %}-->
+            <div class="tab-pane fade {% if prof_menu == 'prof_menu_mat' %} show  active {% endif %}" id="custom-content-domaine" role="tabpanel" aria-labelledby="custom-content-domaine-tab" style="margin-top: 50px !important;">
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="card shadow mb-4">
+
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Liste des matières du professeur</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <!-- DataTales Example -->
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable_list_profmat_news" width="100%" cellspacing="0" table>
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Libelle</th>
+                                                <th></th>
+                                            </tr>
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Libelle</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+
+                                            {% if allProfMat is defined %} {% for key, value in allProfMat %}
+                                            <tr>
+                                                <td>{{ value.code }}</td>
+                                                <td>{{ value.libele }}</td>
+                                                <td>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="id_prof" value="{% if id_prof is defined %}{{id_prof}}{% endif %}">
+                                                        <input type="hidden" name="idmat" value="{{ value.id_matiere_matiere }}">
+                                                        <button title="Supprimer" name="btn_sup_prof_mat" value="sup_mat" class="btn btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                                </button>
+                                                    </form>
+                                                </td>
+
+                                            </tr>
+                                            {% endfor %} {% endif %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pie Chart -->
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Attribuer une matière au professeur</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <form method="POST">
+                                    <div class="form-group form-inline">
+                                        <label>Matière : &nbsp; </label>
+                                        <div class="form-group">
+                                            <select name="id_matiere">
+                                            <option value="0">Choisissez une matière</option>
+
+                                            {% if allmatiere is defined %}
+                                            {% for key, value in allmatiere  %}
+                                            <tr>
+                                                <option value="{{ value.id_matiere_matiere }}">{{ value.code }}-{{ value.libele }}</option>
+                                            </tr>
+                                            {% endfor %} 
+                                        {% endif %}  
+                                        </select>
+                                            <input type="hidden" name="id_prof" value="{% if id_prof is defined %}{{id_prof}}{% endif %}">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" name="ajout_prof_mat" value="ajoutMat" class="btn btn-primary btn-icon-split">
+                                    <span class="icon text-white-50">
+                                    <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="text">Ajouter</span>
+                                </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Contenu - Prof {% if prof_menu_groupe is defined %}  active  {% endif %}-->
+            <div class="tab-pane fade  {% if prof_menu == 'prof_menu_groupe' %} show  active {% endif %}" id="custom-content-services" role="tabpanel" aria-labelledby="custom-content-domaine-tab" style="margin-top: 50px !important;">
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="card shadow mb-4">
+
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Liste des classe du professeur</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <!-- DataTales Example -->
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable_list_classe" width="100%" cellspacing="0" table>
+                                        <thead>
+                                            <tr>
+                                                <th>Libelle Classe</th>
+                                                <th>Libelle Matière</th>
+                                                <th></th>
+                                            </tr>
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Libelle Classe</th>
+                                                <th>Libelle Matière</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+
+                                            {% if allProfGroupe is defined %} {% for key, value in allProfGroupe %}
+                                            <tr>
+                                                <td>{{ value.groupe_libelle }}</td>
+                                                <td>{{ value.code }}-{{ value.libmat }}</td>
+                                                <td>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="id_prof" value="{% if id_prof is defined %}{{id_prof}}{% endif %}">
+                                                        <input type="hidden" name="id_groupe" value="{{ value.groupe_id }}">
+                                                        <input type="hidden" name="id_mat" value="{{ value.id_mat }}">
+                                                        <button title="Supprimer" name="btn_sup_prof_groupe" value="sup_groupe" class="btn btn-danger ">
+                                                <i class="fas fa-trash"></i>
+                                                </button>
+                                                    </form>
+                                                </td>
+
+                                            </tr>
+                                            {% endfor %} {% endif %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pie Chart -->
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Attribuer une classe au professeur</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <form method="POST">
+                                    <div class="form-group form-inline form-row">
+                                        <label class="col-3">Classe : &nbsp; </label>
+
+                                        <select name="id_groupe" class="col-8">
+                                            <option value="0">Choisissez une classe</option>
+
+                                            {% if allGroupe is defined %}
+                                            {% for key, value in allGroupe  %}
+                                            <tr>
+                                                <option value="{{ value.groupe_id }}">{{ value.annee_libelle }}-{{ value.groupe_libelle }}</option>
+                                            </tr>
+                                            {% endfor %} 
+                                        {% endif %}  
+                                        </select>
+                                        <input type="hidden" name="id_prof" value="{% if id_prof is defined %}{{id_prof}}{% endif %}">
+
+                                    </div>
+                                    <div class="form-group form-inline form-row">
+                                        <label class="col-3">Matière : &nbsp; </label>
+
+                                        <select name="id_prof_mmat" class="col-8">
+                                            <option value="0">Choisissez une Matière</option>
+
+                                            {% if allProfMat is defined %}
+                                            {% for key, value in allProfMat  %}
+                                            <tr>
+                                                <option value="{{ value.id_mat }}">{{ value.code }}-{{ value.libele }}</option>
+                                            </tr>
+                                            {% endfor %} 
+                                        {% endif %}  
+                                        </select>
+
+                                    </div>
+
+                                    <button type="submit" name="ajout_profgroupe" value="ajoutGroupe" class="btn btn-primary btn-icon-split">
+                                    <span class="icon text-white-50">
+                                    <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="text">Ajouter</span>
+                                </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Contenu - Prof {% if prof_menu_groupe is defined %}  active  {% endif %}-->
+            <div class="tab-pane fade  {% if prof_menu == '4' %} show  active {% endif %}" id="tab4" role="tabpanel" style="margin-top: 50px !important;">
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="card shadow mb-4">
+
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Liste des classe du professeur</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <!-- DataTales Example -->
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table  class="table caption-top table-striped table-bordered table-hover table-condensed  table-sm" style="width:100%; " cellspacing="0"  id="prof_matall" width="100%" cellspacing="0" table>
+                                        <thead class="bg-gradient-info text-white text-center">
+                                            <tr>
+                                                <th>Libelle Classe</th>
+                                                <th>Libelle Matière</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Libelle Classe</th>
+                                                <th>Libelle Matière</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+
+                                            {% if allProfGroupe is defined %} 
+                                            {% for key, value in allProfGroupe %}
+                                            <tr>
+                                                <td>{{ value.groupe_libelle }}</td>
+                                                <td>
+                                                    ({{ value.code }})-{{ value.libmat }}
+                                                    <br>
+                                                                                                                                                            <form method="POST">
+                                                        <input type="hidden" name="id_prof" value="{% if id_prof is defined %}{{id_prof}}{% endif %}">
+                                                        <input type="hidden" name="id_groupe" value="{{ value.groupe_id }}">
+                                                        <input type="hidden" name="id_mat" value="{{ value.id_mat }}">
+                                                        <button title="Supprimer" name="btn_sup_prof_groupe" value="sup_groupe" class="btn btn-danger ">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+
+                                                </td>
+                                            </tr>
+                                            {% endfor %} {% endif %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pie Chart -->
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Attribuer une classe au professeur</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <form method="POST">
+                                    <div class="form-group form-inline form-row">
+                                        <label class="col">Classe : &nbsp; </label>
+                                        <br>
+                                        <select name="id_groupe_all[]" class="col" multiple>
+                                            <option disabled selected >Choisissez des Classes</option>
+                                            {% if allGroupe is defined %}
+                                            {% for key, value in allGroupe  %}
+                                            <tr>
+                                                <option value="{{ value.groupe_id }}">{{ value.annee_libelle }}-{{ value.groupe_libelle }}</option>
+                                            </tr>
+                                            {% endfor %} 
+                                        {% endif %}  
+                                        </select>
+                                        <input type="hidden" name="id_prof" value="{% if id_prof is defined %}{{id_prof}}{% endif %}">
+                                    </div>
+                                    <br>
+                                    <div class="form-group form-inline form-row">
+                                        <label class="col">Matière : &nbsp; </label>
+                                        <br>
+                                        <select  name="id_prof_mmat_all[]"  multiple class="form-control col">
+                                            <option value="0" disabled selected>Choisissez des Matières</option>
+
+                                            {% if get_AllMatiereBy is defined %}
+                                            {% for key, value in get_AllMatiereBy  %}
+                                            <tr>
+                                                <option value="{{ value.id_matiere_matiere }}">({{ value.code }})-{{ value.libele }}</option>
+                                            </tr>
+                                            {% endfor %} 
+                                        {% endif %}  
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" name="ajout_profgroupe_all" value="ajoutGroupe" class="btn btn-primary btn-icon-split">
+                                    <span class="icon text-white-50">
+                                    <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="text">Ajouter</span>
+                                </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            
+            {% endif %}
+
+
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+
+{% endblock %} 
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script >
+$(document).ready(function() {
+    $('table tfoot th').each(function() {
+        var title = $(this).text();
+        $(this).html('<input style="width: 100%;" type="text" placeholder="Search ' + title + '" />');
+    });
+
+    var prof_matall = $('#prof_matall').DataTable({
+        initComplete: function() {
+            // Apply the search
+            this.api().columns().every(function() {
+                var that = this;
+
+                $('input', this.footer()).on('keyup change clear', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        },
+        dom: 'Blfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                titleAttr: 'Copy'
+            }, {
+                extend: 'excelHtml5',
+                text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                titleAttr: 'Excel'
+            }, {
+                extend: 'csvHtml5',
+                text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                titleAttr: 'CSV'
+            }, {
+                extend: 'pdfHtml5',
+                text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                title: 'Liste de classe {% if info_groupe.0 is defined %}{{info_groupe.0.groupe_libelle}}{% endif %}',
+                titleAttr: 'PDF'
+            }
+
+        ]
+    });
+
+    $('.profinfos').on('change', function(event) {
+
+        titre = "//evenement Change sur: .profinfos";
+        info = "  // id --> " + event.target.id + " :: Valeur= ";
+        valueur = $('#' + event.target.id).val();
+        consoleInfo(envi, titre, info, valueur);
+
+        url_info = liens + 'App/Models/info.model.php';
+        values_info = 'action=MAJprofInfos&table=personne&infos=' + event.target.id + '&valeur=' + $('#' + event.target.id).val();
+        idelemt = '#' + event.target.id;
+
+        root_AjaxMethod(url_info, values_info, ajax_etudinfos, idelemt);
+
+        //alert($('#' + event.target.id).val());
+
+    });
+    function ajax_etudinfos(jsondatas) {
+
+        var json_datas = JSON.parse(jsondatas);
+
+        if (typeof(json_datas) != undefined && json_datas != "" && json_datas != null) {
+
+            if (json_datas == 1) {
+                infos_stat = "Mise à jour éffectuée!";
+                classtype = "alert-success";
+            } else {
+                infos_stat = "Mise à jour non éffectuée!";
+                classtype = "alert-danger";
+            }
+
+            root_fct_showinfos_toast(infos_stat, classtype);
+        }
+
+    }
+
+});
+</script>
+{% endblock %}

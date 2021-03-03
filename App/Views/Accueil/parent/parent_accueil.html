@@ -1,0 +1,130 @@
+{% extends "main_parent.html" %} 
+{% block title %}Home{% endblock %} 
+{% block content %}
+<!--{% for key, value in _context  %}<li>{{ key}}</li>{% endfor %} 
+
+   Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-3">
+          {{ include('include/nav_parent.html') }}
+        </div>
+        <!-- /.col -->
+        
+        <!-- /.col -->
+        <div class="col-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#activity_parent" data-toggle="tab">Notifications</a></li>
+                <!--<li class="nav-item"><a  id="prof_emploitps_cal" class="nav-link" href="#timeline_parent" data-toggle="tab">Emploi du temps</a></li>-->
+                <li class="nav-item" disabled=""><a class="nav-link" href="#settings_parent" data-toggle="tab">Mes Informations</a></li>
+              </ul>
+            </div><!-- Notifications -->
+            <div class="card-body">
+              <div class="tab-content">
+                <!-- /.card-header -->
+                <div class="active tab-pane" id="activity_parent">
+
+                  <!-- NOTIFICATIONS -->
+                  {{ include('notification_menu.html') }}
+                  <!-- /NOTIFICATIONS -->
+
+                  <br> <hr> 
+                </div>
+                <!-- /.tab-pane >Emploi du temps-->
+                <div class="tab-pane" id="timeline_parent">
+                    <div id="calendar"></div>
+                </div>
+                <!-- /.tab-pane Dossier-->
+                <div class="tab-pane" id="settings_parent">
+                  <div class="form-row">
+                    <div class="col">
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        class="form-control form-control-user"
+                        id="exampleInputEmail"
+                        placeholder="{% if email is defined %}{{ email  }}{% endif %}   "
+                      />
+                    </div>
+                    <div class="col">
+                      <label for="tel">Contacts</label>
+                      <input
+                        type="tel"
+                        name="tel"
+                        class="form-control form-control-user"
+                        id="telexplid"
+                        placeholder=" {% if contact is defined %}{{ contact  }}{% endif %}"
+                      />
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <label for="pass1">Mots de Passe</label>
+                      <input
+                        type="password"
+                        name="pass1"
+                        class="form-control form-control-user"
+                        id="exampleInputPassword"
+                        placeholder="**********"
+                      />
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="pass2">Repeter Mots de Passe</label>
+                      <input
+                        type="password"
+                        name="pass2"
+                        class="form-control form-control-user"
+                        id="exampleRepeatPassword"
+                        placeholder="**********"
+                      />
+                    </div>
+                  </div>
+
+   
+                  <hr />
+                  <label for="">Ajouter un fichier</label>
+                  <form action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="exampleInputFile">
+                          <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                    <input style="border-radius: 10px; border : 1px solid #36b9cc" type="text" name="fichiersend" placeholder="Nom du fichier">
+                    <button href="#" class="btn btn-info btn-icon-split">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-add"></i>
+                      </span>
+                      <span class="text">Envoyer</span>
+                    </button>
+                  </form>
+                  <hr>
+                </div>
+                <!-- /.tab-pane -->
+              </div>
+              <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+
+
+
+{% endblock %}
+
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_eleve.js"></script>
+{% endblock %} 

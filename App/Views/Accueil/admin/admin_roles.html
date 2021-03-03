@@ -1,0 +1,385 @@
+{% extends "main.html" %} {% block title %}Admin - Rôles et Privilèges{% endblock %} {% block content %}
+
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div class="row" style="
+background-image: url('/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px; ">
+
+    <section class="content col-12">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <br>
+            <div class="row">
+
+                <!-- ./col -->
+                <div class="col-4">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{% set nbr_secr = 00 %} {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %} {% if info.id_role == 4 %} {% set nbr_secr = nbr_secr + 1 %} {% endif %} {% endfor %} {% endif %} {{nbr_secr}}
+                            </h3>
+
+                            <p>Utilisateur</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-user-shield"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Plus d'infos <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-4">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>{% set nbr_secr = 00 %} {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %} {% if info.id_role == 2 %} {% set nbr_secr = nbr_secr + 1 %} {% endif %} {% endfor %} {% endif %} {{nbr_secr}}
+
+                            </h3>
+
+                            <p>Administrateurs</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-users-cog"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Plus d'infos <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-4">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{% set nbr_secr = 00 %} {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %} {% if info.id_role == 1 %} {% set nbr_secr = nbr_secr + 1 %} {% endif %} {% endfor %} {% endif %} {{nbr_secr}}
+
+                            </h3>
+
+                            <p>Super Administrateurs</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-user-lock"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Plus d'infos <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-4">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{% set nbr_secr = 00 %} {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %} {% if info.id_role == 5 %} {% set nbr_secr = nbr_secr + 1 %} {% endif %} {% endfor %} {% endif %} {{nbr_secr}}
+                            </h3>
+                            <p>Secrétaires </p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">
+                        Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <!-- 4-Utilisateur -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{% set nbr_secr = 00 %} {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %} {% if info.id_role == 3 %} {% set nbr_secr = nbr_secr + 1 %} {% endif %} {% endfor %} {% endif %} {{nbr_secr}}
+                            </h3>
+                            <p> Gestionnaires</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">
+                        Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{% set nbr_secr = 00 %} {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %} {% if info.id_role == 6 %} {% set nbr_secr = nbr_secr + 1 %} {% endif %} {% endfor %} {% endif %} {{nbr_secr}}
+                            </h3>
+                            <p>Super Utilisateur </p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">
+                        Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{% set nbr_secr = 00 %} {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %} {% if info.id_role == 7 %} {% set nbr_secr = nbr_secr + 1 %} {% endif %} {% endfor %} {% endif %} {{nbr_secr}}
+                            </h3>
+                            <p>Superviseur</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">
+                        Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{% set nbr_secr = 00 %} {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %} {% if info.id_role == 8 %} {% set nbr_secr = nbr_secr + 1 %} {% endif %} {% endfor %} {% endif %} {{nbr_secr}}
+                            </h3>
+                            <p>Super Superviseur </p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">
+                        Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+
+            <!-- /.row (main row) -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+    <div class="card shadow mb-4 col-12">
+
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary"> Liste du Personnel</h6>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body" style="padding: 1rem 0.30rem;">
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTableadminrole" width="100%" cellspacing="0" style="text-align: center;font-size: 0.8em;">
+                    <thead>
+                        <tr>
+                            <th>Nom et Prénom</th>
+                            <th>Date et lieu Naiss.</th>
+                            <th>Sexe</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Rôle</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if allCpteAdmin is defined %} {% for info in allCpteAdmin %}
+                        <tr>
+
+                            <td>{{info.nom_prenom}}</td>
+                            <td>Née {{info.date_naiss}} à {{info.lieu_naiss}}</td>
+                            <td>{{info.sexe}}</td>
+                            <td>{{info.email}}</td>
+                            <td>{{info.contact}}</td>
+                            <td>
+                                <select name="admin_role" class="admin_role_manage badge badge-primary col-12" id="admin_role_manage_{{value.id_role}}_{{info.id_admin_admin}}">
+                                    <option value="0" disabled selected hidden >{{info.lib_role}}</option>
+                                    {% if getRole is defined %}
+                                    {% for key,value in getRole %}
+                                        <option value="{{value.id_role}}_{{info.id_admin_admin}}">{{value.lib_role}}</option>
+                                    {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </td>
+                            <td>
+                                <span class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <b class="caret">Action</b></a>
+                            <ul class="dropdown-menu" style="position: relative;padding: 0;background-color: transparent !important;">
+                                <li><button class="modif_doc_rev btn btn-danger btn-block" value="{{info.id_pers_personne}}_{{info.id_type}}_4_0" >Désactiver</button></li>
+                            </ul>
+                        </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %} {% endif %}
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="card shadow mb-4 col-12">
+
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary"> Liste des Droits</h6>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body" style="padding: 1rem 0.30rem;">
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTableadminrole" width="100%" cellspacing="0" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th>Rôles</th>
+                            <th>Listes des actions</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1 :::Super Administrateurs</td>
+                            <td>Lecture et écriture sur tous ! </td>
+                            <td>Accès à tous les université </td>
+                        </tr>
+                        <tr>
+                            <td>2 :::Administrateurs </td>
+                            <td>Lecture et écriture sur tous !</td>
+                            <td>Accès à l'université assigné</td>
+                        </tr>
+                        <tr>
+                            <td>6 :::Super Utilisateur </td>
+                            <td>Liste des professeurs, Liste des Etudiants, Gestion des stages, Réseaux des anciens </td>
+                            <td>RESPONSABLE DE LA SCOLARITE </td>
+                        </tr>
+                        <tr>
+                            <td>4 :::Utilisateur </td>
+                            <td>Gestion ETUDIANTS, GESTION FILIERE, GESTION SALLE,EVALUATION, ACTIVATION ETUDIANTS </td>
+                            <td>EDUCATEUR</td>
+                        </tr>
+                        <tr>
+                            <td>3 :::Gestionnaires </td>
+                            <td>Liste des Etudiants, Gestion des stages, Réseaux des anciens</td>
+                            <td>DIRECTEUR PARTENARIAT </td>
+                        </tr>
+                        <tr>
+                            <td>8 ::: Super Superviseur</td>
+                            <td>
+                                compte voir tous sans modification  (effectifs par classes)  (listes des élèves en stage et rseaux des anciens) voir comptabilité
+                                <br>
+                                - Lecture
+                            </td>
+                            <td>
+                                - Peut voir tous les menus sans modification et changer d'université
+                                <br/> - Peut voir comptabilité
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 7 :::Superviseur</td>
+                            <td>
+                                compte voir tous sans modification  (effectifs par classes)  (listes des élèves en stage et rseaux des anciens) voir comptabilité
+                                <br>
+                                - Lecture
+                            </td>
+                            <td>
+                                - Peut voir tous les menus d'une université sans modification
+                                <br/> - Peut voir comptabilité
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 5 :::Secrétaires</td>
+                            <td>
+                                Liste des Etudiants, Gestion des stages, Réseaux des anciens  ,notification emploi du temps , chat</td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %} {% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+<script>
+    $(document).ready(function() {
+
+        $('#dataTableadminrole').DataTable({
+            dom: 'Blfrtip',
+            buttons: [{
+                    extend: 'copyHtml5',
+                    text: '<span style="font-size: 20px; color: Mediumslateblue;"><i class="fas fa fa-copy "></i></span>',
+                    titleAttr: 'Copy'
+                }, {
+                    extend: 'excelHtml5',
+                    text: '<span style="font-size: 20px; color: green;"><i class="fas fa fa-file-excel"></i></span>',
+                    titleAttr: 'Excel'
+                }, {
+                    extend: 'csvHtml5',
+                    text: '<span style="font-size: 20px; color: Dodgerblue;"><i class="fas fa fa-file-csv"></i></span>',
+                    titleAttr: 'CSV'
+                }, {
+                    extend: 'pdfHtml5',
+                    text: '<span style="font-size: 20px; color: Tomato;"><i class="fas fa fa-file-pdf"></i></span>',
+                    titleAttr: 'PDF'
+                }
+
+            ]
+        });
+
+
+        $('.admin_role_manage').on('change', function(event) {
+
+            titre = "//evenement Change sur: admin_role_manage";
+            info = "  // Valeur=id --> admin_role_manage";
+            valueur = $('#' + event.target.id).val();
+            consoleInfo(envi, titre, info, valueur);
+
+            url_info = liens + 'App/Models/info.model.php';
+            values_info = 'action=change_role&infos=' + $('#' + event.target.id).val();
+            idelemt = '#' + event.target.id;
+
+            root_AjaxMethod(url_info, values_info, ajax_result_toast_role, idelemt);
+
+            function ajax_result_toast_role(jsondata) {
+
+                if (typeof(jsondata) != undefined && jsondata != "") {
+
+                    jsondata = JSON.parse(jsondata);
+                    if (jsondata == 1) {
+                        classtype = "alert-success";
+
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 5000);
+                    } else {
+                        classtype = "alert-danger";
+                    }
+                    infos_stat = "MISE A JOUR";
+                    root_fct_showinfos_toast(infos_stat, classtype);
+                }
+
+            }
+
+        });
+
+
+
+    });
+</script>
+
+{% endblock %}

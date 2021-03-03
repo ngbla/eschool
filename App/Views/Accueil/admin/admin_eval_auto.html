@@ -1,0 +1,210 @@
+{% extends "main.html" %} 
+{% block title %}Administration - Menu Evaluation{% endblock %} 
+{% block content %}
+
+{% if id_pers_personne is defined %}
+<input readonly type="hidden" name="global_admin" id="global_admin" value="{{id_pers_personne}}" style="color: white;border: 1px solid white;">
+<input readonly type="hidden" name="global_univ" id="global_univ" value="{{fk_iduniv}}" style="color: white;border: 1px solid white;"> 
+{% endif %}
+
+<div style="
+background-image: url('{{base_liens}}/public/assets/img/background/back_img5.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;padding-top: 20px;
+min-height: 1024px; ">
+
+  <!-- /.card-body -->
+  <!-- DataTales Programme exemple -->
+  <div class="card shadow mb-4" >
+    <!-- Card Header - Accordion -->
+    <div class="card-header row" >
+      <div class="col-4">
+        <h6 class="m-0 font-weight-bold text-primary ">Evaluation en attente</h6>
+      </div>
+      <div class="col-8 d-flex flex-row-reverse">
+        <div class="input-group-prepend ">
+          <button type="button" class="btn btn-primary">Année scolaire</button>
+        </div>
+        <select class="form-control" style="width: 40% !important;" id="eval_prog_annee" name="eval_prog_annee" required>
+          <option value="0">Choisissez l'année</option>
+          {% if allannee is defined %}                 
+            {% for key, value in allannee  %}
+              <option value="{{ value.id_anscol_annee_scolaire }}">{{ value.annee_libelle }}</option>
+            {% endfor %} 
+          {% endif %}
+        </select>
+      </div>
+
+    </div>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="eval_collapse" >
+
+      <div class="card-body">
+        
+        <div class="table-responsive">
+          <table class="table table-bordered" id="eval_prog_table" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Libelle</th>
+                <th>Date</th>
+                <th>Groupe</th>
+                <th>matière</th>
+                <th>Professeur</th>
+                <th>Contact</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Libelle</th>
+                <th>Date</th>
+                <th>Groupe</th>
+                <th>matière</th>
+                <th>Professeur</th>
+                <th>Contact</th>
+                <th>Action</th>
+              </tr>
+            </tfoot>
+            <tbody id="eval_prog_table_tbody">
+
+            </tbody>
+          </table>
+        </div>
+
+        
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <!-- The Modal -->
+  <div class="modal" id="progEval_modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Programmation de l'evaluation</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-row card-header card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <div class="col  ">
+              <h6 class="m-0 font-weight-bold text-primary">Classe : </h6><span id="evalprog_grpe"> </span>
+            </div>
+            <div class="col ">
+              <h6 class="m-0 font-weight-bold text-primary">Matière : </h6><span id="evalprog_mat"> </span>
+            </div>
+          </div>
+
+          <div class="form-row card-header card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <div class="col">
+              <h6 class="m-0 font-weight-bold text-primary">Professeur : </h6><span id="evalprog_prof"> </span>
+            </div>
+            <div class="col">
+              <h6 class="m-0 font-weight-bold text-primary">Contact : </h6><span id="evalprog_tel"> </span>
+            </div>
+          </div>
+
+          <div class="form-row card-header card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <div class="col">
+              <h6 class="m-0 font-weight-bold text-primary">Date : </h6> <br>
+              <span id="evalprog_tmpdate"> </span>
+            </div>
+            <div class="col">
+              <h6 class="m-0 font-weight-bold text-primary">H Debut : </h6> <br>
+              <span id="evalprog_hdebut"> </span>
+            </div>
+            <div class="col">
+              <h6 class="m-0 font-weight-bold text-primary">H Fin : </h6> <br>
+              <span id="evalprog_hfin"> </span>
+            </div>
+            <div class="col">
+              <h6 class="m-0 font-weight-bold text-primary">Durée: </h6> <br>
+              <span id="evalprog_duree"> </span>
+            </div>
+          </div>
+
+          <br>
+
+          <form method="POST">
+
+            <div class="form-row">
+
+              <div class="col">
+                <span class="input-group-addon"><i class="fa fa-clock-o"></i> Coéfficient </span>
+                <input type="number" class="form-control" name="evalProg_coef" id="evalProg_coef" placeholder="2" required>
+              </div>
+              <div class="col">
+                <span class="input-group-addon"><i class="fa fa-clock-o"></i> Notation (Ex: /20)</span>
+                <input type="number"  class="form-control" name="evalProg_notation" id="evalProg_notation" placeholder="20" required>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col-5">
+                <label for="evalProg_date">Date : </label> <br>
+                <input type="date" name="evalProg_date" required>
+              </div>
+              <div class="col-5">
+                <label for="evalProg_salle">Salle : </label> <br>
+                <select name="evalProg_salle" class="form-control" required>
+                  <option value="0">Choisissez une salle</option>
+                  {% if allSalle is defined %}                 
+                    {% for key, value in allSalle  %}
+                      <option value="{{value.id_salle}}">{{value.Code_salle}}-{{value.libelle}}</option>
+                    {% endfor %} 
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <br>
+
+
+            <div class="form-row">
+              <div class="col">
+                <span class="input-group-addon"><i class="fa fa-clock-o"></i> Heure Debut </span>
+                <input type="time" value="00:00" class="form-control" name="evalProg_salle_heuredebut" placeholder="10:00" required>
+              </div>
+              <div class="col">
+                <span class="input-group-addon"><i class="fa fa-clock-o"></i> Heure Fin </span>
+                <input type="time" value="00:00" class="form-control" name="evalProg_salle_heurefin" placeholder="12:00" required>
+              </div>
+            </div>
+
+            <br>
+            
+            <span id="evalProg_ideval"></span>
+            <button type="submit" class="btn btn-warning btn-icon-split" name="btn_set_evalProg">
+              <span class="icon text-white-50">
+                <i class="fas fa-arrow-right"></i>
+              </span>
+              <span class="text">Programmer</span>
+            </button>
+          </form>
+
+        </div>
+
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock %}
+{% block javascript_footer_add %}
+<script src="assets/js/mescript_admin.js"></script>
+{% endblock %} 
